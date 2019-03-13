@@ -16,6 +16,12 @@
 using namespace std;
 
 /*
+ * Pre: ---
+ * Post: Devuelve una tupla vacia
+ */
+carFrec::carFrec(){}
+
+/*
  * Pre: <<c>> es un caracter y <<f>> es el total de veces que 
  *      aparece escrito en un fichero, es decir, su frecuencia:
  * Post: Devuelve una tupla <<carFrec>> donde el valor del caracter

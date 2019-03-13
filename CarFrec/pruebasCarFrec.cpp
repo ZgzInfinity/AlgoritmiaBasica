@@ -16,6 +16,19 @@ const int MAX_FICHERO_NOMBRE = 100;
 
 
 /*
+ * Pre: A=X1 y B=X2
+ * Post: A=X2 y B=X1
+ */
+void permutar (carFrec& uno, carFrec& otro){
+	// Creacion de una tupla auxiliar vacia
+	carFrec aux = carFrec();
+	// Permutacion de tuplas
+	aux = uno;
+	uno = otro;
+	otro = aux;
+}
+
+/*
  * Pre: <<numCfrecs>> es un vector de datos de tipo "carFrec" que
  *      y <<c>> es un caracter concreto
  * Post: Si existe una tupla en el vector <<numCfrecs>> cuyo caracter es 
@@ -55,6 +68,45 @@ int encontrarCaracter( vector <carFrec>& numCfrecs, char& c){
 		// fracaso en la busqueda
 		// devuelve error
 		return -1;
+	}
+}
+
+void quicksort(vector <carFrec>& numCfrecs, int prim, int ult){
+	// declaracion de variables
+	int medio, i, j, frecPivot;
+	// calculo del punto medio del vector
+	medio = (prim + ult) / 2;
+	frecPivot = numCfrecs.at(medio).getFrecuencia();
+	// separacion de los fragmentos a ordenar
+	i = prim;
+	j = ult;
+	
+	while (i <= j){
+		// particion del vector de dos fragmentos
+		while (numCfrecs.at(i).getFrecuencia() > frecPivot){
+			// separacion de los caracteres con mayor frecuencia que la del pivote
+			i++;
+		}
+		while (numCfrecs.at(j).getFrecuencia() < frecPivot){
+			// separacion de los caracteres con menor frecuencia que la del pivote
+			cout << "hola" << endl;
+			j--;
+		}
+		if (i <= j){
+			// se cruzan los valores
+			// permutar los valores del vector
+			permutar(numCfrecs.at(i), numCfrecs.at(j));
+			i++;
+			j--;
+		}
+	}
+	// llamada recursiva a la funcion para llevar a cabo de las 
+	// restantes subparticiones del vector
+	if (numCfrecs.at(prim).getFrecuencia() < numCfrecs.at(j).getFrecuencia()){
+		quicksort(numCfrecs, prim, j);
+	}
+	if (numCfrecs.at(i).getFrecuencia() < numCfrecs.at(ult).getFrecuencia()){
+		quicksort(numCfrecs, i, ult);
 	}
 }
 
@@ -165,6 +217,7 @@ int main(){
 	
 	// pruebas de frecuenciasPorCaracter
 	// fichero ejemplo para comprobar la lectura 
+	
 	const char fichero[MAX_FICHERO_NOMBRE] = "frecuencias.txt";
 	// limpieza del vector
 	numCarFrecs.clear();
@@ -172,6 +225,15 @@ int main(){
 	cout << "Leyendo fichero " << fichero << endl;
 	// rellenado con los nuevos caracteres
 	frecuenciasPorCaracter(fichero, numCarFrecs);
+	
+	//ordenacion por metodo quicksort
+	quicksort(numCarFrecs, 0, numCarFrecs.size() - 1);
+	
+	// Prubas del TAD carFrec
+	for (int i = 0; i < int(numCarFrecs.size()); i++){
+		cout << "El caracter de la tupla " << i << " es " << numCarFrecs[i].getCaracter() << endl;
+		cout << "La frecuencia de la tupla " << i << " es " << numCarFrecs[i].getFrecuencia() << endl;
+	}
 	
 	cout << "Fin del programa " << endl;
 	

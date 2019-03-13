@@ -28,7 +28,13 @@ class carFrec {
 	private:
 		char caracter;     // valor del caracter 
 		int frecuencia;    // total de veces que aparece el caracter 
-	public:
+public:
+		
+		/*
+		 * Pre: ---
+		 * Post: Devuelve una tupla vacia
+		 */
+		carFrec();
 		
 		/*
 		 * Pre: <<c>> es un caracter y <<f>> es el total de veces que 
