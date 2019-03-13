@@ -13,6 +13,8 @@
  
 #include "CarFrec.h"
 
+using namespace std;
+
 /*
  * Pre: <<c>> es un caracter y <<f>> es el total de veces que 
  *      aparece escrito en un fichero, es decir, su frecuencia:
@@ -23,6 +25,16 @@ carFrec::carFrec(char c, int f){
 	caracter = c;
 	frecuencia = f;
 }
+
+
+/*
+ * Pre: ---
+ * Post: Ha asginado el caracter <<c>> como valor del caracter
+ */
+void carFrec::asignarCaracter(char c){
+	caracter = c;
+}
+
 
 /*
  * Pre: ---
@@ -36,6 +48,16 @@ char carFrec::getCaracter(){
  * Pre: ---
  * Post: Ha devuelto el valor de la frecuencia  
  */ 
-int carFrec::getFreecuencia(){
+int carFrec::getFrecuencia(){
 	return frecuencia;
 }      
+
+
+		/*
+		 * Pre: ---
+		 * Post: Incrementado la frecuencia en una unidad
+		 */
+void carFrec::incrementaFrecuencia(){
+	frecuencia++;
+}
+

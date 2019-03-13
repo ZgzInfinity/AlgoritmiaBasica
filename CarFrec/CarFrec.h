@@ -13,11 +13,16 @@
 #include <iostream>
 #include <cstring>
 #include <iomanip>
+#include <vector>
+#include <iterator>
+#include <fstream>
+
+using namespace std;
 
 /*
  * Fichero de interfaz del modulo carFrec
  */
-
+ 
 class carFrec {
 	// Estructura interna del tipo de dato carFrec
 	private:
@@ -33,7 +38,18 @@ class carFrec {
 		 */
 		carFrec(char c, int f); 
 
-		
+		/*
+		 * Pre: ---
+		 * Post: Ha asginado el caracter <<c>> como valor del caracter
+		 */
+		 void asignarCaracter(char c);
+
+		/*
+		 * Pre: ---
+		 * Post: Incrementado la frecuencia en una unidad
+		 */
+		 void incrementaFrecuencia();
+
 		/*
 		 * Pre: ---
 		 * Post: Ha devuelto el valor del caracter 
@@ -44,7 +60,7 @@ class carFrec {
 		 * Pre: ---
 		 * Post: Ha devuelto el valor de la frecuencia  
 		 */ 
-		int getFreecuencia();      
+		int getFrecuencia();      
 };
 
 #endif
