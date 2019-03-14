@@ -3,21 +3,21 @@
 
 
 //Includes
-
+#include "CarFrec/CarFrec.h"
 #include <cstring>
 #include <string.h>
 #include <iostream>
 
 
 using namespace std;
-
-class Arbol{
-    private:
-        struct Nodo{
-            Elemento e;
+struct Nodo{
+            carFrec e;
             Nodo* izq;
             Nodo* der;
         };
+
+class Arbol{
+    private:       
         Nodo* raiz;
     public:
 
