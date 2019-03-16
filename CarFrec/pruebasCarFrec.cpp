@@ -157,9 +157,6 @@ void frecuenciasPorCaracter(const char nombreFichero[], vector <carFrec>& numCfr
 		cerr << "El fichero de " << nombreFichero << " no se ha podido leer " << endl;
 	}
 }
-
-
-
 /*
  * Programa que reune un conjunto de pruebas básicas
  * para poder probar el funcionamiento del TAD CarFrec

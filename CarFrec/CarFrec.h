@@ -6,15 +6,13 @@
  * Fecha : 13-3-19 *******************************
  * ***********************************************
  */
-
-#ifndef CarFrec_H
-#define CarFrec_H
+ 
+#ifndef CARFREC_H
+#define CARFREC_H
 
 #include <iostream>
 #include <cstring>
-#include <iomanip>
 #include <vector>
-#include <iterator>
 #include <fstream>
 
 using namespace std;
@@ -25,7 +23,7 @@ using namespace std;
  
 class carFrec {
 	// Estructura interna del tipo de dato carFrec
-	private:
+private:
 		char caracter;     // valor del caracter 
 		int frecuencia;    // total de veces que aparece el caracter 
 public:
