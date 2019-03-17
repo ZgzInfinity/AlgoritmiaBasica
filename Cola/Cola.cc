@@ -1,20 +1,8 @@
-/*
- * ***********************************************
- * Asignatura : Algoritmia basica ****************
- * Autores : Rubén Rodríguez Esteban 737215 ******
- *           José María Vallejo Puyal 720044 *****
- * Fecha : 16-3-19 *******************************
- * ***********************************************
- */
+
 
 #include <fstream>
 #include "Cola.h"
 #include "../CarFrec/CarFrec.cc"
-
-/*
- * Fichero de implementacion del modulo Cola que trabaja 
- * con datos de tipo CarFrec/CarFrec/CarFrec
- */
 
 using namespace std;
 

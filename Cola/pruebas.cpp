@@ -1,16 +1,3 @@
-/*
- * ***********************************************
- * Asignatura : Algoritmia basica ****************
- * Autores : Rubén Rodríguez Esteban 737215 ******
- *           José María Vallejo Puyal 720044 *****
- * Fecha : 16-3-19 *******************************
- * ***********************************************
- */
- 
- /*
-  * Fichero de pruebas que combina los modulos Cola y CarFrec
-  */
-
 #include <iostream>
 #include <cstring>
 #include "Cola.h"

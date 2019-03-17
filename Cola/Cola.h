@@ -1,13 +1,3 @@
-/*
- * ***********************************************
- * Asignatura : Algoritmia basica ****************
- * Autores : Rubén Rodríguez Esteban 737215 ******
- *           José María Vallejo Puyal 720044 *****
- * Fecha : 16-3-19 *******************************
- * ***********************************************
- */
-
-
 #ifndef COLA_H
 #define COLA_H
 
@@ -16,12 +6,7 @@
 #include <cstring>
 #include "../CarFrec/CarFrec.h"
 
-/*
- * Fichero de interfaz del modulo Cola
- */
-
 using namespace std;
-
 
 struct Cola {
 	private:
