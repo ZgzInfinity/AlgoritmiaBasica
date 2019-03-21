@@ -1,1 +1,0 @@
-./Debug/pruebasCarFrec.cpp.o ./Debug/CarFrec.cc.o   
