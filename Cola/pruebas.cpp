@@ -18,5 +18,8 @@ int main(){
 	
 	//ordenacion por metodo quicksort
 	quicksort(c, 0, total - 1);
+	
+	cout << "Fin del programa " << endl;
 	return 0;
+	
 }

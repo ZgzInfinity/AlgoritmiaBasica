@@ -4,14 +4,14 @@
 #include <iterator>
 #include <iostream>
 #include <cstring>
-#include "../CarFrec/CarFrec.h"
+#include "../ArbolTrie/ArbolTrie.h"
 
 using namespace std;
 
 struct Cola {
 	private:
 		// vector de tuplas <caracter, frecuencia> ordenado por frecuencias
-		vector <carFrec> numCfrecs;
+		vector <ArbolTrie> arboles;
 	public:
 	
 	/*
@@ -42,7 +42,7 @@ struct Cola {
 	 *      al cola
 	 * Post: Se puede ha incorporado al cola <<h>> la nueva tupla <<cF>> 
 	 */
-	 friend void insertarCarFrec(Cola& h, carFrec cF);
+	 friend void insertarArbol(Cola& h, ArbolTrie& a);
 
 
 	/*
@@ -52,7 +52,7 @@ struct Cola {
 	 * Post: Ha devuelto la tupla <caracter, frecuencia> de la cola <<h>> situada
 	 *       en la posicion <<i>>
 	 */
-	 friend carFrec consultarCarFrec(Cola& h, int i);
+	 friend ArbolTrie consultarArbol(Cola& h, int i);
 
 
 	/*

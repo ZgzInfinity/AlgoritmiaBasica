@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include "Cola.h"
-#include "../CarFrec/CarFrec.cc"
+#include "../ArbolTrie/ArbolTrie.cc"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ using namespace std;
  *       de manera que ha quedado vacio o directamente se ha creado una cola vacia
  */
 void crear(Cola& h){
-	h.numCfrecs.clear();
+	h.arboles.clear();
 }
 
 /*
@@ -21,7 +21,7 @@ void crear(Cola& h){
  * Post: Ha devuelto el numero de elementos de la cola <<h>>
  */
 int numElementos(const Cola& h){
-	return h.numCfrecs.size();
+	return h.arboles.size();
 }
 
 
@@ -29,11 +29,8 @@ int numElementos(const Cola& h){
  * Pre: A=X1 y B=X2
  * Post: A=X2 y B=X1
  */
-void permutar (carFrec& uno, carFrec& otro){
-	// Creacion de una tupla auxiliar vacia
-	carFrec aux = carFrec();
-	// Permutacion de tuplas
-	aux = uno;
+void permutar (ArbolTrie& uno, ArbolTrie& otro){
+	ArbolTrie aux = uno;
 	uno = otro;
 	otro = aux;
 }
@@ -45,8 +42,8 @@ void permutar (carFrec& uno, carFrec& otro){
  *      a la cola
  * Post: Se ha incorporado a la cola <<h>> la nueva tupla <<cF>> 
  */
-void insertarCarFrec(Cola& h, carFrec cF){
-	h.numCfrecs.push_back(cF);
+void insertarArbol(Cola& h, ArbolTrie& a){
+	h.arboles.push_back(a);
 }
 
 
@@ -57,8 +54,8 @@ void insertarCarFrec(Cola& h, carFrec cF){
  * Post: Ha devuelto la tupla <caracter, frecuencia> de la cola <<h>> situada
  *      en la posicion <<i>>
  */
-carFrec consultarCarFrec(Cola& h, int i){
-	return h.numCfrecs.at(i);
+ArbolTrie consultarArbol(Cola& h, int i){
+	return h.arboles.at(i);
 }
 
 
@@ -82,7 +79,9 @@ int encontrarCaracter(Cola& h, char& c){
 	while (!encontrado && indice < total){
 		// tupla con caracter igual a <<c>> todavia no
 		// encontrada
-		if (consultarCarFrec(h, indice).getCaracter() == c){
+		ArbolTrie arbol = consultarArbol(h, indice);
+		carFrec tupla = obtenerCarFrec(arbol);
+		if (tupla.getCaracter() == c){
 			// El caracter de la tupla marcada por el iterador 
 			// coincide con el caracter buscado 
 			// se detiene la busqueda
@@ -118,37 +117,56 @@ int encontrarCaracter(Cola& h, char& c){
 void quicksort (Cola& h, int prim, int ult){
 	// declaracion de variables
 	int medio, i, j, frecPivot;
+	
+	carFrec tuplaI, tuplaJ;
 	// calculo del punto medio del vector
 	medio = (prim + ult) / 2;
-	frecPivot = consultarCarFrec(h, medio).getFrecuencia();
+	
+	ArbolTrie arbol = consultarArbol(h, medio);
+	carFrec tupla = obtenerCarFrec(arbol);
+	
+	frecPivot = tupla.getFrecuencia();
 	// separacion de los fragmentos a ordenar
 	i = prim;
 	j = ult;
 	
 	while (i <= j){
 		// particion del vector de dos fragmentos
-		while (consultarCarFrec(h, i).getFrecuencia() > frecPivot){
+		ArbolTrie arbolI = consultarArbol(h, i);
+		tuplaI = obtenerCarFrec(arbolI);
+		while (tuplaI.getFrecuencia() > frecPivot){
 			// separacion de los caracteres con mayor frecuencia que la del pivote
 			i++;
 		}
-		while (consultarCarFrec(h, j).getFrecuencia() < frecPivot){
+		
+		ArbolTrie arbolJ = consultarArbol(h, j);
+		tuplaJ = obtenerCarFrec(arbolJ);
+		while (tuplaJ.getFrecuencia() < frecPivot){
 			// separacion de los caracteres con menor frecuencia que la del pivote
 			j--;
 		}
+		
 		if (i <= j){
 			// se cruzan los valores
 			// permutar los valores del vector
-			permutar(h.numCfrecs.at(i), h.numCfrecs.at(j));
+			permutar(h.arboles.at(i), h.arboles.at(j));
 			i++;
 			j--;
 		}
 	}
 	// llamada recursiva a la funcion para llevar a cabo de las 
 	// restantes subparticiones del vector
-	if (consultarCarFrec(h, prim).getFrecuencia() < consultarCarFrec(h, j).getFrecuencia()){
+	ArbolTrie arbolPrim = consultarArbol(h, prim);
+	carFrec tuplaPrim = obtenerCarFrec(arbolPrim);
+	
+	if (tuplaPrim.getFrecuencia() < tuplaJ.getFrecuencia()){
 		quicksort(h, prim, j);
 	}
-	if (consultarCarFrec(h, i).getFrecuencia() < consultarCarFrec(h, ult).getFrecuencia()){
+	
+	ArbolTrie arbolUlt = consultarArbol(h, ult);
+	carFrec tuplaUlt = obtenerCarFrec(arbolUlt);
+	
+	if (tuplaI.getFrecuencia() < tuplaUlt.getFrecuencia()){
 		quicksort(h, i, ult);
 	}
 }
@@ -180,14 +198,21 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 			if (indice != -1){
 				// el caracter ya existe
 				// incremento de la frecuencia
-				h.numCfrecs.at(indice).incrementaFrecuencia();
+				ArbolTrie a = consultarArbol(h, indice);
+				carFrec nC = obtenerCarFrec(a);
+				nC.incrementaFrecuencia();
+				asignarArbolCarFrec(a, nC);
+				h.arboles.at(indice) = a;
 			}
 			else {
 				// el caracter nuevo leido no existe en el vector
 				// hay que registralo
 				carFrec nuevoCarFrec = carFrec(c, 1);
+				ArbolTrie nuevoArbol;
+				crearArbol(nuevoArbol, nuevoCarFrec);
+				
 				// incorporar el nuevo caracter al vector
-				insertarCarFrec(h, nuevoCarFrec);
+				insertarArbol(h, nuevoArbol);
 			}
 			// lectura de un nuevo caracter del fichero
 			c = f.get();
