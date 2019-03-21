@@ -41,7 +41,7 @@ struct ArbolTrie {
 		 *       toma el valor de <<e>>, el campo <<frecuencia>> toma el valor de la frecuencia de <<e>>
 		 *       y los punteros a los subarboles izquuierdo y derecho son nulos
 		 */
-		friend void crearArbol(ArbolTrie& a, carFrec e);
+		friend void crearArbol(ArbolTrie& a, carFrec& e);
 
 
 		/*
@@ -50,42 +50,57 @@ struct ArbolTrie {
 		 * Post: Ha asignado al caracter recogido en el arbol <<a>> la frecuencia 
 		 *       <<frecuencia>>
 		 */
-		 friend void asignarFrecuencia(ArbolTrie& a, int frecuencia);
+		 friend void asignarFrecuencia(ArbolTrie& a, const int& frecuencia);
 
 
 		/*
 		 * Pre: <<a>> y <<aIzq>> son dos arboles que almacenan tuplas <caracter, frecuencia>>
 		 * Post: Ha asignado <<aIzq>> como subarbol izquierdo de <<a>>
 		 */
-		friend void asignarArbolIzquierdo(ArbolTrie& a, ArbolTrie aIzq);
+		friend void asignarArbolIzquierdo(ArbolTrie& a, const ArbolTrie& aIzq);
 
 
 		/*
 		 * Pre: <<a>> y <<aDer>> son dos arboles que almacenan tuplas <caracter, frecuencia>>
 		 * Post: Ha asignado <<aDer>> como subarbol derecho de <<a>>
 		 */
-		friend void asignarArbolDerecho(ArbolTrie& a, ArbolTrie aDer);
+		friend void asignarArbolDerecho(ArbolTrie& a, const ArbolTrie& aDer);
 
+
+		/*
+		* Pre: <<a>> es un arbol que almacena una tupla <caracter, valor> y 
+		*      <<cF>> es una tupla <caracter, valor> libre
+		* Post: Ha reemplazado la tupla <caracter, valor> almacenada en <<a>> por
+		*       la tupla <<cF>>
+		*/
+		friend void asignarArbolCarFrec(ArbolTrie& a, const carFrec& cF);
+		
 
 		/*
 		 * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
 		 * Post: Ha devuelto la frecuencia del arbol <<a>>
 		 */
-		 friend int obtenerArbolFrecuencia(ArbolTrie& a);
+		 friend int obtenerArbolFrecuencia(const ArbolTrie& a);
 
+
+		/*
+		 * Pre: <<a>> es un arbol que almacena una tupla <caracter, frecuencia>
+		 * Post: Ha devuelto la tupla <caracter, valor> asociada al arbol <<a>>
+		 */
+		 friend carFrec obtenerCarFrec(const ArbolTrie& a);
 
 		/*
 		 * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
 		 * Post: Ha devuelto el subarbol izquierdo de <<a>>
 		 */
-		 friend ArbolTrie obtenerArbolIzquierdo(ArbolTrie& a);
+		 friend ArbolTrie obtenerArbolIzquierdo(const ArbolTrie& a);
 
 
 		/*
 		 * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
 		 * Post: Ha devuelto el subarbol derecho de <<a>>
 		 */
-		 friend ArbolTrie obtenerArbolDerecho(ArbolTrie& a);
+		 friend ArbolTrie obtenerArbolDerecho(const ArbolTrie& a);
 
 
 		/*
@@ -93,7 +108,7 @@ struct ArbolTrie {
 		 * Post: Devuelve <<true>> si y solo si el arbol <<a>> es hoja. En caso
 		 *       contrario devuelve <<false>>
 		 */
-		 friend bool esHoja (ArbolTrie& a);
+		 friend bool esHoja (const ArbolTrie& a);
 
 
 		/*
@@ -124,6 +139,7 @@ struct ArbolTrie {
 		 *       de <<cadena>>
 		 */
 		friend char decodificarCaracter(ArbolTrie &a, string cadena);
+		
 };
 
 #endif

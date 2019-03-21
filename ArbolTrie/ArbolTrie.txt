@@ -1,0 +1,1 @@
+./Debug/pruebasArboles.cpp.o ./Debug/ArbolTrie.cc.o   

@@ -8,7 +8,7 @@
  */
  
 #include "ArbolTrie.h"
-#include "../CarFrec/carFrec.cc"
+#include "../CarFrec/Carfrec.cc"
 
 /* OK
  * Pre: <<e>> es una tupla <carater, frecuencia>
@@ -16,10 +16,10 @@
  *       toma el valor de <<e>>, el campo <<frecuencia>> toma el valor de la frecuencia de <<e>>
  *       y los punteros a los subarboles izquuierdo y derecho son nulos
  */
-void crearArbol(ArbolTrie& a, carFrec e){
+void crearArbol(ArbolTrie& a, carFrec& e){
 	ArbolTrie::Nodo* aux = new ArbolTrie::Nodo;
 	aux->dato = e;
-	aux->frecuencia = e.getFrecuencia();
+	aux->frecuencia = 0;
 	aux->der = nullptr;
 	aux->izq = nullptr;
 	a.raiz = aux;
@@ -32,7 +32,7 @@ void crearArbol(ArbolTrie& a, carFrec e){
  * Post: Ha asignado al caracter recogido en el arbol <<a>> la frecuencia 
  *       <<frecuencia>>
  */
-void asignarFrecuencia(ArbolTrie& a, int frecuencia){
+void asignarFrecuencia(ArbolTrie& a, const int& frecuencia){
 	ArbolTrie::Nodo* aux = a.raiz;
 	aux->frecuencia = frecuencia;
 }
@@ -42,7 +42,7 @@ void asignarFrecuencia(ArbolTrie& a, int frecuencia){
  * Pre: <<a>> y <<aIzq>> son dos arboles que almacenan tuplas <caracter, frecuencia>>
  * Post: Ha asignado <<aIzq>> como subarbol izquierdo de <<a>>
  */
-void asignarArbolIzquierdo(ArbolTrie& a, ArbolTrie aIzq){
+void asignarArbolIzquierdo(ArbolTrie& a, const ArbolTrie& aIzq){
 	ArbolTrie::Nodo* aux = a.raiz;
 	aux->izq = aIzq.raiz;
 }
@@ -52,18 +52,39 @@ void asignarArbolIzquierdo(ArbolTrie& a, ArbolTrie aIzq){
  * Pre: <<a>> y <<aDer>> son dos arboles que almacenan tuplas <caracter, frecuencia>>
  * Post: Ha asignado <<aDer>> como subarbol derecho de <<a>>
  */
-void asignarArbolDerecho(ArbolTrie& a, ArbolTrie aDer){
+void asignarArbolDerecho(ArbolTrie& a, const ArbolTrie& aDer){
 	ArbolTrie::Nodo* aux = a.raiz;
 	aux->der = aDer.raiz;
 }
+
+
+/*
+ * Pre: <<a>> es un arbol que almacena una tupla <caracter, valor> y 
+ *      <<cF>> es una tupla <caracter, valor> libre
+ * Post: Ha reemplazado la tupla <caracter, valor> almacenada en <<a>> por
+ *       la tupla <<cF>>
+ */
+void asignarArbolCarFrec(ArbolTrie& a, const carFrec& cF){
+	a.raiz->dato = cF;
+}
+
 
 
 /* OK
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto la frecuencia del arbol <<a>>
  */
-int obtenerArbolFrecuencia(ArbolTrie& a){
+int obtenerArbolFrecuencia(const ArbolTrie& a){
 	return a.raiz->frecuencia;
+}
+
+
+/*
+ * Pre: <<a>> es un arbol que almacena una tupla <caracter, frecuencia>
+ * Post: Ha devuelto la tupla <caracter, valor> asociada al arbol <<a>>
+ */
+carFrec obtenerCarFrec(const ArbolTrie& a){
+	return a.raiz->dato;
 }
 
 
@@ -71,7 +92,7 @@ int obtenerArbolFrecuencia(ArbolTrie& a){
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto el subarbol izquierdo de <<a>>
  */
-ArbolTrie obtenerArbolIzquierdo(ArbolTrie& a){
+ArbolTrie obtenerArbolIzquierdo(const ArbolTrie& a){
 	ArbolTrie aF;
 	ArbolTrie::Nodo* aux = a.raiz;
 	aF.raiz = aux->izq;
@@ -83,7 +104,7 @@ ArbolTrie obtenerArbolIzquierdo(ArbolTrie& a){
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto el subarbol derecho de <<a>>
  */
-ArbolTrie obtenerArbolDerecho(ArbolTrie& a){
+ArbolTrie obtenerArbolDerecho(const ArbolTrie& a){
 	ArbolTrie aF;
 	ArbolTrie::Nodo* aux = a.raiz;
 	aF.raiz = aux->der;
@@ -97,7 +118,7 @@ ArbolTrie obtenerArbolDerecho(ArbolTrie& a){
  * Post: Devuelve <<true>> si y solo si el arbol <<a>> es hoja. En caso
  *       contrario devuelve <<false>>
  */
-bool esHoja (ArbolTrie& a){
+bool esHoja (const ArbolTrie& a){
 	return a.raiz->izq == nullptr && a.raiz->der == nullptr;
 }
 
@@ -114,9 +135,16 @@ ArbolTrie unir(ArbolTrie& a1, ArbolTrie& a2){
 	if (!esHoja(a1) && !esHoja(a2)){
 		aux->frecuencia = obtenerArbolFrecuencia(a1) + obtenerArbolFrecuencia(a2);
 	}
+	else if (!esHoja(a1) && esHoja(a2)){
+		aux->frecuencia = obtenerArbolFrecuencia(a1) + a2.raiz->dato.getFrecuencia();
+	}
+	else if (esHoja(a1) && !esHoja(a2)){
+		aux->frecuencia = a1.raiz->dato.getFrecuencia() + obtenerArbolFrecuencia(a2);
+	}
 	else {
 		aux->frecuencia = a1.raiz->dato.getFrecuencia() + a2.raiz->dato.getFrecuencia();
 	}
+	
 	aux->der = a1.raiz;
 	aux->izq = a2.raiz;
 	a.raiz = aux;
@@ -163,3 +191,4 @@ char decodificarCaracter(ArbolTrie &a, string cadena){
 	decodificarCaracter(a.raiz, cadena, 0, cB);
 	return cB;
 }
+

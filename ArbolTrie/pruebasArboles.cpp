@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ArbolTrie.h"
+#include "../CarFrec/CarFrec.cc"
 
 
 using namespace std;
@@ -56,6 +57,7 @@ int main(){
 	}
 	
 	// Pruebas para crear descifrar caracteres en un arbol
+	
 	*/
 	
 	carFrec cF5 = carFrec('X', 72);
@@ -89,5 +91,6 @@ int main(){
 	// cout << c4 << endl;
 	
 	cout << "Fin del programa de pruebas " << endl;
+	
 	return 0;
 }
