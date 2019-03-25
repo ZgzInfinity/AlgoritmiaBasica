@@ -1,12 +1,35 @@
-#include <ArbolTrie.h>
-#include <Cola.h>
+/*
+ * ***********************************************
+ * Asignatura : Algoritmia basica ****************
+ * Autores : Rubén Rodríguez Esteban 737215 ******
+ *           José María Vallejo Puyal 720044 *****
+ * Fecha : 25-3-19 *******************************
+ * ***********************************************
+ */
+
+ 
+/*
+ * Fichero de implementacion del modulo Huffman
+ */
+
 #include <iostream>
 #include <cstring>
-#include <vector>
 #include <fstream>
+#include "CarFrec.h"
+#include "ArbolTrie.h"
+#include "Cola.h"
+#include "Huffman.h"
 
 using namespace std;
 
+
+/*
+ * Pre: <<c>> es una cola de arboles hojas en los que se guardan 
+ *       tuplas <caracter, valor> ordenadas por orden decreciente de 
+ *		frecuencias
+ * Post: El arbol <<huffman>> es el arbol de codificacion Huffman que guarda un 
+ *       codigo libre de prefijos optimo para <<c>>
+ */
 void generaHuffman(Cola& c, ArbolTrie& huffman){
     ArbolTrie primero = primero(c);
     eliminarPrimerArbol(c);
@@ -28,10 +51,10 @@ void codificadorEnt(int codigos[], ArbolTrie& a,int codigo, int num){
         CarFrec c = obtenerCarFrec(a);
         codigos[c.getCaracter()]=codigo;
     }else{
-        int codigoIzq = codigo*2;
-        int codigoDer = codigo*2 + 1;
-        codificadorEnt(codigos,obtenerArbolIzquierdo(a),codigoIzq,num+1);
-        codificadorEnt(codigos,obtenerArbolDerecho(a),codigoDer,num+1);
+        int codigoIzq = codigo * 2;
+        int codigoDer = codigo * 2 + 1;
+        codificadorEnt(codigos, obtenerArbolIzquierdo(a), codigoIzq,num + 1);
+        codificadorEnt(codigos, obtenerArbolDerecho(a), codigoDer,num + 1);
     }
 }
 
@@ -44,11 +67,19 @@ void codificador(string codigos[], ArbolTrie& a,string codigo){
     }else{
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
-        codificador(codigos,obtenerArbolIzquierdo(a),codigIzq);
-        codificador(codigos,obtenerArbolDerecho(a),codigDer);
+        codificador(codigos, obtenerArbolIzquierdo(a), codigIzq);
+        codificador(codigos, obtenerArbolDerecho(a), codigDer);
     }
 }
 
+/*
+ * Pre: <<ficheroEntrada>> es un fichero de texto que almacena 
+ *      caracteres tanto especiales como alfanumericos
+ * Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
+ *       de forma comprimida la secuencia de caracteres guardada en el fichero
+ *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion 
+ *		 los codigos Huffman
+ */		 
 void comprimir(char in[], char out[], int codigos[]){
     //leer cada caracter y
     string total = "";
@@ -65,10 +96,5 @@ void comprimir(char in[], char out[], int codigos[]){
 
     //saliendo del bucle
     //codificar lo que falte con int i_bin = std::stoi (str_bin,nullptr,2); 
-
-
-
-
-
 }
 
