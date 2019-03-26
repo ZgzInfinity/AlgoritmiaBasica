@@ -65,13 +65,14 @@ void descifra(string nombre,string destino){
 }
 
 void comprimir(string nombre){
-    std::bitset<8> foo;
     string cod[256];
     ArbolTrie a;
     int posicion;
     //Obtener el huffman
     codificador(cod,a,"0");
-    ifstream f;
+    
+
+
     //leemos el dato
     //cogemos el codigo
     //hay que tratar los codigos de 8 en 8 para que funcione como chars
@@ -127,8 +128,39 @@ int main(){
     cout << "el numero es es " << result;*/
 
     
-    std::bitset<8> foo;
-    string s= "01010101";
+    
+    /*string s= "10000000";
+    int i = std::stoi(s, nullptr, 2);
+    //cout<<(char)i;
+    
+    out << (char)i;*/
+    
+    //De aqui para abajo esta todo dpm
+    
+    string cod[100];
+    cod[65]="10";
+    cod[66]="01";
+    cod[67]="00";
+    cod[68]="11";
+    
+    ifstream in;
+    string s="";
+    in.open("pru.txt");
+    char c;
+    while (in.get(c))
+    {
+        /*for (int i = 7; i >= 0; i--){
+            cout << ((c >> i) & 1);
+        }*/
+        s = s + cod[(int)c]; 
+    }
+
+    ofstream out;
+    out.open("salida.txt");
+    int i = std::stoi(s, nullptr, 2);    
+    out << (char)i;
+
+
     
     
 
