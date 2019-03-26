@@ -1,86 +1,88 @@
-/*
- * ***********************************************
- * Asignatura : Algoritmia basica ****************
- * Autores : Rubén Rodríguez Esteban 737215 ******
- *           José María Vallejo Puyal 720044 *****
- * Fecha : 25-3-19 *******************************
- * ***********************************************
- */
-
- 
-/*
- * Fichero de implementacion del modulo Huffman
- */
-
-#include <iostream>
-#include <cstring>
-#include <fstream>
-#include "CarFrec.h"
 #include "ArbolTrie.h"
 #include "Cola.h"
-#include "Huffman.h"
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <fstream>
+#include <bitset>
+#include "CarFrec.h"
 
 using namespace std;
 
-
-/*
- * Pre: <<c>> es una cola de arboles hojas en los que se guardan 
- *       tuplas <caracter, valor> ordenadas por orden decreciente de 
- *		frecuencias
- * Post: El arbol <<huffman>> es el arbol de codificacion Huffman que guarda un 
- *       codigo libre de prefijos optimo para <<c>>
- */
 void generaHuffman(Cola& c, ArbolTrie& huffman){
-    ArbolTrie primero = primero(c);
+    ArbolTrie pri = primero(c);
     eliminarPrimerArbol(c);
     ArbolTrie segundo = primero(c);
     eliminarPrimerArbol(c);
     if(numElementos(c)>=2){    
         ArbolTrie aux;
-        unir(primero, segundo, aux);
+        unir(pri, segundo, aux);
         insertarArbol(c,aux); //Insertar debe dvolver el vector ordenado
         generaHuffman(c,huffman);
     }else{
-        unir(primero, segundo, huffman);
+        unir(pri, segundo, huffman);
     }
 }
 
 //Codificador con enteros
-void codificadorEnt(int codigos[], ArbolTrie& a,int codigo, int num){
+void codificadorEnt(int codigos[],const ArbolTrie& a,int codigo, int num){
     if(esHoja(a)){
-        CarFrec c = obtenerCarFrec(a);
+        carFrec c = obtenerCarFrec(a);
         codigos[c.getCaracter()]=codigo;
     }else{
-        int codigoIzq = codigo * 2;
-        int codigoDer = codigo * 2 + 1;
-        codificadorEnt(codigos, obtenerArbolIzquierdo(a), codigoIzq,num + 1);
-        codificadorEnt(codigos, obtenerArbolDerecho(a), codigoDer,num + 1);
+        int codigoIzq = codigo*2;
+        int codigoDer = codigo*2 + 1;
+        codificadorEnt(codigos,obtenerArbolIzquierdo(a),codigoIzq,num+1);
+        codificadorEnt(codigos,obtenerArbolDerecho(a),codigoDer,num+1);
     }
 }
 
 
 //Codificador con string 
-void codificador(string codigos[], ArbolTrie& a,string codigo){
+void codificador(string codigos[],const ArbolTrie& a,string codigo){
     if(esHoja(a)){
-        CarFrec c = obtenerCarFrec(a);
+        carFrec c = obtenerCarFrec(a);
         codigos[c.getCaracter()]=codigo;
     }else{
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
-        codificador(codigos, obtenerArbolIzquierdo(a), codigIzq);
-        codificador(codigos, obtenerArbolDerecho(a), codigDer);
+        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq);
+        codificador(codigos,obtenerArbolDerecho(a),codigoDer);
     }
 }
 
-/*
- * Pre: <<ficheroEntrada>> es un fichero de texto que almacena 
- *      caracteres tanto especiales como alfanumericos
- * Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
- *       de forma comprimida la secuencia de caracteres guardada en el fichero
- *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion 
- *		 los codigos Huffman
- */		 
-void comprimir(char in[], char out[], int codigos[]){
+
+void descifra(string nombre,string destino){
+    ifstream f(nombre, ios::binary | ios::in);
+    ofstream out(destino);
+    char c;
+    while (f.get(c))
+    {
+        for (int i = 7; i >= 0; i--){
+            cout << ((c >> i) & 1);
+        }
+    }
+}
+
+void comprimir(string nombre){
+    std::bitset<8> foo;
+    string cod[256];
+    ArbolTrie a;
+    int posicion;
+    //Obtener el huffman
+    codificador(cod,a,"0");
+    ifstream f;
+    //leemos el dato
+    //cogemos el codigo
+    //hay que tratar los codigos de 8 en 8 para que funcione como chars
+
+
+    
+
+
+
+}
+/*void comprimir(char in[], char out[], int codigos[]){
     //leer cada caracter y
     string total = "";
 
@@ -96,5 +98,44 @@ void comprimir(char in[], char out[], int codigos[]){
 
     //saliendo del bucle
     //codificar lo que falte con int i_bin = std::stoi (str_bin,nullptr,2); 
+    //escribirlo en el fichero 
+}*/
+
+
+int main(){
+    /*std::bitset<8> foo;
+    foo.set();
+    foo[4]=0;
+    foo[1]=0;
+    ofstream out;
+    out.open("prueba.txt");
+    unsigned long i = foo.to_ulong(); 
+    unsigned char c = static_cast<unsigned char>( i );
+    
+    out<<c;
+    cout << "el caracter es " << c <<"\n";*/
+    /*char ca;
+    ifstream f;
+    f.open("prueba.txt");
+    //f.seekg(0);
+    if (f.is_open())
+    {      
+        ca = f.get();
+    }
+    cout << ca;
+    uint8_t result = ca;
+    cout << "el numero es es " << result;*/
+
+    
+    std::bitset<8> foo;
+    string s= "01010101";
+    
+    
+
+
+
+    return 0;
 }
+
+
 
