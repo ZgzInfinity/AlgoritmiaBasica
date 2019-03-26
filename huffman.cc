@@ -69,7 +69,25 @@ void comprimir(string nombre){
     ArbolTrie a;
     int posicion;
     //Obtener el huffman
-    codificador(cod,a,"0");
+    //codificador(cod,a,"0");
+    string nSal = nombre +".bin";
+    ofstream sal(nSal); 
+    cod[65]="10";
+    cod[66]="01";
+    cod[67]="00";
+    cod[68]="11";
+    ifstream in;
+    string s="";
+    in.open(nombre);
+    char c;
+    while (in.get(c))
+    {
+        s = s + cod[(int)c]; 
+    }
+    //Parsear de 8 en 8 la cadena en un buclle y escribitlo
+    int i = std::stoi(s, nullptr, 2);    
+    sal << (char)i;
+
     
 
 
@@ -103,69 +121,8 @@ void comprimir(string nombre){
 }*/
 
 
-int main(){
-    /*std::bitset<8> foo;
-    foo.set();
-    foo[4]=0;
-    foo[1]=0;
-    ofstream out;
-    out.open("prueba.txt");
-    unsigned long i = foo.to_ulong(); 
-    unsigned char c = static_cast<unsigned char>( i );
-    
-    out<<c;
-    cout << "el caracter es " << c <<"\n";*/
-    /*char ca;
-    ifstream f;
-    f.open("prueba.txt");
-    //f.seekg(0);
-    if (f.is_open())
-    {      
-        ca = f.get();
-    }
-    cout << ca;
-    uint8_t result = ca;
-    cout << "el numero es es " << result;*/
-
-    
-    
-    /*string s= "10000000";
-    int i = std::stoi(s, nullptr, 2);
-    //cout<<(char)i;
-    
-    out << (char)i;*/
-    
-    //De aqui para abajo esta todo dpm
-    
-    string cod[100];
-    cod[65]="10";
-    cod[66]="01";
-    cod[67]="00";
-    cod[68]="11";
-    
-    ifstream in;
-    string s="";
-    in.open("pru.txt");
-    char c;
-    while (in.get(c))
-    {
-        /*for (int i = 7; i >= 0; i--){
-            cout << ((c >> i) & 1);
-        }*/
-        s = s + cod[(int)c]; 
-    }
-
-    ofstream out;
-    out.open("salida.txt");
-    int i = std::stoi(s, nullptr, 2);    
-    out << (char)i;
-
-
-    
-    
-
-
-
+int main(){ 
+    comprimir("pru");
     return 0;
 }
 
