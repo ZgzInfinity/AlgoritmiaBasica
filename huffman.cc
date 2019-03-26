@@ -52,14 +52,15 @@ void codificador(string codigos[],const ArbolTrie& a,string codigo){
 }
 
 
-void descifra(string nombre,string destino){
+void descifra(string nombre){
     ifstream f(nombre, ios::binary | ios::in);
-    ofstream out(destino);
     char c;
     while (f.get(c))
     {
         for (int i = 7; i >= 0; i--){
-            cout << ((c >> i) & 1);
+            int a =  ((c >> i) & 1);
+            cout<<a;
+            //Recorrer el arbol y descifrar las letras
         }
     }
 }
@@ -87,42 +88,12 @@ void comprimir(string nombre){
     //Parsear de 8 en 8 la cadena en un buclle y escribitlo
     int i = std::stoi(s, nullptr, 2);    
     sal << (char)i;
-
-    
-
-
-    //leemos el dato
-    //cogemos el codigo
-    //hay que tratar los codigos de 8 en 8 para que funcione como chars
-
-
-    
-
-
-
 }
-/*void comprimir(char in[], char out[], int codigos[]){
-    //leer cada caracter y
-    string total = "";
-
-    //en el bucle
-    total = total + codigos[(int)caracter];
-
-    if(total.size()%32 == 0){
-        //escribir en el fichero destino los enteros ya codificadis
-        int i_bin = std::stoi (str_bin,nullptr,2); 
-        total.clear();
-    }
-
-
-    //saliendo del bucle
-    //codificar lo que falte con int i_bin = std::stoi (str_bin,nullptr,2); 
-    //escribirlo en el fichero 
-}*/
 
 
 int main(){ 
-    comprimir("pru");
+    //comprimir("pru");
+    descifra("pru.bin");
     return 0;
 }
 
