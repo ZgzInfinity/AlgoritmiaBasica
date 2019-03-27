@@ -1,6 +1,7 @@
 
 
 #include <fstream>
+#include <iterator>
 #include "Cola.h"
 #include "ArbolTrie.h"
 
@@ -16,6 +17,9 @@ void crear(Cola& h){
 	h.arboles.clear();
 }
 
+
+
+
 /*
  * Pre: <<h>> es una cola de tuplas <caracter, frecuencia>
  * Post: Ha devuelto el numero de elementos de la cola <<h>>
@@ -23,6 +27,8 @@ void crear(Cola& h){
 int numElementos(const Cola& h){
 	return h.arboles.size();
 }
+
+
 
 
 /*
@@ -35,9 +41,19 @@ void permutar (ArbolTrie& uno, ArbolTrie& otro){
 	otro = aux;
 }
 
+
+
+
+/*
+ * Pre: <<h>> es una cola de arboles
+ * Post: Devuelve el primer elemento de la cola <<h>>
+ */
 ArbolTrie primero(const Cola& h){
 	return h.arboles.front();
 }
+
+
+
 
 /*
  * Pre: <<h>> es una cola de tuplas de tipo <caracter, frecuencia>
@@ -46,27 +62,34 @@ ArbolTrie primero(const Cola& h){
  * Post: Se ha incorporado a la cola <<h>> la nueva tupla <<cF>>
  */
 void insertarArbol(Cola& h, ArbolTrie& a){
-	std::vector<ArbolTrie>::iterator it=h.arboles.begin();;
-	int pos = posicion(h,obtenerArbolFrecuencia(a));
- 	std::next(it,pos);	
-	h.arboles.insert(it,a);
-	//h.arboles.push_back(a);
+	h.arboles.push_back(a);
 }
 
 
-//TODO: hay que poner la frecuiencia de los nodos hoja como la frecuencia que tienen en el carfrec.
+
+void anyadirArbol(Cola& h, ArbolTrie& a){
+	std::vector<ArbolTrie>::iterator it=h.arboles.begin();
+	int pos = posicion(h,obtenerArbolFrecuencia(a));
+ 	next(it, pos);	
+	h.arboles.insert(it, a);
+}
+
+
+
 int posicion(Cola& h,int frecuencia){
-	ArbolTrie t;
+	ArbolTrie arbolMed;
+	carFrec cF;
 	int i = 0;
-	int j = numElementos(h);
+	int j = numElementos(h) - 1;
 	int medio;
-	while(i<=j){
-		medio= (i+j)/2;
-		t=consultarArbol(h,medio);
-		if(obtenerArbolFrecuencia(t)>frecuencia){
-			j = medio-1;
+	while(i <= j){
+		medio = (i + j) / 2;
+		arbolMed = consultarArbol(h,medio);
+		cF = obtenerCarFrec(arbolMed);
+		if(cF.getFrecuencia() <= frecuencia){
+			j = medio - 1;
 		}else{
-			i = medio;
+			i = medio + 1;
 		}
 	}
 	return i;
@@ -145,7 +168,7 @@ int encontrarCaracter(Cola& h, char& c){
 }
 
 
-/*
+/* VA BIEN PARA VALORES NO REPETIDOS (CON REPES PETA)
  * Pre: <<h>> es una cola de tuplas <caracter, frecuencia, <<prim>>
  *      marca la posicion de la primera tupla de la cola <<h>> y
  *      <<ult>> marca la posicion de la ultima tupla de la cola <<h>>
@@ -230,7 +253,6 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 	f.open(nombreFichero);
 	if (f.is_open()){
 		// Flujo asociado a fichero correctamente
-		cout << " Fichero bien " << endl;
 		char c;
 		// lectura del primer caracter del fichero
 		c = f.get();
@@ -262,7 +284,6 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 		}
 		// Cierre del flujo de lectura asociado al fichero
 		f.close();
-		cout << "Sale de leer el fichero "<< endl;
 	}
 	else {
 		// Error en la asociacion del flujo al fichero

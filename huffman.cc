@@ -90,12 +90,12 @@ void comprimir(string nombre){
     sal << (char)i;
 }
 
-
+/*
 int main(){ 
     //comprimir("pru");
     descifra("pru.bin");
     return 0;
 }
-
+*/
 
 
