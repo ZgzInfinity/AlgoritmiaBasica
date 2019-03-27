@@ -72,7 +72,7 @@ struct Cola {
 	 * Post: Ha devuelto la tupla <caracter, frecuencia> de la cola <<h>> situada
 	 *       en la posicion <<i>>
 	 */
-	 friend void eliminarPrimerArbol(Cola& h);
+	 friend void eliminarArbol(Cola& h, vector<ArbolTrie>::iterator it);
 
 
 
@@ -83,7 +83,7 @@ struct Cola {
 	 *       igual al caracter <<c>> devuelve el indice de esa tupla en el vector.
 	 *       En caso contrario se ha limitado a devolver un numero negativo
 	 */
-	 friend int encontrarCaracter(Cola& h, char& c);
+	 friend vector<ArbolTrie>::iterator encontrarCaracter(Cola& h, char& c);
 
 	/*
 	 * Pre: <<h>> es una cola de tuplas <caracter, frecuencia, <<prim>>
@@ -92,7 +92,7 @@ struct Cola {
 	 * Post: <<h>> es una permutacion de las tuplas <caracter, frecuencia> de manera
 	 *       que ahora estan ordenadas por orden decriente de frecuencias
 	 */
-	  friend void quicksort(Cola& h, int prim, int ult);
+	 // friend void quicksort(Cola& h, int prim, int ult);
 
 
 	/*

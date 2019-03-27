@@ -67,6 +67,7 @@ void insertarArbol(Cola& h, ArbolTrie& a){
 
 
 
+
 void anyadirArbol(Cola& h, ArbolTrie& a){
 	std::vector<ArbolTrie>::iterator it=h.arboles.begin();
 	int pos = posicion(h,obtenerArbolFrecuencia(a));
@@ -76,7 +77,7 @@ void anyadirArbol(Cola& h, ArbolTrie& a){
 
 
 
-int posicion(Cola& h,int frecuencia){
+int posicion(Cola& h, int frecuencia){
 	ArbolTrie arbolMed;
 	carFrec cF;
 	int i = 0;
@@ -84,7 +85,7 @@ int posicion(Cola& h,int frecuencia){
 	int medio;
 	while(i <= j){
 		medio = (i + j) / 2;
-		arbolMed = consultarArbol(h,medio);
+		arbolMed = h.arboles.at(medio);
 		cF = obtenerCarFrec(arbolMed);
 		if(cF.getFrecuencia() <= frecuencia){
 			j = medio - 1;
@@ -117,8 +118,8 @@ ArbolTrie consultarArbol(Cola& h, int i){
  * Post: Ha devuelto la tupla <caracter, frecuencia> de la cola <<h>> situada
  *       en la posicion <<i>>
  */
-void eliminarPrimerArbol(Cola& h){
-	h.arboles.erase(h.arboles.begin());
+void eliminarArbol(Cola& h,vector<ArbolTrie>::iterator it){
+	h.arboles.erase(it);
 }
 
 /*
@@ -128,19 +129,18 @@ void eliminarPrimerArbol(Cola& h){
  *       igual al caracter <<c>> devuelve el indice de esa tupla en el vector.
  *       En caso contrario se ha limitado a devolver un numero negativo
  */
-int encontrarCaracter(Cola& h, char& c){
+vector<ArbolTrie>::iterator encontrarCaracter(Cola& h, char& c){
 	// control de deteccion de tupla deseada
 	bool encontrado = false;
 	// posicion del vector a analizar
-	int indice = 0;
-
+	vector<ArbolTrie>::iterator it=h.arboles.begin();
 	int total = numElementos(h);
 
 	// iterador para recorrer el vector
-	while (!encontrado && indice < total){
+	while (!encontrado && it < h.arboles.end()){
 		// tupla con caracter igual a <<c>> todavia no
 		// encontrada
-		ArbolTrie arbol = consultarArbol(h, indice);
+		ArbolTrie arbol = (*it);
 		carFrec tupla = obtenerCarFrec(arbol);
 		if (tupla.getCaracter() == c){
 			// El caracter de la tupla marcada por el iterador
@@ -152,19 +152,21 @@ int encontrarCaracter(Cola& h, char& c){
 			// El caracter de la tupla marcada por el iterador
 			// no coincide con el caracter buscado
 			// se prosigue la busqueda
-			indice++;
+			it++;
 		}
 	}
-	if (encontrado){
+	/*if (encontrado){
 		// exito en la busqueda
 		// retorno de la posicion en el vector
-		return indice;
+		return it;
 	}
 	else {
 		// fracaso en la busqueda
 		// devuelve error
-		return -1;
+		return nullptr;;
 	}
+	*/
+	return it;
 }
 
 
@@ -174,7 +176,7 @@ int encontrarCaracter(Cola& h, char& c){
  *      <<ult>> marca la posicion de la ultima tupla de la cola <<h>>
  * Post: <<h>> es una permutacion de las tuplas <caracter, frecuencia> de manera
  *       que ahora estan ordenadas por orden decriente de frecuencias
- */
+ *
 void quicksort (Cola& h, int prim, int ult){
 	// declaracion de variables
 	int medio, i, j, frecPivot;
@@ -235,7 +237,7 @@ void quicksort (Cola& h, int prim, int ult){
 		quicksort(h, i, ult);
 	}
 }
-
+*/
 
 /*
  * Pre: <<nombreFichero>> es un fichero de caracteres y <<numCfrecs>> es un vector vacio
@@ -256,18 +258,21 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 		char c;
 		// lectura del primer caracter del fichero
 		c = f.get();
-		int indice;
+		vector<ArbolTrie>::iterator indice;
+		int v;
 		while (!f.eof()){
 			// mientras no acaba el fichero
 			indice = encontrarCaracter(h, c);
-			if (indice != -1){
+			if (indice != h.arboles.end()){
 				// el caracter ya existe
 				// incremento de la frecuencia
-				ArbolTrie a = consultarArbol(h, indice);
+				ArbolTrie a = (*indice);
+				h.arboles.erase(indice);
 				carFrec nC = obtenerCarFrec(a);
 				nC.incrementaFrecuencia();
 				asignarArbolCarFrec(a, nC);
-				h.arboles.at(indice) = a;
+				v = posicion(h,nC.getFrecuencia());
+				h.arboles.insert(h.arboles.begin() + v, a);
 			}
 			else {
 				// el caracter nuevo leido no existe en el vector

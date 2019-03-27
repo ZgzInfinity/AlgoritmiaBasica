@@ -29,17 +29,9 @@ int main(){
 	}
 	
 	//ordenacion por metodo quicksort TRATA ELEMENTOS NO REPETIDOS
-	quicksort(c, 0, total - 1);
+	//quicksort(c, 0, total - 1);
 	
-	cout << "ORDENADO" << endl;
 
-	for(int i = 0 ; i < total ; i++){
-		a = consultarArbol(c,i);
-		ca = obtenerCarFrec(a);
-		cout <<  "Caracter: "<< ca.getCaracter() << " Frecuencia: "<< ca.getFrecuencia()<< endl; 
-	}
-	
-	
 	// Pruebas de busqueda binaria 
 	cout << "La posicion de la freucencia 11 seria " << posicion(c, 11) << endl;
 	cout << "La posicion de la frecuencia 8 seria " << posicion(c, 8) << endl;
