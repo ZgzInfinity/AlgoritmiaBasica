@@ -46,7 +46,30 @@ ArbolTrie primero(const Cola& h){
  * Post: Se ha incorporado a la cola <<h>> la nueva tupla <<cF>>
  */
 void insertarArbol(Cola& h, ArbolTrie& a){
-	h.arboles.push_back(a);
+	std::vector<ArbolTrie>::iterator it=h.arboles.begin();;
+	int pos = posicion(h,obtenerArbolFrecuencia(a));
+ 	std::next(it,pos);	
+	h.arboles.insert(it,a);
+	//h.arboles.push_back(a);
+}
+
+
+//TODO: hay que poner la frecuiencia de los nodos hoja como la frecuencia que tienen en el carfrec.
+int posicion(Cola& h,int frecuencia){
+	ArbolTrie t;
+	int i = 0;
+	int j = numElementos(h);
+	int medio;
+	while(i<=j){
+		medio= (i+j)/2;
+		t=consultarArbol(h,medio);
+		if(obtenerArbolFrecuencia(t)>frecuencia){
+			j = medio-1;
+		}else{
+			i = medio;
+		}
+	}
+	return i;
 }
 
 
@@ -207,6 +230,7 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 	f.open(nombreFichero);
 	if (f.is_open()){
 		// Flujo asociado a fichero correctamente
+		cout << " Fichero bien " << endl;
 		char c;
 		// lectura del primer caracter del fichero
 		c = f.get();
@@ -238,6 +262,7 @@ void frecuenciasPorCaracter(const char nombreFichero[], Cola& h){
 		}
 		// Cierre del flujo de lectura asociado al fichero
 		f.close();
+		cout << "Sale de leer el fichero "<< endl;
 	}
 	else {
 		// Error en la asociacion del flujo al fichero
