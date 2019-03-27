@@ -48,8 +48,13 @@ struct Cola {
 	 * Post: Se puede ha incorporado al cola <<h>> la nueva tupla <<cF>> 
 	 */
 	 friend void insertarArbol(Cola& h, ArbolTrie& a);
-
+	 
+	 friend void anyadirArbol(Cola& h, ArbolTrie& a);
+	
+	
 	 friend int posicion(Cola& h,int frecuencia);
+	 
+	 
 	/*
 	 * Pre: <<h>> es una cola de tuplas <caracter, frecuencia> 
 	 *      e <<i>> es un entero positivo menor o igual que el total
