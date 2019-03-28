@@ -5,6 +5,11 @@ void crearVacio(Heap& h){
     h.num=0;
 }
 
+
+int numElementos(Heap& h){
+	return h.num;
+}
+
 void anyadir(Heap& h, ArbolTrie& a){
     h.num++;
     h.arboles[h.num]=a;
@@ -39,7 +44,7 @@ void eliminarMin(Heap& h){
         h.num--;
         i = 1;
         while(i<(h.num/2)){
-            if(2*i==h.num|obtenerArbolFrecuencia(h.arboles[2*i]) < obtenerArbolFrecuencia(h.arboles[2*i+1])){
+            if(2*i==h.num || obtenerArbolFrecuencia(h.arboles[2*i]) < obtenerArbolFrecuencia(h.arboles[2*i+1])){
                 j= 2*i;
             }else{
                 j = 2*i+1;
@@ -63,4 +68,8 @@ ArbolTrie min(Heap& h){
 
 bool esVacio(Heap& h){
     return h.num == 0;
+}
+
+ArbolTrie consultar(Heap& h, const int i){
+	return h.arboles[i];
 }

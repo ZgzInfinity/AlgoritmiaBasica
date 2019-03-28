@@ -3,66 +3,64 @@
 #include "Cola.h"
 #include "CarFrec.h"
 #include "ArbolTrie.h"
+#include "Heap.h"
 
+const int UMBRAL = 51;
 const int MAX_FICHERO_NOMBRE = 100;
 
 int main(){
 	const char fichero[MAX_FICHERO_NOMBRE] = "frecuencias.txt";
 	// limpieza del vector
-	Cola c;
-	crear(c);
+	Heap c;
+	crearVacio(c);
 	
 	cout << "Leyendo fichero " << fichero << endl;
 	// rellenado con los nuevos caracteres
-	frecuenciasPorCaracter(fichero, c);
+	// frecuenciasPorCaracter(fichero, c);
 	
 	int total = numElementos(c);
+	cout << "La cantidad inicial de elementos del monticulo es " << total << endl << endl;
 	
+	int capacidad;
+	cout << "Introduzca la cantidad de elementos del monticulo " << flush;
+	cin >> capacidad;
 	
+	// Variables para probar el monticulo
 	ArbolTrie a;
 	carFrec ca;
 	
-	for(int i = 0 ; i < total; i++){
-		a = consultarArbol(c,i);
-		ca = obtenerCarFrec(a);
-		cout <<  "Caracter: "<< ca.getCaracter() << " Frecuencia: "<< ca.getFrecuencia()<< endl; 
+	int frec;
+	char car;
+	
+	
+	// no repetir caracteres para la prueba
+	for (int i = 0; i < capacidad; i++){
+		// pedir caracter al usuario
+		cout << "Introduzca el caracter " << flush;
+		cin >> car;
+		// pedir frecuencia al usuario
+		cout << "Introduzca la frecuencia " << flush;
+		cin >> frec;
+		
+		// generar carFrec
+		ca = carFrec(car, frec);
+		// crea rArbol con nuevo carFrec
+		crearArbol(a, ca);
+		
+		// añadir al monticulo el nuevo arbol
+		anyadir(c, a);
 	}
 	
-	//ordenacion por metodo quicksort TRATA ELEMENTOS NO REPETIDOS
-	//quicksort(c, 0, total - 1);
+	cout << "El monticulo esta lleno " << endl;
 	
-
-	// Pruebas de busqueda binaria 
-	cout << "La posicion de la freucencia 11 seria " << posicion(c, 11) << endl;
-	cout << "La posicion de la frecuencia 8 seria " << posicion(c, 8) << endl;
-	cout << "La posicion de la frecuencia 6 seria " << posicion(c, 6) << endl;
-	cout << "La posicion de la frecuencia 2 seria " << posicion(c, 2) << endl;
-	cout << "La posicion de la frecuencia 0 seria " << posicion(c, 0) << endl;
+	total = numElementos(c);
+	cout << "Ahora hay en el monticulo " << total << " elementos " << endl;
 	
-	ca = carFrec('R', 11);
-	crearArbol(a, ca);
-	anyadirArbol(c, a);
-	
-	ca = carFrec('H', 8);
-	crearArbol(a, ca);
-	anyadirArbol(c, a);
-	
-	ca = carFrec('K', 6);
-	crearArbol(a, ca);
-	anyadirArbol(c, a);
-	
-	ca = carFrec('X', 2);
-	crearArbol(a, ca);
-	anyadirArbol(c, a);
-	
-	ca = carFrec('Z', 0);
-	crearArbol(a, ca);
-	anyadirArbol(c, a);
-	
-	
-	
-	
-	
+	for (int i = 1; i < total; i++){
+		a = consultar(c, i);
+		ca = obtenerCarFrec(a);
+		cout << i << " C: " << ca.getCaracter() << " F: " << ca.getFrecuencia() << endl;
+	}
 	
 	cout << "Fin del programa " << endl;
 	return 0;

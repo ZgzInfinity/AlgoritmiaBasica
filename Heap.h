@@ -11,12 +11,14 @@ using namespace std;
 
 struct Heap {
 	private:
-		// vector de tuplas <caracter, frecuencia> ordenado por frecuencias
+		// monticulo de tuplas <caracter, frecuencia> ordenado por frecuencias
 		ArbolTrie arboles[257];
         int num;
 	public:
 	
 	    friend void crearVacio(Heap& h);
+		
+		friend int numElementos(Heap& h);
 
         friend void anyadir(Heap& h, ArbolTrie& a);
 
@@ -26,6 +28,7 @@ struct Heap {
 
         friend bool esVacio(Heap& h);
 	 
+		friend ArbolTrie consultar(Heap& h, const int i);
 };
 
 #endif
