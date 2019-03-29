@@ -45,9 +45,70 @@ void frecuenciasPorCaracter(const char nombreFichero[], int frecsPorChar[]){
 	}
 }
 
+string rellenar(string s, int numCeros){
+	for(int i = 0; i < numCeros ; i++){
+		s = s + "0"; 
+	}
+	return s;
+}
+
+void comprimir(string nombre, string codigos[]){
+	ifstream f(nombre);
+	string nSal = nombre +".bin";
+    ofstream sal(nSal);
+	char c;
+	string s = "";
+	int aux=0;
+	int numBytes = 0;
+	int caracteres;
+	string sub;
+	int ascii;
+    while (f.get(c))
+    {
+		numBytes++;
+        s = s + codigos[(int)c];
+		if(s.length()%8==0){
+			 caracteres = s.length()/8;
+			 cout << "la String es: " << s << endl;
+			for(int i = 0; i < caracteres; i++){
+				sub = s.substr(i*8,8);
+				cout << "La substring es : " << sub << endl;
+				ascii = std::stoi(sub, nullptr, 2);
+				sal << (char)ascii;
+			}
+			s = "";
+		}
+    }
+	if(s.length()>0){
+		caracteres = s.length()/8;
+		cout << "Quedan por escribir " << caracteres << " y sobran " << s.length()%8; 
+		int i=0;
+		cout << "La ultima string que no es multiplo de 8 vale: " << s << endl;
+		while(i < caracteres){
+				sub = s.substr(i*8,8);
+				cout << "La substring es : " << sub << endl;
+				ascii = std::stoi(sub, nullptr, 2);
+				sal << (char)ascii;
+				i++;
+		}
+
+		if(s.length()%8 != 0){
+			sub = s.substr(i*8, s.length()%8);
+			cout << "La ultima string vale :" << sub << endl; 
+			ascii = std::stoi(rellenar(sub,8-s.length()), nullptr, 2);
+			cout << "La string rellenada vale: " << rellenar(sub,8-s.length()) << endl;
+			sal << (char)ascii;
+
+		}
+	}
+
+	cout << "Al final se han escrito " << numBytes << " Bytes." << endl;
+
+
+}
+
 
 int main(){
-	
 	const char fichero[] = "frecuencias.txt";
 	int frecsPorChar[MAX_CARACTERES];
 	
@@ -100,6 +161,7 @@ int main(){
 		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
 	}
 
+	comprimir("frecuencias.txt", codigos);
 
 	
 	cout << "Fin del programa " << endl;
