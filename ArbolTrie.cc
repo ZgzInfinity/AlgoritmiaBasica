@@ -132,37 +132,12 @@ bool esHoja (const ArbolTrie& a){
 void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 	ArbolTrie::Nodo* aux;
 	aux = new ArbolTrie::Nodo;
-	if (!esHoja(a1) && !esHoja(a2)){
-		aux->frecuencia = obtenerArbolFrecuencia(a1) + obtenerArbolFrecuencia(a2);
-	}
-	else if (!esHoja(a1) && esHoja(a2)){
-		aux->frecuencia = obtenerArbolFrecuencia(a1) + a2.raiz->dato.getFrecuencia();
-	}
-	else if (esHoja(a1) && !esHoja(a2)){
-		aux->frecuencia = a1.raiz->dato.getFrecuencia() + obtenerArbolFrecuencia(a2);
-	}
-	else {
-		aux->frecuencia = a1.raiz->dato.getFrecuencia() + a2.raiz->dato.getFrecuencia();
-	}
-
-	aux->der = a1.raiz;
-	aux->izq = a2.raiz;
+	aux->frecuencia = obtenerArbolFrecuencia(a1) + obtenerArbolFrecuencia(a2);
+	aux->izq = a1.raiz;
+	aux->der = a2.raiz;
 	arbolFinal.raiz = aux;
 }
 
-/*
-ArbolTrie crearArbolHuffman(Cola& c){
-	int total = numElementos(c);
-	ArbolTrie arbolHuffman, arbolIzq, arbolDer;
-	for (int i = 0; i < total; i++){
-		arbolIzq = primero(c);
-		eliminarPrimerArbol(c);
-		arbolDer = primero(c);
-		eliminarPrimerArbol(c);
-	}
-	return arbolHuffman;
-}
-*/
 
 /*
  * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
