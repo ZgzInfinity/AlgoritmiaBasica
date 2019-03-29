@@ -1,1 +1,0 @@
-El TAD ArbolTrie es una segunda version a la estructura del arbol porque es una basura

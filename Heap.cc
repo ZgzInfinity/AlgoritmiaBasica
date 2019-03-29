@@ -73,3 +73,19 @@ bool esVacio(Heap& h){
 ArbolTrie consultar(Heap& h, const int i){
 	return h.arboles[i];
 }
+
+
+void rellenar(Heap& h, const int frecsPorChar[]){
+	ArbolTrie a;
+	carFrec nuevoCarFrec;
+	char c;
+	for (int i = 0; i < MAX_CARACTERES; i++){
+		if (frecsPorChar[i] > 0){
+			c = char(i);
+			nuevoCarFrec = carFrec(c, frecsPorChar[i]); 
+			crearArbol(a, nuevoCarFrec);
+			asignarFrecuencia(a, frecsPorChar[i]);
+			anyadir(h, a);
+		}
+	}
+}

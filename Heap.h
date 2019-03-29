@@ -7,12 +7,15 @@
 #include "CarFrec.h"
 #include "ArbolTrie.h"
 
+
+const int MAX_CARACTERES = 256;
+
 using namespace std;
 
 struct Heap {
 	private:
 		// monticulo de tuplas <caracter, frecuencia> ordenado por frecuencias
-		ArbolTrie arboles[257];
+		ArbolTrie arboles[MAX_CARACTERES + 1];
         int num;
 	public:
 	
@@ -29,6 +32,9 @@ struct Heap {
         friend bool esVacio(Heap& h);
 	 
 		friend ArbolTrie consultar(Heap& h, const int i);
+		
+		friend void rellenar(Heap& h, const int frecsPorChar[]);
 };
+
 
 #endif

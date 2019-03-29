@@ -1,53 +1,33 @@
-#include "ArbolTrie.h"
-#include "Cola.h"
-#include <iostream>
-#include <cstring>
-#include <vector>
-#include <fstream>
-#include <bitset>
-#include "CarFrec.h"
+#include "Huffman.h"
+
 
 using namespace std;
 
-void generaHuffman(Cola& c, ArbolTrie& huffman){
-    ArbolTrie pri = primero(c);
-    eliminarPrimerArbol(c);
-    ArbolTrie segundo = primero(c);
-    eliminarPrimerArbol(c);
-    if(numElementos(c)>=2){    
+void generaHuffman(Heap& c, ArbolTrie& huffman, Huffman& h){
+    ArbolTrie pri = min(c);
+    eliminarMin(c);
+    ArbolTrie segundo = min(c);
+    eliminarMin(c);
+    if(numElementos(c)>0){    
         ArbolTrie aux;
         unir(pri, segundo, aux);
-        insertarArbol(c,aux); //Insertar debe dvolver el vector ordenado
-        generaHuffman(c,huffman);
+        anyadir(c,aux); //Insertar debe dvolver el vector ordenado
+        generaHuffman(c,huffman,h);
     }else{
         unir(pri, segundo, huffman);
     }
 }
 
-//Codificador con enteros
-void codificadorEnt(int codigos[],const ArbolTrie& a,int codigo, int num){
+//Codificador con string CREO QUE ESTA MAL
+void codificador(string codigos[],const ArbolTrie& a, string codigo, Huffman& h){
     if(esHoja(a)){
         carFrec c = obtenerCarFrec(a);
-        codigos[c.getCaracter()]=codigo;
-    }else{
-        int codigoIzq = codigo*2;
-        int codigoDer = codigo*2 + 1;
-        codificadorEnt(codigos,obtenerArbolIzquierdo(a),codigoIzq,num+1);
-        codificadorEnt(codigos,obtenerArbolDerecho(a),codigoDer,num+1);
-    }
-}
-
-
-//Codificador con string 
-void codificador(string codigos[],const ArbolTrie& a,string codigo){
-    if(esHoja(a)){
-        carFrec c = obtenerCarFrec(a);
-        codigos[c.getCaracter()]=codigo;
+        codigos[(int)c.getCaracter()]=codigo;
     }else{
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
-        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq);
-        codificador(codigos,obtenerArbolDerecho(a),codigoDer);
+        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq,h);
+        codificador(codigos,obtenerArbolDerecho(a),codigoDer,h);
     }
 }
 
@@ -90,12 +70,5 @@ void comprimir(string nombre){
     sal << (char)i;
 }
 
-/*
-int main(){ 
-    //comprimir("pru");
-    descifra("pru.bin");
-    return 0;
-}
-*/
 
 

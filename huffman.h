@@ -17,6 +17,11 @@
 #include <iostream>
 #include <cstring>
 #include "CarFrec.h"
+#include "Heap.h"
+#include "ArbolTrie.h"
+#include "Cola.h"
+#include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -32,15 +37,11 @@ struct Huffman{
 		 * Post: El arbol <<huffman>> es el arbol de codificacion Huffman que guarda un 
 		 *       codigo libre de prefijos optimo para <<c>>
 		 */
-		void generaHuffman(Cola& c, ArbolTrie& huffman);
-		
-
-		//Codificador con enteros
-		void codificadorEnt(int codigos[], ArbolTrie& a,int codigo, int num);
+		friend void generaHuffman(Heap& c, ArbolTrie& huffman, Huffman& h);
 
 
 		//Codificador con string 
-		void codificador(string codigos[], ArbolTrie& a,string codigo);
+		friend void codificador(string codigos[],const ArbolTrie& a, string codigo, Huffman& h);
 		
 		/*
 		 * Pre: <<ficheroEntrada>> es un fichero de texto que almacena 

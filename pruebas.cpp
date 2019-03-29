@@ -1,77 +1,100 @@
 #include <iostream>
 #include <cstring>
-#include "Cola.h"
 #include "Huffman.h"
 #include "CarFrec.h"
 #include "ArbolTrie.h"
 #include "Heap.h"
 
 
-
 const int UMBRAL = 51;
 const int MAX_FICHERO_NOMBRE = 100;
 
+/*
+ * Pre: <<nombreFichero>> es un fichero de caracteres y <<numCfrecs>> es un vector vacio
+ *      que puede no tiene almacenado ningun dato de tipo calFrec
+ * Post: Si la lectura del fichero de caracteres <<nombreFichero>> se ha efectuado correctamente
+ *       ha guardado en las primeras componentes del vector <<numCfrecs>> el numero de veces
+ *       que aparece cada caracter distinto en el fichero junto con el propio caracter.
+ *       En caso contrario ha informado mediante un error por pantalla de la innacesibilidad
+ *       del fichero <<nombreFichero>>
+ */
+void frecuenciasPorCaracter(const char nombreFichero[], int frecsPorChar[]){
+	int codAscii;
+	// Creacion del flujo de lectura
+	ifstream f;
+	// Asociacion del flujo al fichero
+	f.open(nombreFichero);
+	if (f.is_open()){
+		// Flujo asociado a fichero correctamente
+		char c;
+		// lectura del primer caracter del fichero
+		c = f.get();
+		while (!f.eof()){
+			// mientras no acaba el fichero
+			codAscii = int(c);
+			frecsPorChar[codAscii]++;
+			// lectura de un nuevo caracter del fichero
+			c = f.get();
+		}
+		// Cierre del flujo de lectura asociado al fichero
+		f.close();
+	}
+	else {
+		// Error en la asociacion del flujo al fichero
+		cerr << "El fichero de " << nombreFichero << " no se ha podido leer " << endl;
+	}
+}
+
+
 int main(){
-	const char fichero[MAX_FICHERO_NOMBRE] = "frecuencias.txt";
-	// limpieza del vector
-	Heap c;
-	crearVacio(c);
-	cout << "Leyendo fichero " << fichero << endl;
-	// rellenado con los nuevos caracteres
-	// frecuenciasPorCaracter(fichero, c);
 	
-	int total = numElementos(c);
-	cout << "La cantidad inicial de elementos del monticulo es " << total << endl << endl;
+	const char fichero[] = "frecuencias.txt";
+	int frecsPorChar[MAX_CARACTERES];
 	
-	int capacidad;
-	cout << "Introduzca la cantidad de elementos del monticulo " << flush;
-	cin >> capacidad;
-	
-	// Variables para probar el monticulo
-	ArbolTrie a;
-	carFrec ca;
-	
-	int frec;
-	char car;
-	
-	
-	// no repetir caracteres para la prueba
-	for (int i = 0; i < capacidad; i++){
-		// pedir caracter al usuario
-		cout << "Introduzca el caracter " << flush;
-		cin >> car;
-		// pedir frecuencia al usuario
-		cout << "Introduzca la frecuencia " << flush;
-		cin >> frec;
-		
-		// generar carFrec
-		ca = carFrec(car, frec);
-		// crea rArbol con nuevo carFrec
-		crearArbol(a, ca);
-		asignarFrecuencia(a,frec);
-		
-		// añadir al monticulo el nuevo arbol
-		anyadir(c, a);
+	for (int i = 0; i < MAX_CARACTERES; i++){
+		frecsPorChar[i] = 0;
 	}
 	
-	cout << "El monticulo esta lleno " << endl;
-	total = numElementos(c);
-	cout << "Ahora hay en el monticulo " << total << " elementos " << endl;
+	frecuenciasPorCaracter(fichero, frecsPorChar);
+	
+	// Mostrar caracteres leidos
+	for (int i = 0; i < MAX_CARACTERES; i++){
+		if (frecsPorChar[i] > 0){
+			cout << char(i) << frecsPorChar[i] << endl;
+		}
+	}
+	
+	carFrec ca;
+	ArbolTrie a;
+	Heap h;
+	crearVacio(h);
+	
+	cout << "El monticulo tiene " << numElementos(h) << " elementos" << endl;
+	
+	rellenar(h, frecsPorChar);
+	
+	int total = numElementos(h);
+	cout << "El monticulo tiene " << total << " elementos" << endl;
+	
 	
 	for (int i = 1; i <= total; i++){
-		a = consultar(c, i);
+		a = consultar(h, i);
 		ca = obtenerCarFrec(a);
 		cout << i << " C: " << ca.getCaracter() << " F: " << ca.getFrecuencia() << endl;
 	}
 	
 	ArbolTrie huff;
-	Huffman h;
-	generaHuffman(c,huff,h);
-	string codigos[256];
+	Huffman hF;
+	generaHuffman(h, huff, hF);
+	
+	string codigos[MAX_CARACTERES];
+	
 	for(int k = 0; k < 256 ; k++){
 		codigos[k]= "-";
 	}
-	codificador(codigos, huff, "", h);
+	
+	codificador(codigos, huff, "", hF);
+	
 	for(int j = 0; j < 256; j++){
 		if(codigos[j]!= "-")
 		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
@@ -80,25 +103,7 @@ int main(){
 
 	
 	cout << "Fin del programa " << endl;
-	/*car= 'a';
-	while(car != 'f'){
-		cout << "Introduzca op" << endl << "f para acabar " << endl << "m para obtener el minimo " << "c para consultar el arbol"<< flush;
-		cin >> car;
-		if(car == 'm'){
-			a = min(c);
-			ca = obtenerCarFrec(a);
-			cout << "El minimo es C: " << ca.getCaracter() << " F: " << ca.getFrecuencia() << endl;
-			eliminarMin(c);
-		}else if(car == 'c'){
-			for (int i = 1; i <= numElementos(c); i++){
-				a = consultar(c, i);
-				ca = obtenerCarFrec(a);
-				cout << i << " C: " << ca.getCaracter() << " F: " << ca.getFrecuencia() << endl;
-			}
-		}
-	}*/
-
-
+	
 	return 0;
 	
 }
