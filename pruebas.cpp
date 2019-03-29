@@ -5,18 +5,42 @@
 #include "ArbolTrie.h"
 #include "Heap.h"
 
-
+// Constantes del programa
 const int UMBRAL = 51;
 const int MAX_FICHERO_NOMBRE = 100;
 
+
 /*
- * Pre: <<nombreFichero>> es un fichero de caracteres y <<numCfrecs>> es un vector vacio
- *      que puede no tiene almacenado ningun dato de tipo calFrec
+ * Pre: ---
+ * Post: Ha asignado con valor cero todas las componentes del 
+ *       vector <<frecsPorChar>>
+ */
+void iniciarFrecuencias(int frecsPorChar[]){
+	for (int i = 0; i < MAX_CARACTERES; i++){
+		frecsPorChar[i] = 0;
+	}
+}
+
+
+/*
+ * Pre: ---
+ * Post: Ha asignado con valor '-' todas las componentes del 
+ *       vector <<frecsPorChar>>
+ */
+void iniciarCodificaciones(string codigos[]){
+	for(int k = 0; k < 256 ; k++){
+		codigos[k]= "-";
+	}
+}
+
+/*
+ * Pre: <<nombreFichero>> es un fichero de caracteres y <<frescPorChar>> es un vector de 
+ *      enteros vacio destinado a almacenar en cada una de sus componentes las veces que 
+ *      aparece cada caracter del fichero <<nombreFichero>>
  * Post: Si la lectura del fichero de caracteres <<nombreFichero>> se ha efectuado correctamente
- *       ha guardado en las primeras componentes del vector <<numCfrecs>> el numero de veces
- *       que aparece cada caracter distinto en el fichero junto con el propio caracter.
- *       En caso contrario ha informado mediante un error por pantalla de la innacesibilidad
- *       del fichero <<nombreFichero>>
+ *       ha guardado en las componentes del vector <<frecsPorChar>> el numero de veces
+ *       que aparece cada caracter distinto en el fichero. En caso contrario ha informado
+ *       mediante un error por pantalla de la innacesibilidad del fichero <<nombreFichero>>
  */
 void frecuenciasPorCaracter(const char nombreFichero[], int frecsPorChar[]){
 	int codAscii;
@@ -29,9 +53,11 @@ void frecuenciasPorCaracter(const char nombreFichero[], int frecsPorChar[]){
 		char c;
 		// lectura del primer caracter del fichero
 		c = f.get();
+		// mientras no acaba el fichero
 		while (!f.eof()){
-			// mientras no acaba el fichero
+			// obtencion del codigo ascii del caracter leido
 			codAscii = int(c);
+			// incremento de la frecuencia correspondiente
 			frecsPorChar[codAscii]++;
 			// lectura de un nuevo caracter del fichero
 			c = f.get();
@@ -48,60 +74,56 @@ void frecuenciasPorCaracter(const char nombreFichero[], int frecsPorChar[]){
 
 int main(){
 	
+	// Fichero de caracteres que se va a proceder a descomprimir
 	const char fichero[] = "frecuencias.txt";
+	// vector de enteros que almacena la frecuencia de cada caracter
 	int frecsPorChar[MAX_CARACTERES];
 	
-	for (int i = 0; i < MAX_CARACTERES; i++){
-		frecsPorChar[i] = 0;
-	}
+	// iniciar frecuencias iniciales
+	iniciarFrecuencias(frecsPorChar);
 	
+	//calculo de frecuencias 
 	frecuenciasPorCaracter(fichero, frecsPorChar);
 	
-	// Mostrar caracteres leidos
-	for (int i = 0; i < MAX_CARACTERES; i++){
-		if (frecsPorChar[i] > 0){
-			cout << char(i) << frecsPorChar[i] << endl;
-		}
-	}
 	
-	carFrec ca;
-	ArbolTrie a;
+	// Creacion del monticulo
 	Heap h;
 	crearVacio(h);
 	
+	// Muestreo del estado incial del monticulo
 	cout << "El monticulo tiene " << numElementos(h) << " elementos" << endl;
 	
+	// Rellenado del monticulo 
 	rellenar(h, frecsPorChar);
 	
+	// Muestreo del estado final del monticulo
 	int total = numElementos(h);
 	cout << "El monticulo tiene " << total << " elementos" << endl;
 	
 	
-	for (int i = 1; i <= total; i++){
-		a = consultar(h, i);
-		ca = obtenerCarFrec(a);
-		cout << i << " C: " << ca.getCaracter() << " F: " << ca.getFrecuencia() << endl;
-	}
-	
 	ArbolTrie huff;
 	Huffman hF;
+	
+	// Construccion del arbol de codificacion Huffman
 	generaHuffman(h, huff, hF);
 	
+	// vector de codigos binarios para cada caracter
 	string codigos[MAX_CARACTERES];
 	
-	for(int k = 0; k < 256 ; k++){
-		codigos[k]= "-";
-	}
+	// Iniciar codificaciones binarias
+	iniciarCodificaciones(codigos);
 	
+	// Codificacion de caracteres con codigos binarios
 	codificador(codigos, huff, "", hF);
 	
+	
+	// Muestreo de los codigos binarios obtenidos
 	for(int j = 0; j < 256; j++){
 		if(codigos[j]!= "-")
 		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
 	}
 
-
-	
+	// Fin de ejecucion del programa
 	cout << "Fin del programa " << endl;
 	
 	return 0;

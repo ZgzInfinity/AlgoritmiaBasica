@@ -11,7 +11,7 @@
 #include "ArbolTrie.h"
 
 
-/* OK
+/* 
  * Pre: <<e>> es una tupla <carater, frecuencia>
  * Post: Ha creado un arbol de manera que el campo <<dato>> del arbol nuevo
  *       toma el valor de <<e>>, el campo <<frecuencia>> toma el valor de la frecuencia de <<e>>
@@ -71,7 +71,7 @@ void asignarArbolCarFrec(ArbolTrie& a, const carFrec& cF){
 
 
 
-/* OK
+/* 
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto la frecuencia del arbol <<a>>
  */
@@ -137,7 +137,6 @@ void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 	aux->der = a2.raiz;
 	arbolFinal.raiz = aux;
 }
-
 
 /*
  * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
