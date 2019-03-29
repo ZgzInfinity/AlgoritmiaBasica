@@ -45,7 +45,7 @@ void descifra(string nombre){
     }
 }
 
-void comprimir(string nombre){
+void comprimir(string nombre, Huffman& h){
     string cod[256];
     ArbolTrie a;
     int posicion;

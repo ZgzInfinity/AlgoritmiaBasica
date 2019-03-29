@@ -19,7 +19,6 @@
 #include "CarFrec.h"
 #include "Heap.h"
 #include "ArbolTrie.h"
-#include "Cola.h"
 #include <vector>
 #include <fstream>
 
@@ -51,7 +50,7 @@ struct Huffman{
 		 *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion 
 		 *		 los codigos Huffman
 		 */		 
-		void comprimir(char in[], char out[], int codigos[]);
+		friend void comprimir(char in[], Huffman& h);
 };
 
 

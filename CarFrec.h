@@ -44,18 +44,6 @@ public:
 
 		/*
 		 * Pre: ---
-		 * Post: Ha asginado el caracter <<c>> como valor del caracter
-		 */
-		 void asignarCaracter(char c);
-
-		/*
-		 * Pre: ---
-		 * Post: Incrementado la frecuencia en una unidad
-		 */
-		 void incrementaFrecuencia();
-
-		/*
-		 * Pre: ---
 		 * Post: Ha devuelto el valor del caracter 
 		 */
 		char getCaracter();       

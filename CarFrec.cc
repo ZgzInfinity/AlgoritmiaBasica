@@ -35,15 +35,6 @@ carFrec::carFrec(char c, int f){
 
 /*
  * Pre: ---
- * Post: Ha asginado el caracter <<c>> como valor del caracter
- */
-void carFrec::asignarCaracter(char c){
-	caracter = c;
-}
-
-
-/*
- * Pre: ---
  * Post: Ha devuelto el valor del caracter 
  */
 char carFrec::getCaracter(){
@@ -58,12 +49,4 @@ int carFrec::getFrecuencia(){
 	return frecuencia;
 }      
 
-
-		/*
-		 * Pre: ---
-		 * Post: Incrementado la frecuencia en una unidad
-		 */
-void carFrec::incrementaFrecuencia(){
-	frecuencia++;
-}
 
