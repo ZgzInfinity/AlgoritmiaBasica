@@ -197,22 +197,12 @@ char decodificarCaracter(ArbolTrie &a, string cadena){
  *
  */
 void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bool enHijoDerecho, int nivel){
-	  // Indice del nodo
-		int posicion = 0;
 		// Comprobacion de si el nodo es o no una hoja
 		if (!esHoja(a)){
 			// Escribir en el fichero solamente la frecuencia del nodo
 			int frecuencia = obtenerArbolFrecuencia(a);
-			if (enHijoIzquierdo){
-				 // La hoja es el hijo izquierdo
-				 posicion = 1;
-			}
-			else if (enHijoDerecho){
-				// La hoja es el hijo derecho
-				posicion = 2;
-			}
 			// Escritura de la frecuencia del nodo y de que es interno
-			f << nivel << " " << posicion << " " << "# " << frecuencia <<  " IT" << endl;
+			f << " # " << frecuencia <<  " M";
 			// Comprobar el hijo izquierdo del nodo actual
 			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f, true, false, nivel + 1);
 
@@ -231,17 +221,14 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bo
 			// Comprobar si la hoja es hijo izquierdo o hijo derecho
 			if (enHijoIzquierdo){
 				 // La hoja es el hijo izquierdo
-				 tipoHijo = "IZQ";
-				 posicion = 1;
+				 tipoHijo = "I";
 			}
 			else if (enHijoDerecho){
 				// La hoja es el hijo derecho
-				tipoHijo = "DCH";
-				posicion = 2;
+				tipoHijo = "D";
 			}
 			// Escritura de la frecuencia del nodo y de que es interno
-			f << nivel << " " << posicion << " " << caracter << " "
-			  << frecuencia << " " << tipoHijo << endl;
+			f << " " << caracter << " " << frecuencia << " " << tipoHijo;
 		}
 }
 
@@ -293,8 +280,6 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
   *
   */
  void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f){
-	// Nivel e indice del nodo
-	int nivel, posicion;
 	// Caracter a leer
 	char caracter;
 	// Frecuencia a leer
@@ -302,13 +287,13 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 	// Tipo de nodo leido
 	string tipoNodo;
  	// Intento de leer una nueva linea del fichero
-  f >> nivel >> posicion >> caracter >> frecuencia >> tipoNodo;
+  f >> caracter >> frecuencia >> tipoNodo;
 	// Comprobar si la lectura ha sido efectiva
 	if (!f.eof()){
 		// Se ha leido correctamente se crea la tupla
 		carFrec c = carFrec();
 		crearArbol(a, c);
-		if (tipoNodo == "IT"){
+		if (tipoNodo == "M"){
 			// Nodo interno
 			// La frecuencia es la suma de los dos hijos
 			asignarFrecuencia(a, frecuencia);
@@ -325,7 +310,7 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 			construirArbolDeFicheroRec(aDer, f);
 		  asignarArbolDerecho(a, aDer);
 		}
-		else if (tipoNodo == "IZQ" || tipoNodo == "DCH"){
+		else if (tipoNodo == "I" || tipoNodo == "D"){
 			// Nodo hoja izquierda o derecha
 			// Asignar el caracter y su frecuencia de aparicion
 			c.setCaracter(caracter);

@@ -1,11 +1,1 @@
-0 0 # 100 IT
-1 1 A 45 IZQ
-1 2 # 55 IT
-2 1 # 25 IT
-3 1 C 12 IZQ
-3 2 B 13 DCH
-2 2 # 30 IT
-3 1 # 14 IT
-4 1 F 5 IZQ
-4 2 E 9 DCH
-3 2 D 16 DCH
+ # 100 M A 45 I # 55 M # 25 M C 12 I B 13 D # 30 M # 14 M F 5 I E 9 D D 16 D
