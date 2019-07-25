@@ -5,11 +5,11 @@ using namespace std;
 
 /*
  * Pre: <<c>> es una cola de prioridades o monticulo donde se almacenan todos los
- *      caracteres y sus correspondientes frecuencias de caracteres ordenados por 
+ *      caracteres y sus correspondientes frecuencias de caracteres ordenados por
  *      orden decreciente de frecuencia. <<a>> es un trie en cuyos nodos residen los
  *      caracteres y sus correspondientes frecuencias
  * Post: <<h>> es el resultado de aplicar el algoritmo de codificacion Huffman de tal forma
- *        que a los caracteres con mayor valor de frecuencia se les ha asignado un codigo de 
+ *        que a los caracteres con mayor valor de frecuencia se les ha asignado un codigo de
  *        compresion menor y a los digitos de mayor frecuencia un codigo mayor, garantizando
  *        asi un tamanyo de fichero comprimido menor
  */
@@ -23,32 +23,58 @@ void generaHuffman(Heap& c, ArbolTrie& a, Huffman& h){
 	// Eliminar el nuevo primer elemento del monticulo
     eliminarMin(c);
 	// Si quedan elementos
-    if(numElementos(c)>0){  
-		// Crear un nuevo nodo uniendo los otros dos 
+    if(numElementos(c)>0){
+		// Crear un nuevo nodo uniendo los otros dos
         ArbolTrie aux;
         unir(pri, segundo, aux);
 		// Insertar el nuevo formado en la cola de prioridades
-        anyadir(c,aux); 
+        anyadir(c,aux);
         generaHuffman(c, a, h);
     }
 	else{
-		// Crear un nuevo nodo uniendo los otros dos 
+		// Crear un nuevo nodo uniendo los otros dos
         unir(pri, segundo, a);
     }
 }
 
 
 
-//Codificador con string CREO QUE ESTA MAL
-void codificador(string codigos[],const ArbolTrie& a, string codigo, Huffman& h){
+/*
+ * Pre:  <<codigos>> es un vector de caracteres de con capacidad
+ *       para 256 caracteres, <<a>> es el trie que almacena en cada uno de sus
+ *       nodos un caracter presente en el fichero junto con su correspondiente
+ *       frecuencia, <<h>> SOBRA y <<codigo>> es un frgamento de codificacion
+ *       del caracter actual apuntado por la raiz del arbol <<a>>
+ * Post: Ha guardado en cada una de las componentes del vector <<codigos>>
+ *       la codificacion binaria a cada caracter presente en el fichero
+ *
+ *       Ejemplo:
+ *       A = 0
+ *       B = 101
+ *       C = 100
+ *       D = 111
+ *       E = 1101
+ *       F = 1100
+ *
+ *       ............
+ *
+ */
+void codificador(string codigos[],const ArbolTrie& a, string codigo){
+    // Comprobar que el nodo actual es hoja
     if(esHoja(a)){
+        // Obtencion del caracter con su frecuencia
         carFrec c = obtenerCarFrec(a);
+        // Guardar el codigo del caracter
         codigos[(int)c.getCaracter()]=codigo;
-    }else{
+    }
+    else{
+        // Si el nodo no es hoja se inserta en la codificacion del caracter
+        // un 0 para ir al hijo izuierdo y un 1 para ir al hijo derecho
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
-        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq,h);
-        codificador(codigos,obtenerArbolDerecho(a),codigoDer,h);
+        // Llamadas recursivas
+        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq);
+        codificador(codigos,obtenerArbolDerecho(a),codigoDer);
     }
 }
 
@@ -68,80 +94,144 @@ void descifra(string nombre){
 }
 
 
+/*
+ * Pre:  <<ficheroEntrada>> es un fichero de texto que almacena
+ *       caracteres tanto especiales como alfanumericos
+ * Post: Si el fichero se ha abierto correctamente ha leido su contenido
+ *       caracter a caracter guardando la representacion binaria de cada
+ *       uno en el vector <<contenidoFichero>>
+ */
+void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos[]){
+    // Flujo de lectura asociado al fichero
+    ifstream f;
+    // Apertura del fichero de texto
+    f.open(ficheroEntrada);
+    if (f.is_open()){
+      // Si el fichero se abre correctamente
 
-void comprimir(string nombre, Huffman& h){
-    int frecsPorChar[MAX_CARACTERES];
+      // Leer el fichero caracter a caracter
+      char c;
+      f.get(c);
 
-    iniciarFrecuencias(frecsPorChar);
+      // Mientras queden caracteres por leer
+      while (!f.eof()){
+          // Guardar la codificacion binario del caracter leido
+          contenidoFichero += codigos[(int)c];
 
-    frecuenciasPorCaracter(nombre, frecsPorChar);
+          // Leer el siguiente caracter
+          f.get(c);
+      }
+      // Cierre del flujo de lectura
+      f.close();
+    }
+    else {
+      // El fichero no se abre correctamente
+      cerr << "Error al abir el fichero " << ficheroEntrada << endl;
+    }
+}
 
-    // Creacion del monticulo
+
+
+/*
+ * Pre:  <<contenido>> es una secuencia que almacena un conjunto
+ *       de caracteres representados con su codificacion binaria
+ *       caracteres tanto especiales como alfanumericos
+ * Post: Si el fichero <<ficheroSalida>> se ha creado correctamente ha
+ *       volcado el contenido almacenado en <<contenido>>
+ *       comprimido. En caso contrario ha mostrado por salida estandar el
+ *       error de apertura.
+ */
+void escribirFichero(const string contenido, string ficheroSalida){
+  // Flujo de lectura asociado al fichero
+  ofstream f;
+  // Apertura del fichero de texto
+  f.open(ficheroSalida);
+  if (f.is_open()){
+    // Si el fichero se abre correctamente
+
+    // Parsear el contenido del fichero para guardalo en grupos de bytes
+    int indice = 0;
+
+    //Mientras queden caracteres por leer
+    while(indice < int(contenido.length())){
+        if((indice - contenido.length() < TAMANYO_BYTE)){
+            f << (char)std::stoi(contenido.substr(indice, indice - contenido.length()), nullptr, BASE);
+        }
+        else{
+            std::stoi(contenido.substr(indice, TAMANYO_BYTE), nullptr, BASE);
+            f << (char)std::stoi(contenido.substr(indice, TAMANYO_BYTE), nullptr, BASE);
+        }
+        // Nuevo byte leido
+        indice += TAMANYO_BYTE;
+    }
+    // Cierre del flujo de escritura
+    f.close();
+  }
+  else {
+    // El fichero no se abre correctamente
+    cerr << "Error al abir el fichero " << ficheroSalida << endl;
+  }
+}
+
+
+
+/*
+ * Pre: <<ficheroEntrada>> es un fichero de texto que almacena una secuencia
+ *      de caracteres
+ * Post: Si el fichero <<ficheroEntrada>> se ha abierto se ha podido leer correctamente
+ *       ha almacenado en <<h>> el resultado de aplicar a dicho fichero el
+ *       algoritmo de compresion Huffman de modo que a los caracteres con
+ *       mayor frecuencia de aparicion se les ha asignado un codigo de compresion
+ *       menor y a los caracteres con una frecuencia de aparicion menor se les ha
+ *       asignado un codigo de compresion menor
+ */
+void comprimir(string ficheroEntrada, Huffman& h){
+	// Vector de frecuencias de cada caracter
+  int frecsPorChar[MAX_CARACTERES];
+
+	// Inicializar la frecuencia de aparicion de cada caracter a cero
+  iniciarFrecuencias(frecsPorChar);
+
+  // vector de codigos binarios para cada caracter
+  string codigos[MAX_CARACTERES];
+
+  // Iniciar codificaciones binarias
+  iniciarCodificaciones(codigos);
+
+	// Contabilizar las frecuencias de cada caracter
+  frecuenciasPorCaracter(ficheroEntrada, frecsPorChar);
+
+  // Creacion del monticulo de prioridades
 	Heap hp;
 	crearVacio(hp);
-	
-	// Rellenado del monticulo 
+
+	// Rellenado del monticulo a partir de las frecuencias de cada caracter
 	rellenar(hp, frecsPorChar);
 
-    int total = numElementos(hp);
-	cout << "El monticulo tiene " << total << " elementos" << endl;
-
-    
+  // Construccion del arbol de codificacion Huffman
 	ArbolTrie huff;
-	
-	// Construccion del arbol de codificacion Huffman
 	generaHuffman(hp, huff, h);
-	
-	// vector de codigos binarios para cada caracter
-	string codigos[MAX_CARACTERES];
-	
-	// Iniciar codificaciones binarias
-	iniciarCodificaciones(codigos);
-	
+
 	// Codificacion de caracteres con codigos binarios
-	codificador(codigos, huff, "", h);
-	
-	
+	codificador(codigos, huff, "");
+
+  // QUITAR ESTA MIERDA
 	// Muestreo de los codigos binarios obtenidos
 	for(int j = 0; j < 256; j++){
 		if(codigos[j]!= "-")
 		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
 	}
 
+	// Nombre del fichero binario codificado de salida
+  string ficheroSalida = ficheroEntrada.substr(0, ficheroSalida.length() - 4) + ".bin";
 
-    // string cod[256];
-    // ArbolTrie a;
-    // int posicion;
-    // //Obtener el huffman
-    // //codificador(cod,a,"0");
-    string nSal = nombre +".bin";
-    ofstream sal(nSal); 
-    // cod[65]="10";
-    // cod[66]="01";
-    // cod[67]="00";
-    // cod[68]="11";
-    ifstream in;
-    string s="";
-    in.open(nombre);
-    char c;
-    while (in.get(c))
-    {
-        s = s + codigos[(int)c]; 
-    }
-    cout << s << endl;
-    int x = 0;
-    while(x < int(s.length())){
-        if((x - s.length() < 8)){
-            cout << s.substr(x,x - s.length()) << endl;
-            sal << (char)std::stoi(s.substr(x,x - s.length()), nullptr, 2);
-        }else{
-            cout << s.substr(x,8) << endl;
-            std::stoi(s.substr(x,8), nullptr, 2);
-            sal << (char)std::stoi(s.substr(x,8), nullptr, 2);
-        }
-        x = x+8;
-    }
+  // Cadena donde se almacena la informacion del fichero
+  string contenidoFichero = "";
+
+  // Leer fichero de texto y guardar su contenido codificado en binario
+  leerFichero(ficheroEntrada, contenidoFichero, codigos);
+
+  // Escribir el contenido comprimido en un nuevo fichero
+  escribirFichero(contenidoFichero, ficheroSalida);
+
 }
-
-
-

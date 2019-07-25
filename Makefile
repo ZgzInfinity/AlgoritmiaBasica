@@ -16,7 +16,7 @@ CC=g++
 
 # Expansion de variables
 
-CARFREC_DIR=Carfrec
+CARFREC_DIR=CarFrec
 PRELIMINAR_DIR=Preliminar
 ARBOLTRIE_DIR=ArbolTrie
 HEAP_DIR=Heap
@@ -54,18 +54,20 @@ ${PRELIMINAR}.o: ${PRELIMINAR}.h  ${PRELIMINAR}.cc
 # Compilacion
 ${ARBOLTRIE}.o: ${ARBOLTRIE}.h ${ARBOLTRIE}.cc
 	${CC} -c ${CPPFLAGS} ${ARBOLTRIE}.cc -o ${ARBOLTRIE}.o
+#--------------------------------------------------------------
 
 # HEAP
 # Compilacion
 ${HEAP}.o: ${HEAP}.h ${HEAP}.cc
 	${CC} -c ${CPPFLAGS} ${HEAP}.cc -o ${HEAP}.o
+#--------------------------------------------------------------
 
 
 # HUFFMAN
 # Compilacion
 ${HUFFMAN}.o: ${HUFFMAN}.h ${HUFFMAN}.cc
 	${CC} -c ${CPPFLAGS} ${HUFFMAN}.cc -o ${HUFFMAN}.o
-
+#--------------------------------------------------------------
 
 # PRUEBAS
 # Compilacion
@@ -75,7 +77,7 @@ ${PRUEBAS}.o: ${PRUEBAS}.cpp
 # Linkado
 ${PRUEBAS}: ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o  
 	${CC} ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o -o ${PRUEBAS}
-#-----------------------------------------------------------
+#---------------------------------------------------------------
 
 # LIMPIEZA
 clean:
