@@ -1,13 +1,9 @@
 #include <iostream>
 #include <cstring>
-#include "Huffman.h"
-#include "CarFrec.h"
-#include "ArbolTrie.h"
-#include "Heap.h"
-
-// Constantes del programa
-const int UMBRAL = 51;
-const int MAX_FICHERO_NOMBRE = 100;
+#include "Huffman/Huffman.h"
+#include "CarFrec/CarFrec.h"
+#include "ArbolTrie/ArbolTrie.h"
+#include "Heap/Heap.h"
 
 
 // /*

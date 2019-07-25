@@ -16,13 +16,21 @@
 
 #include <iostream>
 #include <cstring>
-#include "CarFrec.h"
-#include "Heap.h"
-#include "ArbolTrie.h"
-#include <vector>
 #include <fstream>
+#include "../Preliminar/Preliminar.h"
+#include "../Carfrec/CarFrec.h"
+#include "../Heap/Heap.h"
+#include "../ArbolTrie/ArbolTrie.h"
+
 
 using namespace std;
+
+
+// Constantes del programa
+const int UMBRAL = 51;
+const int MAX_FICHERO_NOMBRE = 100;
+
+
 
 struct Huffman{
 	private:

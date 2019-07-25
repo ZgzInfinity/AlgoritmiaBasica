@@ -15,10 +15,18 @@
 CC=g++
 
 # Expansion de variables
-ARBOLTRIE=ArbolTrie
-CARFREC=CarFrec
-COLA=Heap
-HUFFMAN=Huffman
+
+CARFREC_DIR=Carfrec
+PRELIMINAR_DIR=Preliminar
+ARBOLTRIE_DIR=ArbolTrie
+HEAP_DIR=Heap
+HUFFMAN_DIR=Huffman
+
+CARFREC=${CARFREC_DIR}/CarFrec
+PRELIMINAR=${PRELIMINAR_DIR}/Preliminar
+ARBOLTRIE=${ARBOLTRIE_DIR}/ArbolTrie
+HEAP=${HEAP_DIR}/Heap
+HUFFMAN=${HUFFMAN_DIR}/Huffman
 PRUEBAS=pruebas
 
 # Flags de compilacion
@@ -27,43 +35,37 @@ CPPFLAGS=-O2 -std=c++11 -Wall
 # Regla para compilar el programa principal
 all: ${PRUEBAS} 
 
+
+# CARFREC
+# Compilacion
+${CARFREC}.o: ${CARFREC}.h  ${CARFREC}.cc
+	${CC} -c ${CPPFLAGS} ${CARFREC}.cc -o ${CARFREC}.o
+#----------------------------------------------------------------
+
+
+# PRELIMINAR
+# Compilacion
+${PRELIMINAR}.o: ${PRELIMINAR}.h  ${PRELIMINAR}.cc
+	${CC} -c ${CPPFLAGS} ${PRELIMINAR}.cc -o ${PRELIMINAR}.o
+#---------------------------------------------------------------
+
+
 # ARBOLTRIE
 # Compilacion
 ${ARBOLTRIE}.o: ${ARBOLTRIE}.h ${ARBOLTRIE}.cc
-	${CC} -c ${CPPFLAGS} ${ARBOLTRIE}.cc
+	${CC} -c ${CPPFLAGS} ${ARBOLTRIE}.cc -o ${ARBOLTRIE}.o
 
-# Linkado
-${ARBOLTRIE}: ${CARFREC}.o ${ARBOLTRIE}.o  
-	${CC} ${CARFREC}.o ${ARBOLTRIE}.o -o ${ARBOLTRIE}
-#-----------------------------------------------------------------
-
-# COLA
+# HEAP
 # Compilacion
-${COLA}.o: ${COLA}.h ${COLA}.cc
-	${CC} -c ${CPPFLAGS} ${COLA}.cc
-
-# Linkado
-${COLA}: ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o
-	${CC} ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o -o ${COLA}
-#----------------------------------------------------------------
+${HEAP}.o: ${HEAP}.h ${HEAP}.cc
+	${CC} -c ${CPPFLAGS} ${HEAP}.cc -o ${HEAP}.o
 
 
 # HUFFMAN
 # Compilacion
 ${HUFFMAN}.o: ${HUFFMAN}.h ${HUFFMAN}.cc
-	${CC} -c ${CPPFLAGS} ${HUFFMAN}.cc
+	${CC} -c ${CPPFLAGS} ${HUFFMAN}.cc -o ${HUFFMAN}.o
 
-# Linkado
-${HUFFMAN}: ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o
-	${CC} ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o -o ${COLA}
-#----------------------------------------------------------------
-
-
-# CARFREC
-# Compilacion
-${CARFREC}.o: ${CARFREC}.h  ${CARFREC}.cc
-	${CC} -c ${CARFREC}.cc -o ${CARFREC}.o
-#----------------------------------------------------------------
 
 # PRUEBAS
 # Compilacion
@@ -71,13 +73,15 @@ ${PRUEBAS}.o: ${PRUEBAS}.cpp
 	${CC} -c ${CPPFLAGS} ${PRUEBAS}.cpp
 
 # Linkado
-${PRUEBAS}: ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o  
-	${CC} ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o -o ${PRUEBAS}
+${PRUEBAS}: ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o  
+	${CC} ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o -o ${PRUEBAS}
 #-----------------------------------------------------------
 
 # LIMPIEZA
 clean:
 	$(RM) ${CARFREC}.o
-	$(RM) ${ARBOLTRIE} ${ARBOLTRIE}.o
-	$(RM) ${COLA} ${COLA}.o
+	$(RM) ${PRELIMINAR}.o
+	$(RM) ${ARBOLTRIE}.o
+	$(RM) ${HUFFMAN}.o
+	$(RM) ${HEAP}.o
 	$(RM) ${PRUEBAS} ${PRUEBAS}.o

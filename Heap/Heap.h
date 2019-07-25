@@ -13,8 +13,8 @@
 #include <iterator>
 #include <iostream>
 #include <cstring>
-#include "CarFrec.h"
-#include "ArbolTrie.h"
+#include "../Carfrec/CarFrec.h"
+#include "../ArbolTrie/ArbolTrie.h"
 
 /*
  * Fichero de interfaz del modulo Heap
