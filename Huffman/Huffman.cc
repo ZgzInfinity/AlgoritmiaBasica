@@ -223,7 +223,7 @@ void comprimir(string ficheroEntrada, Huffman& h){
 	}
 
 	// Nombre del fichero binario codificado de salida
-  string ficheroSalida = ficheroEntrada.substr(0, ficheroSalida.length() - 4) + ".bin";
+  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".bin";
 
   // Cadena donde se almacena la informacion del fichero
   string contenidoFichero = "";
@@ -234,4 +234,13 @@ void comprimir(string ficheroEntrada, Huffman& h){
   // Escribir el contenido comprimido en un nuevo fichero
   escribirFichero(contenidoFichero, ficheroSalida);
 
+  // Creacion del fichero donde se guarda el arbol
+  string arbolFichero = "arbol" + ficheroEntrada;
+
+  // Generacion del fichero con el arbol comprimido
+  guardarArbolEnFichero(huff, arbolFichero);
+
+  // Generacion del nuevo arbol a partir del fichero comprimido
+  ArbolTrie nuevoArbolFinal;
+  construirArbolDeFichero(arbolFichero, nuevoArbolFinal);
 }

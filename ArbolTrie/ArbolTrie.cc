@@ -10,7 +10,7 @@
 #include "ArbolTrie.h"
 
 
-/* 
+/*
  * Pre: <<e>> es una tupla <carater, frecuencia>
  * Post: Ha creado un arbol de manera que el campo <<dato>> del arbol nuevo
  *       toma el valor de <<e>>, el campo <<frecuencia>> toma el valor de la frecuencia de <<e>>
@@ -70,7 +70,7 @@ void asignarArbolCarFrec(ArbolTrie& a, const carFrec& cF){
 
 
 
-/* 
+/*
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto la frecuencia del arbol <<a>>
  */
@@ -137,6 +137,9 @@ void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 	arbolFinal.raiz = aux;
 }
 
+
+
+
 /*
  * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
  *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
@@ -173,4 +176,194 @@ char decodificarCaracter(ArbolTrie &a, string cadena){
 	char cB;
 	decodificarCaracter(a.raiz, cadena, 0, cB);
 	return cB;
+}
+
+
+
+/*
+ * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
+ *      cada uno de sus nodos hoja correspondientes a los caracteres
+ *      recogidos en un fichero de texto junto con sus frecuencias de
+ *      aparicion y <<f>> es un flujo de escritura asociado a un fichero
+ *      de texto donde se ha escrito una parte el arbol codificado,
+ *      <<enHijoIzquierdo>> toma valor <<true>> si el nodo apuntado del
+ *      arbol <<a>> es nodo hoja y ademas es hijo izquierdo,
+ *      <<enHijoDerecho>> toma valor <<true>> si el nodo apuntado del
+ *      arbol <<a>> es nodo hoja y ademas es hijo derecho. Si el nodo apuntado
+ *      del arbol <<a>> es una hoja ambos toman valor <<false>> y <<nivel>>
+ *      almacena la profundidad del arbol en la que nos encontramos
+ * Post: Ha volcado en el fichero de texto asociado al flujo de escritura
+ *       <<f>> el contenido restante del arbol <<a>>
+ *
+ */
+void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bool enHijoDerecho, int nivel){
+	  // Indice del nodo
+		int posicion = 0;
+		// Comprobacion de si el nodo es o no una hoja
+		if (!esHoja(a)){
+			// Escribir en el fichero solamente la frecuencia del nodo
+			int frecuencia = obtenerArbolFrecuencia(a);
+			if (enHijoIzquierdo){
+				 // La hoja es el hijo izquierdo
+				 posicion = 1;
+			}
+			else if (enHijoDerecho){
+				// La hoja es el hijo derecho
+				posicion = 2;
+			}
+			// Escritura de la frecuencia del nodo y de que es interno
+			f << nivel << " " << posicion << " " << "# " << frecuencia <<  " IT" << endl;
+			// Comprobar el hijo izquierdo del nodo actual
+			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f, true, false, nivel + 1);
+
+			// Comprobar el hijo el hijo derecho del nodo actual
+			guardarArbolEnFicheroRec(obtenerArbolDerecho(a), f, false, true, nivel + 1);
+		}
+		else {
+			// El nodo es una hojaArbolTrie::Nodo* a
+		  // Obtencion de la tupla <caracter, frecuencia> del nodo
+			carFrec c = obtenerCarFrec(a);
+
+			// Obtencion del caracter y la frecuencia de la tupla y del tipo de hijo
+			int frecuencia = c.getFrecuencia();
+			char caracter = c.getCaracter();
+			string tipoHijo;
+			// Comprobar si la hoja es hijo izquierdo o hijo derecho
+			if (enHijoIzquierdo){
+				 // La hoja es el hijo izquierdo
+				 tipoHijo = "IZQ";
+				 posicion = 1;
+			}
+			else if (enHijoDerecho){
+				// La hoja es el hijo derecho
+				tipoHijo = "DCH";
+				posicion = 2;
+			}
+			// Escritura de la frecuencia del nodo y de que es interno
+			f << nivel << " " << posicion << " " << caracter << " "
+			  << frecuencia << " " << tipoHijo << endl;
+		}
+}
+
+
+
+
+
+/*
+ * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
+ *      cada uno de sus nodos hoja correspondientes a los caracteres
+ *      recogidos en un fichero de texto junto con sus frecuencias de
+ *      aparicion
+ * Post: Si se ha podido crear sin ningun problema el fichero de
+ *       texto <<arbolNombreFichero>> ha guardado en dicho fichero una
+ *       representacion del arbol con la siguiente estructura:
+ *
+ *       Estructura: explicar
+ *
+ */
+void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
+		// Flujo de escritura asociado al fichero
+		ofstream f;
+		// Apertura del fichero asociado al flujo
+		f.open(arbolNombreFichero);
+		if (f.is_open()){
+			// Si el fichero se ha abierto correctamente
+			guardarArbolEnFicheroRec(a, f, false , false, 0);
+		}
+		else {
+			cerr << "El fichero para guardar el arbol de codificacion "
+					 << arbolNombreFichero << " es innacesible" << endl;
+		}
+		// Cierre del flujo asociado al fichero
+		f.close();
+ }
+
+
+
+
+ /*
+  * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
+  *      cada uno de sus nodos hoja correspondientes a los caracteres
+  *      recogidos en un fichero de texto junto con sus frecuencias de
+  *      aparicion y <<f>> es un flujo de escritura asociado a un fichero
+  *      de texto que guarda una representacion del contenido con el que debe
+	*      contar el arbol <<a>>
+  * Post: Ha volcado en el fichero de texto asociado al flujo de escritura
+  *       <<f>> el contenido restante del arbol <<a>>
+  *
+  */
+ void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f){
+	// Nivel e indice del nodo
+	int nivel, posicion;
+	// Caracter a leer
+	char caracter;
+	// Frecuencia a leer
+	int frecuencia;
+	// Tipo de nodo leido
+	string tipoNodo;
+ 	// Intento de leer una nueva linea del fichero
+  f >> nivel >> posicion >> caracter >> frecuencia >> tipoNodo;
+	// Comprobar si la lectura ha sido efectiva
+	if (!f.eof()){
+		// Se ha leido correctamente se crea la tupla
+		carFrec c = carFrec();
+		crearArbol(a, c);
+		if (tipoNodo == "IT"){
+			// Nodo interno
+			// La frecuencia es la suma de los dos hijos
+			asignarFrecuencia(a, frecuencia);
+			// Como el nodo es interno tiene hijos
+			// se van a visitar los hijos izquierdo y derecho
+
+		  // Crear el arbolTrie del hijo izquierdo
+		  ArbolTrie aIzq;
+			construirArbolDeFicheroRec(aIzq, f);
+			asignarArbolIzquierdo(a, aIzq);
+
+			// Crear el arbolTrie del hijo derecho
+			ArbolTrie aDer;
+			construirArbolDeFicheroRec(aDer, f);
+		  asignarArbolDerecho(a, aDer);
+		}
+		else if (tipoNodo == "IZQ" || tipoNodo == "DCH"){
+			// Nodo hoja izquierda o derecha
+			// Asignar el caracter y su frecuencia de aparicion
+			c.setCaracter(caracter);
+			c.setFrecuencia(frecuencia);
+
+			// Apuntar los nodos hijos a nil
+			a.raiz->der = nullptr;
+			a.raiz->izq = nullptr;
+		}
+		else {
+			// En el resto de casos
+			cerr << "Tipo de nodo leido desconocido" << endl;
+		}
+	}
+ }
+
+
+
+
+/*
+ * Pre: <<arbolNombreFichero>> es un fichero de texto que almacena el arbol
+ *      de codigos Huffman de un fichero cuyo nombre es igual a <<NombreFichero>>
+ * Post: Ha construido en <<a>> un arbol el arbol de codigos Huffman
+ *       correspondiente al fichero <<NombreFichero>>
+ */
+void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a){
+	// Flujo de escritura asociado al fichero
+	ifstream f;
+	// Apertura del fichero asociado al flujo
+	f.open(arbolNombreFichero);
+	if (f.is_open()){
+		// Si el fichero se ha abierto correctamente
+		construirArbolDeFicheroRec(a, f);
+	}
+	else {
+		cerr << "El fichero de lectura del arbol de codificacion "
+				 << arbolNombreFichero << " es innacesible" << endl;
+	}
+	// Cierre del flujo asociado al fichero
+	f.close();
 }

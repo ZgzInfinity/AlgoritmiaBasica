@@ -70,7 +70,18 @@ struct Huffman{
 
 
 
-		
+		/*
+		 * Pre: <<ficheroEntrada>> es un fichero de texto que almacena
+		 *      caracteres tanto especiales como alfanumericos
+		 * Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
+		 *       de forma comprimida la secuencia de caracteres guardada en el fichero
+		 *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion
+		 *		   los codigos Huffman
+		 */
+		friend void comprimir(string ficheroEntrada, Huffman& h);
+
+
+
 		/*
 		 * Pre:  <<ficheroEntrada>> es un fichero de texto que almacena
 		 *       caracteres tanto especiales como alfanumericos
@@ -94,19 +105,6 @@ struct Huffman{
 		 *       error de apertura.
 		 */
 		friend void escribirFichero(const string contenido, string ficheroSalida);
-
-
-
-
-                /*
-		 * Pre: <<ficheroEntrada>> es un fichero de texto que almacena
-		 *      caracteres tanto especiales como alfanumericos
-		 * Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
-		 *       de forma comprimida la secuencia de caracteres guardada en el fichero
-		 *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion
-		 *		   los codigos Huffman
-		 */
-		friend void comprimir(string ficheroEntrada, Huffman& h);
 };
 
 
