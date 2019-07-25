@@ -17,7 +17,7 @@ CC=g++
 # Expansion de variables
 ARBOLTRIE=ArbolTrie
 CARFREC=CarFrec
-COLA=Cola
+COLA=Heap
 PRUEBAS=pruebas
 
 # Flags de compilacion

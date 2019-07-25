@@ -50,7 +50,7 @@ struct Huffman{
 		 *       denominado <<ficheroEntrada>> empleando como mecanismo de compresion 
 		 *		 los codigos Huffman
 		 */		 
-		friend void comprimir(char in[], Huffman& h);
+		friend void comprimir(string nombre, Huffman& h);
 };
 
 
