@@ -68,18 +68,39 @@ void frecuenciasPorCaracter(string nombreFichero, int frecsPorChar[]){
 	}
 }
 
-void generaHuffman(Heap& c, ArbolTrie& huffman, Huffman& h){
+
+
+/*
+ * Pre: <<c>> es una cola de prioridades o monticulo donde se almacenan todos los
+ *      caracteres y sus correspondientes frecuencias de caracteres ordenados por 
+ *      orden decreciente de frecuencia. <<a>> es un trie en cuyos nodos residen los
+ *      caracteres y sus correspondientes frecuencias
+ * Post: <<h>> es el resultado de aplicar el algoritmo de codificacion Huffman de tal forma
+ *        que a los caracteres con mayor valor de frecuencia se les ha asignado un codigo de 
+ *        compresion menor y a los digitos de mayor frecuencia un codigo mayor, garantizando
+ *        asi un tamanyo de fichero comprimido menor
+ */
+void generaHuffman(Heap& c, ArbolTrie& a, Huffman& h){
+	// Obtener primer elmentos del monticulo
     ArbolTrie pri = min(c);
+	// Eliminar el primer elemento del monticulo
     eliminarMin(c);
+	// Obtener el nuevo primer elemento del monticulo
     ArbolTrie segundo = min(c);
+	// Eliminar el nuevo primer elemento del monticulo
     eliminarMin(c);
-    if(numElementos(c)>0){    
+	// Si quedan elementos
+    if(numElementos(c)>0){  
+		// Crear un nuevo nodo uniendo los otros dos 
         ArbolTrie aux;
         unir(pri, segundo, aux);
-        anyadir(c,aux); //Insertar debe dvolver el vector ordenado
-        generaHuffman(c,huffman,h);
-    }else{
-        unir(pri, segundo, huffman);
+		// Insertar el nuevo formado en la cola de prioridades
+        anyadir(c,aux); 
+        generaHuffman(c, a, h);
+    }
+	else{
+		// Crear un nuevo nodo uniendo los otros dos 
+        unir(pri, segundo, a);
     }
 }
 
@@ -110,7 +131,7 @@ void descifra(string nombre){
     }
 }
 
-void comprimir(string nombre){
+void comprimir(string nombre, Huffman& h){
     int frecsPorChar[MAX_CARACTERES];
 
     iniciarFrecuencias(frecsPorChar);
@@ -129,10 +150,9 @@ void comprimir(string nombre){
 
     
 	ArbolTrie huff;
-	Huffman hF;
 	
 	// Construccion del arbol de codificacion Huffman
-	generaHuffman(hp, huff, hF);
+	generaHuffman(hp, huff, h);
 	
 	// vector de codigos binarios para cada caracter
 	string codigos[MAX_CARACTERES];
@@ -141,7 +161,7 @@ void comprimir(string nombre){
 	iniciarCodificaciones(codigos);
 	
 	// Codificacion de caracteres con codigos binarios
-	codificador(codigos, huff, "", hF);
+	codificador(codigos, huff, "", h);
 	
 	
 	// Muestreo de los codigos binarios obtenidos
@@ -184,12 +204,6 @@ void comprimir(string nombre){
         x = x+8;
     }
 }
-    
-    int main(){  
-        comprimir("frecuencias.txt");
-
-        return 0;
-    }
 
 
 

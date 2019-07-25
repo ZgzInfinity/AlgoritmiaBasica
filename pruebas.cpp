@@ -130,3 +130,12 @@ const int MAX_FICHERO_NOMBRE = 100;
 	return 0;
 	
 }*/
+
+
+int main(){ 
+
+		Huffman h;
+        comprimir("frecuencias.txt", h);
+
+        return 0;
+}

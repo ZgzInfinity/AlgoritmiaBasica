@@ -18,6 +18,7 @@ CC=g++
 ARBOLTRIE=ArbolTrie
 CARFREC=CarFrec
 COLA=Heap
+HUFFMAN=Huffman
 PRUEBAS=pruebas
 
 # Flags de compilacion
@@ -46,6 +47,18 @@ ${COLA}: ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o
 	${CC} ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o -o ${COLA}
 #----------------------------------------------------------------
 
+
+# HUFFMAN
+# Compilacion
+${HUFFMAN}.o: ${HUFFMAN}.h ${HUFFMAN}.cc
+	${CC} -c ${CPPFLAGS} ${HUFFMAN}.cc
+
+# Linkado
+${HUFFMAN}: ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o
+	${CC} ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o -o ${COLA}
+#----------------------------------------------------------------
+
+
 # CARFREC
 # Compilacion
 ${CARFREC}.o: ${CARFREC}.h  ${CARFREC}.cc
@@ -58,8 +71,8 @@ ${PRUEBAS}.o: ${PRUEBAS}.cpp
 	${CC} -c ${CPPFLAGS} ${PRUEBAS}.cpp
 
 # Linkado
-${PRUEBAS}: ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o  
-	${CC} ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o -o ${PRUEBAS}
+${PRUEBAS}: ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o  
+	${CC} ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${COLA}.o ${PRUEBAS}.o -o ${PRUEBAS}
 #-----------------------------------------------------------
 
 # LIMPIEZA
