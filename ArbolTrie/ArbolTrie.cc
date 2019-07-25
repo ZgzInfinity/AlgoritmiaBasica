@@ -190,13 +190,12 @@ char decodificarCaracter(ArbolTrie &a, string cadena){
  *      arbol <<a>> es nodo hoja y ademas es hijo izquierdo,
  *      <<enHijoDerecho>> toma valor <<true>> si el nodo apuntado del
  *      arbol <<a>> es nodo hoja y ademas es hijo derecho. Si el nodo apuntado
- *      del arbol <<a>> es una hoja ambos toman valor <<false>> y <<nivel>>
- *      almacena la profundidad del arbol en la que nos encontramos
+ *      del arbol <<a>> es una hoja ambos toman valor <<false>>
  * Post: Ha volcado en el fichero de texto asociado al flujo de escritura
  *       <<f>> el contenido restante del arbol <<a>>
  *
  */
-void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bool enHijoDerecho, int nivel){
+void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bool enHijoDerecho){
 		// Comprobacion de si el nodo es o no una hoja
 		if (!esHoja(a)){
 			// Escribir en el fichero solamente la frecuencia del nodo
@@ -204,10 +203,10 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f, bool enHijoIzquierdo, bo
 			// Escritura de la frecuencia del nodo y de que es interno
 			f << " # " << frecuencia <<  " M";
 			// Comprobar el hijo izquierdo del nodo actual
-			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f, true, false, nivel + 1);
+			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f, true, false);
 
 			// Comprobar el hijo el hijo derecho del nodo actual
-			guardarArbolEnFicheroRec(obtenerArbolDerecho(a), f, false, true, nivel + 1);
+			guardarArbolEnFicheroRec(obtenerArbolDerecho(a), f, false, true);
 		}
 		else {
 			// El nodo es una hojaArbolTrie::Nodo* a
