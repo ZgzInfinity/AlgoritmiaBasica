@@ -129,7 +129,7 @@ struct ArbolTrie {
 		 *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
 		 *       un uno busca en el subarbol derecho
 		 */
-		 friend void decodificarCaracter(ArbolTrie::Nodo* a, ArbolTrie::Nodo* raiz, string cadena, int indice,  ofstream& nombre);
+		 friend void decodificarCaracter(ArbolTrie a1, ArbolTrie a2, string cadena, int indice,  ofstream& nombre);
 
 
 		/*
@@ -139,7 +139,7 @@ struct ArbolTrie {
 		 * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
 		 *       de <<cadena>>
 		 */
-		friend void decodificarCaracter(ArbolTrie& a, string cadena, string nombreFichero);
+		friend void decodificarCaracter(ArbolTrie a, string cadena, string nombreFichero);
 
 
 
@@ -154,7 +154,7 @@ struct ArbolTrie {
 		 *       <<f>> el contenido restante del arbol <<a>>
 		 *
 		 */
-		friend void guardarArbolEnFicheroRec(ArbolTrie a, ifstream& f );
+		friend void guardarArbolEnFicheroRec(ArbolTrie a, ifstream& f);
 
 
 
@@ -216,7 +216,7 @@ struct ArbolTrie {
 		 *       ............
 		 *
 		 */
-		
+
 		friend void codificador(string codigos[],const ArbolTrie& a, string codigo);
 
 

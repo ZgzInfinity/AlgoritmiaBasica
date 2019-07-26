@@ -11,13 +11,13 @@ int main(){
 	ArbolTrie a;
 	string codigos[MAX_CARACTERES];
 	iniciarCodificaciones(codigos);
-    comprimir("frecuencias.txt");
+  comprimir("frecuencias.txt");
 	construirArbolDeFichero("arbolfrecuencias.txt",a);
 
 	// Codificacion de caracteres con codigos binarios
 	codificador(codigos,a,"");
 
-  	// QUITAR ESTA MIERDA
+  // QUITAR ESTA MIERDA
 	// Muestreo de los codigos binarios obtenidos
 	for(int j = 0; j < 256; j++){
 		if(codigos[j]!= "-")
@@ -26,5 +26,5 @@ int main(){
 
 	descifra("frecuencias.bin", a);
 
-    return 0;
+  return 0;
 }

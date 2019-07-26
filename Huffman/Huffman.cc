@@ -53,16 +53,13 @@ void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos
     f.open(ficheroEntrada);
     if (f.is_open()){
       // Si el fichero se abre correctamente
-
       // Leer el fichero caracter a caracter
       char c;
       f.get(c);
-
       // Mientras queden caracteres por leer
       while (!f.eof()){
           // Guardar la codificacion binario del caracter leido
           contenidoFichero += codigos[(int)c];
-
           // Leer el siguiente caracter
           f.get(c);
       }
@@ -95,10 +92,8 @@ void escribirFichero(const string contenido, string ficheroSalida){
   f.open(ficheroSalida);
   if (f.is_open()){
     // Si el fichero se abre correctamente
-
     // Parsear el contenido del fichero para guardalo en grupos de bytes
     int indice = 0;
-
     //Mientras queden caracteres por leer
     //aux << contenido;
     while(indice < int(contenido.length())){
@@ -188,8 +183,5 @@ void comprimir(string ficheroEntrada){
 
   // Generacion del fichero con el arbol comprimido
   guardarArbolEnFichero(huff, arbolFichero);
-
-  // Generacion del nuevo arbol a partir del fichero comprimido
-  ArbolTrie nuevoArbolFinal;
-  construirArbolDeFichero(arbolFichero, nuevoArbolFinal);
+  
 }
