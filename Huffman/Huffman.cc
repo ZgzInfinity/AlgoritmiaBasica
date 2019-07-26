@@ -89,7 +89,7 @@ void escribirFichero(const string contenido, string ficheroSalida){
   //ofstream aux;
   //aux.open("salida.txt");
   // Apertura del fichero de texto
-  f.open(ficheroSalida);
+  f.open(ficheroSalida, ios::app);
   if (f.is_open()){
     // Si el fichero se abre correctamente
     // Parsear el contenido del fichero para guardalo en grupos de bytes
@@ -158,16 +158,11 @@ void comprimir(string ficheroEntrada){
 	// Codificacion de caracteres con codigos binarios
 	codificador(codigos, huff, "");
 
-  // QUITAR ESTA MIERDA
-	// Muestreo de los codigos binarios obtenidos
-	for(int j = 0; j < 256; j++){
-		if(codigos[j]!= "-")
-		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
-	}
-
-  //TODO: parsear el nombre
 	// Nombre del fichero binario codificado de salida esto solo vale si es txt
-  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".bin";
+  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".huf";
+
+  // Generacion del fichero con el arbol comprimido
+  guardarArbolEnFichero(huff, ficheroSalida);
 
   // Cadena donde se almacena la informacion del fichero
   string contenidoFichero = "";
@@ -178,10 +173,22 @@ void comprimir(string ficheroEntrada){
   // Escribir el contenido comprimido en un nuevo fichero
   escribirFichero(contenidoFichero, ficheroSalida);
 
-  // Creacion del fichero donde se guarda el arbol
-  string arbolFichero = "arbol" + ficheroEntrada;
+}
 
-  // Generacion del fichero con el arbol comprimido
-  guardarArbolEnFichero(huff, arbolFichero);
-  
+
+
+/*
+ * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con la
+ *      codificacion de Hufmman y que tiene extension .huf
+ * Post: Ha creado un nuevo fichero resultado de llevar a cabo la descompresion
+ *       del fichero <<nombreFichero>> de modo que el contenido del nuevo
+ *       fichero es identico al del fichero original antes de hacer la
+ *       compresion
+ */
+void descomprimir(const string nombreFichero){
+    // Construccion del arbol de codigos Huffman para descomprimir
+    ArbolTrie a;
+  	construirArbolDeFichero(nombreFichero, a);
+    // Efectua la descompresion del fichero
+    descifraFichero(nombreFichero, a);
 }

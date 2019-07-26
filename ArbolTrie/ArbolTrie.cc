@@ -155,7 +155,6 @@ void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero,
 		// Extraccion del bit 0 o 1
 		char c = contenidoFichero.at(indice);
 		// Determinar si el nodo es o no hoja
-		cout << indice << " " << c << endl;
 		if (!esHoja(a1)){
 			// Es nodo interno
 			// Incremento del indice de la cadena
@@ -175,7 +174,6 @@ void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero,
 			carFrec tupla = obtenerCarFrec(a1);
 			// Escritura del caracter en el fichero
 			f << tupla.getCaracter();
-			cout << tupla.getCaracter() << endl;
 			decodificarCaracterRec(a2, a2, contenidoFichero, indice, f);
 		}
 	}
@@ -187,7 +185,6 @@ void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero,
 			carFrec tupla = obtenerCarFrec(a1);
 			// Escritura del ultimo caracter en el fichero
 			f << tupla.getCaracter();
-			cout << tupla.getCaracter() << endl;
 		}
 	}
 
@@ -279,6 +276,8 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 			cerr << "El fichero para guardar el arbol de codificacion "
 					 << arbolNombreFichero << " es innacesible" << endl;
 		}
+		// Insertar salto de linea
+		f << endl;
 		// Cierre del flujo asociado al fichero
 		f.close();
  }
@@ -302,8 +301,8 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 	char caracter;
  	// Intento de leer una nueva linea del fichero
   	f.get(caracter);
-	// Comprobar si la lectura ha sido efectiva
-	if (!f.eof()){
+	// Comprobar si no se ha leido salto de linea
+	if (caracter != '\n'){
 		// Se ha leido correctamente se crea la tupla
 		carFrec c = carFrec();
 		crearArbol(a, c);
@@ -406,20 +405,31 @@ void codificador(string codigos[],const ArbolTrie& a, string codigo){
 
 
 
-
-
-void descifra(string nombre, ArbolTrie& trie){
-    ifstream f(nombre, ios::binary | ios::in);
-    char c;
+/*
+ * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con
+ *      extension de archivo .huf y <<a>> es el arbol de codigos huffman
+ *      empleado en la codficacion del fichero <<nombreFichero>>
+ * Post: Ha devuelto como resultado un fichero descomprimido con el contenido
+ *       del del fichero comprimido <<nombreFichero>> empleando para la
+ *       descompresion el arbol de codigos Huffman <<a>>
+ */
+void descifraFichero(string nombreFichero, ArbolTrie& trie){
+	// Flujo de lectura asociado al fichero .huf
+  ifstream f(nombreFichero, ios::binary);
+  char c;
+	// Guardado del contenido del fichero
 	string total = "";
-    while (f.get(c))
-    {
-        for (int i = 7; i >= 0; i--){
-            int a =  ((c >> i) & 1);
-            total = total + std::to_string(a);
-            //Recorrer el arbol y descifrar las letras
-        }
-    }
-	decodificarCaracter(trie, total, "va.txt");
-	//cout << "el total es " << total;
+	// Ignorar la primera linea del fichero porque es el arbol
+	f.ignore(MAX_LONG_LINEA, '\n');
+	// Leer caracter a caracter el fichero
+  while (f.get(c)){
+		  // Parsear el contenido en grupos de bytes
+      for (int i = 7; i >= 0; i--){
+          int a =  ((c >> i) & 1);
+          total = total + std::to_string(a);
+      }
+  }
+	// Decodficar el fichero
+  string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4) + "salida.txt";
+	decodificarCaracter(trie, total, ficheroSalida);
 }

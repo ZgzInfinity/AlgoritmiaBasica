@@ -1,0 +1,6 @@
+frecuencias.txt
+estaciones.txt
+nombres.txt
+usos16.txt
+usos17.txt
+quijote.txt

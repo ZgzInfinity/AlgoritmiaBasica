@@ -27,13 +27,13 @@ PRELIMINAR=${PRELIMINAR_DIR}/Preliminar
 ARBOLTRIE=${ARBOLTRIE_DIR}/ArbolTrie
 HEAP=${HEAP_DIR}/Heap
 HUFFMAN=${HUFFMAN_DIR}/Huffman
-PRUEBAS=pruebas
+HUF=huf
 
 # Flags de compilacion
 CPPFLAGS=-O2 -std=c++11 -Wall
 
 # Regla para compilar el programa principal
-all: ${PRUEBAS} 
+all: ${HUF} 
 
 
 # CARFREC
@@ -71,12 +71,12 @@ ${HUFFMAN}.o: ${HUFFMAN}.h ${HUFFMAN}.cc
 
 # PRUEBAS
 # Compilacion
-${PRUEBAS}.o: ${PRUEBAS}.cpp
-	${CC} -c ${CPPFLAGS} ${PRUEBAS}.cpp
+${HUF}.o: ${HUF}.cpp
+	${CC} -c ${CPPFLAGS} ${HUF}.cpp
 
 # Linkado
-${PRUEBAS}: ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o  
-	${CC} ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${PRUEBAS}.o -o ${PRUEBAS}
+${HUF}: ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${HUF}.o  
+	${CC} ${PRELIMINAR}.o ${HUFFMAN}.o ${CARFREC}.o ${ARBOLTRIE}.o ${HEAP}.o ${HUF}.o -o ${HUF}
 #---------------------------------------------------------------
 
 # LIMPIEZA
@@ -86,4 +86,4 @@ clean:
 	$(RM) ${ARBOLTRIE}.o
 	$(RM) ${HUFFMAN}.o
 	$(RM) ${HEAP}.o
-	$(RM) ${PRUEBAS} ${PRUEBAS}.o
+	$(RM) ${HUF} ${HUF}.o

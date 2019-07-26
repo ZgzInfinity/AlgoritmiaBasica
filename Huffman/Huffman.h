@@ -43,18 +43,6 @@ const int TAMANYO_BYTE = 8;
 
 
 /*
-	* Pre: <<ficheroEntrada>> es un fichero de texto que almacena
-	*      caracteres tanto especiales como alfanumericos
-	* Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
-	*       de forma comprimida la secuencia de caracteres guardada en el fichero
-	*       denominado <<ficheroEntrada>> empleando como mecanismo de compresion
-	*		   los codigos Huffman
-	*/
- void comprimir(string ficheroEntrada);
-
-
-
-/*
 	* Pre:  <<ficheroEntrada>> es un fichero de texto que almacena
 	*       caracteres tanto especiales como alfanumericos
 	* Post: Si el fichero se ha abierto correctamente ha leido su contenido
@@ -77,6 +65,31 @@ const int TAMANYO_BYTE = 8;
 	*       error de apertura.
 	*/
 void escribirFichero(const string contenido, string ficheroSalida);
+
+
+
+/*
+	* Pre: <<ficheroEntrada>> es un fichero de texto que almacena
+	*      caracteres tanto especiales como alfanumericos
+	* Post: <<ficheroSalida>> es un fichero comprimido binario que almacena
+	*       de forma comprimida la secuencia de caracteres guardada en el fichero
+	*       denominado <<ficheroEntrada>> empleando como mecanismo de compresion
+	*		   los codigos Huffman
+	*/
+ void comprimir(string ficheroEntrada);
+
+
+
+
+ /*
+  * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con la
+  *      codificacion de Hufmman y que tiene extension .huf
+  * Post: Ha creado un nuevo fichero resultado de llevar a cabo la descompresion
+  *       del fichero <<nombreFichero>> de modo que el contenido del nuevo
+  *       fichero es identico al del fichero original antes de hacer la
+  *       compresion
+  */
+ void descomprimir(const string nombreFichero);
 
 
 #endif

@@ -16,6 +16,9 @@
 
 using namespace std;
 
+
+const int MAX_LONG_LINEA = 500;
+
 /*
  * Fichero de interfaz del modulo ArbolTrie
  */
@@ -41,7 +44,7 @@ struct ArbolTrie {
 		 *       toma el valor de <<e>>, el campo <<frecuencia>> toma el valor de la frecuencia de <<e>>
 		 *       y los punteros a los subarboles izquuierdo y derecho son nulos
 		 */
-		friend void crearArbol(ArbolTrie& a, carFrec& e);
+		 friend void crearArbol(ArbolTrie& a, carFrec& e);
 
 
 		/*
@@ -116,7 +119,7 @@ struct ArbolTrie {
 		 * Post: Ha devuelto un arbol de manera que <<a1>> es el hijo izquierdo del nuevo arbol y
 		 *       y <<a2>> es el hijo derecho
 		 */
-		friend void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal);
+		 friend void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal);
 
 
 
@@ -139,7 +142,7 @@ struct ArbolTrie {
 		 * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
 		 *       de <<cadena>>
 		 */
-		friend void decodificarCaracter(ArbolTrie a, string cadena, string nombreFichero);
+		 friend void decodificarCaracter(ArbolTrie a, string cadena, string nombreFichero);
 
 
 
@@ -154,7 +157,7 @@ struct ArbolTrie {
 		 *       <<f>> el contenido restante del arbol <<a>>
 		 *
 		 */
-		friend void guardarArbolEnFicheroRec(ArbolTrie a, ifstream& f);
+		 friend void guardarArbolEnFicheroRec(ArbolTrie a, ifstream& f);
 
 
 
@@ -169,7 +172,7 @@ struct ArbolTrie {
      	 *
 		 *       Estructura: explicar
 		 */
-     	friend void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero);
+     friend void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero);
 
 
 
@@ -184,45 +187,53 @@ struct ArbolTrie {
 		  *       <<f>> el contenido restante del arbol <<a>>
 		  *
 		  */
-		 friend void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f);
+		  friend void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f);
 
 
 
-		/*
-		 * Pre: <<arbolNombreFichero>> es un fichero de texto que almacena el arbol
-		 *      de codigos Huffman de un fichero cuyo nombre es igual a <<NombreFichero>>
-		 * Post: Ha construido en <<a>> un arbol el arbol de codigos Huffman
-		 *       correspondiente al fichero <<NombreFichero>>
-		 */
-		friend void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a);
-
-		/*
-		 * Pre:  <<codigos>> es un vector de caracteres de con capacidad
-		 *       para 256 caracteres, <<a>> es el trie que almacena en cada uno de sus
-		 *       nodos un caracter presente en el fichero junto con su correspondiente
-		 *       frecuencia, <<h>> SOBRA y <<codigo>> es un frgamento de codificacion
-		 *       del caracter actual apuntado por la raiz del arbol <<a>>
-		 * Post: Ha guardado en cada una de las componentes del vector <<codigos>>
-		 *       la codificacion binaria a cada caracter presente en el fichero
-		 *
-		 *       Ejemplo:
-		 *       A = 0
-		 *       B = 101
-		 *       C = 100
-		 *       D = 111
-		 *       E = 1101
-		 *       F = 1100
-		 *
-		 *       ............
-		 *
-		 */
-
-		friend void codificador(string codigos[],const ArbolTrie& a, string codigo);
+		 /*
+		  * Pre: <<arbolNombreFichero>> es un fichero de texto que almacena el arbol
+		  *      de codigos Huffman de un fichero cuyo nombre es igual a <<NombreFichero>>
+		  * Post: Ha construido en <<a>> un arbol el arbol de codigos Huffman
+		  *       correspondiente al fichero <<NombreFichero>>
+		  */
+		  friend void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a);
 
 
 
+		 /*
+		  * Pre:  <<codigos>> es un vector de caracteres de con capacidad
+		  *       para 256 caracteres, <<a>> es el trie que almacena en cada uno de sus
+		  *       nodos un caracter presente en el fichero junto con su correspondiente
+		  *       frecuencia, <<h>> SOBRA y <<codigo>> es un frgamento de codificacion
+		  *       del caracter actual apuntado por la raiz del arbol <<a>>
+		  * Post: Ha guardado en cada una de las componentes del vector <<codigos>>
+		  *       la codificacion binaria a cada caracter presente en el fichero
+		  *
+		  *       Ejemplo:
+		  *       A = 0
+		  *       B = 101
+		  *       C = 100
+		  *       D = 111
+		  *       E = 1101
+		  *       F = 1100
+		  *
+		  *       ............
+		  *
+		  */
+    	friend void codificador(string codigos[],const ArbolTrie& a, string codigo);
 
-		friend void descifra(string nombre, ArbolTrie& trie);
+
+
+		 /*
+		  * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con
+		  *      extension de archivo .huf y <<a>> es el arbol de codigos huffman
+		  *      empleado en la codficacion del fichero <<nombreFichero>>
+		  * Post: Ha devuelto como resultado un fichero descomprimido con el contenido
+		  *       del del fichero comprimido <<nombreFichero>> empleando para la
+		  *       descompresion el arbol de codigos Huffman <<a>>
+		  */
+		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie);
 };
 
 #endif
