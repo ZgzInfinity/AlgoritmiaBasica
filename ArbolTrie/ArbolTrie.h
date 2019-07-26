@@ -12,7 +12,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <iomanip>
 #include "../CarFrec/CarFrec.h"
 
 using namespace std;
@@ -130,7 +129,7 @@ struct ArbolTrie {
 		 *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
 		 *       un uno busca en el subarbol derecho
 		 */
-		 friend void decodificarCaracter(ArbolTrie::Nodo* a, string cadena, int indice,  char& cB);
+		 friend void decodificarCaracter(ArbolTrie::Nodo* a, ArbolTrie::Nodo* raiz, string cadena, int indice,  ofstream& nombre);
 
 
 		/*
@@ -140,7 +139,7 @@ struct ArbolTrie {
 		 * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
 		 *       de <<cadena>>
 		 */
-		friend char decodificarCaracter(ArbolTrie &a, string cadena);
+		friend void decodificarCaracter(ArbolTrie& a, string cadena, string nombreFichero);
 
 
 
@@ -167,10 +166,10 @@ struct ArbolTrie {
 		 * Post: Si se ha podido crear sin ningun problema el fichero de
 		 *       texto <<arbolNombreFichero>> ha guardado en dicho fichero una
 		 *       representacion del arbol con la siguiente estructura:
-     *
+     	 *
 		 *       Estructura: explicar
 		 */
-     friend void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero);
+     	friend void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero);
 
 
 
@@ -196,6 +195,34 @@ struct ArbolTrie {
 		 *       correspondiente al fichero <<NombreFichero>>
 		 */
 		friend void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a);
+
+		/*
+		 * Pre:  <<codigos>> es un vector de caracteres de con capacidad
+		 *       para 256 caracteres, <<a>> es el trie que almacena en cada uno de sus
+		 *       nodos un caracter presente en el fichero junto con su correspondiente
+		 *       frecuencia, <<h>> SOBRA y <<codigo>> es un frgamento de codificacion
+		 *       del caracter actual apuntado por la raiz del arbol <<a>>
+		 * Post: Ha guardado en cada una de las componentes del vector <<codigos>>
+		 *       la codificacion binaria a cada caracter presente en el fichero
+		 *
+		 *       Ejemplo:
+		 *       A = 0
+		 *       B = 101
+		 *       C = 100
+		 *       D = 111
+		 *       E = 1101
+		 *       F = 1100
+		 *
+		 *       ............
+		 *
+		 */
+		
+		friend void codificador(string codigos[],const ArbolTrie& a, string codigo);
+
+
+
+
+		friend void descifra(string nombre, ArbolTrie& trie);
 };
 
 #endif
