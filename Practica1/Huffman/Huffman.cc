@@ -13,7 +13,7 @@ using namespace std;
  *        compresion menor y a los digitos de mayor frecuencia un codigo mayor, garantizando
  *        asi un tamanyo de fichero comprimido menor
  */
-void generaHuffman(Heap& c, ArbolTrie& a, Huffman& h){
+void generaHuffman(Heap& c, ArbolTrie& a){
 	// Obtener primer elmentos del monticulo
     ArbolTrie pri = min(c);
 	// Eliminar el primer elemento del monticulo
@@ -29,7 +29,7 @@ void generaHuffman(Heap& c, ArbolTrie& a, Huffman& h){
         unir(pri, segundo, aux);
 		// Insertar el nuevo formado en la cola de prioridades
         anyadir(c,aux);
-        generaHuffman(c, a, h);
+        generaHuffman(c, a);
     }
 	else{
 		// Crear un nuevo nodo uniendo los otros dos
@@ -37,61 +37,6 @@ void generaHuffman(Heap& c, ArbolTrie& a, Huffman& h){
     }
 }
 
-
-
-/*
- * Pre:  <<codigos>> es un vector de caracteres de con capacidad
- *       para 256 caracteres, <<a>> es el trie que almacena en cada uno de sus
- *       nodos un caracter presente en el fichero junto con su correspondiente
- *       frecuencia, <<h>> SOBRA y <<codigo>> es un frgamento de codificacion
- *       del caracter actual apuntado por la raiz del arbol <<a>>
- * Post: Ha guardado en cada una de las componentes del vector <<codigos>>
- *       la codificacion binaria a cada caracter presente en el fichero
- *
- *       Ejemplo:
- *       A = 0
- *       B = 101
- *       C = 100
- *       D = 111
- *       E = 1101
- *       F = 1100
- *
- *       ............
- *
- */
-void codificador(string codigos[],const ArbolTrie& a, string codigo){
-    // Comprobar que el nodo actual es hoja
-    if(esHoja(a)){
-        // Obtencion del caracter con su frecuencia
-        carFrec c = obtenerCarFrec(a);
-        // Guardar el codigo del caracter
-        codigos[(int)c.getCaracter()]=codigo;
-    }
-    else{
-        // Si el nodo no es hoja se inserta en la codificacion del caracter
-        // un 0 para ir al hijo izuierdo y un 1 para ir al hijo derecho
-        string codigoIzq = codigo + "0";
-        string codigoDer = codigo + "1";
-        // Llamadas recursivas
-        codificador(codigos,obtenerArbolIzquierdo(a),codigoIzq);
-        codificador(codigos,obtenerArbolDerecho(a),codigoDer);
-    }
-}
-
-
-
-void descifra(string nombre){
-    ifstream f(nombre, ios::binary | ios::in);
-    char c;
-    while (f.get(c))
-    {
-        for (int i = 7; i >= 0; i--){
-            int a =  ((c >> i) & 1);
-            cout<<a;
-            //Recorrer el arbol y descifrar las letras
-        }
-    }
-}
 
 
 /*
@@ -108,16 +53,13 @@ void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos
     f.open(ficheroEntrada);
     if (f.is_open()){
       // Si el fichero se abre correctamente
-
       // Leer el fichero caracter a caracter
       char c;
       f.get(c);
-
       // Mientras queden caracteres por leer
       while (!f.eof()){
           // Guardar la codificacion binario del caracter leido
           contenidoFichero += codigos[(int)c];
-
           // Leer el siguiente caracter
           f.get(c);
       }
@@ -144,15 +86,16 @@ void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos
 void escribirFichero(const string contenido, string ficheroSalida){
   // Flujo de lectura asociado al fichero
   ofstream f;
+  //ofstream aux;
+  //aux.open("salida.txt");
   // Apertura del fichero de texto
-  f.open(ficheroSalida);
+  f.open(ficheroSalida, ios::app);
   if (f.is_open()){
     // Si el fichero se abre correctamente
-
     // Parsear el contenido del fichero para guardalo en grupos de bytes
     int indice = 0;
-
     //Mientras queden caracteres por leer
+    //aux << contenido;
     while(indice < int(contenido.length())){
         if((indice - contenido.length() < TAMANYO_BYTE)){
             f << (char)std::stoi(contenido.substr(indice, indice - contenido.length()), nullptr, BASE);
@@ -185,7 +128,7 @@ void escribirFichero(const string contenido, string ficheroSalida){
  *       menor y a los caracteres con una frecuencia de aparicion menor se les ha
  *       asignado un codigo de compresion menor
  */
-void comprimir(string ficheroEntrada, Huffman& h){
+void comprimir(string ficheroEntrada){
 	// Vector de frecuencias de cada caracter
   int frecsPorChar[MAX_CARACTERES];
 
@@ -210,20 +153,16 @@ void comprimir(string ficheroEntrada, Huffman& h){
 
   // Construccion del arbol de codificacion Huffman
 	ArbolTrie huff;
-	generaHuffman(hp, huff, h);
+	generaHuffman(hp, huff);
 
 	// Codificacion de caracteres con codigos binarios
 	codificador(codigos, huff, "");
 
-  // QUITAR ESTA MIERDA
-	// Muestreo de los codigos binarios obtenidos
-	for(int j = 0; j < 256; j++){
-		if(codigos[j]!= "-")
-		cout << "El codigo de " << (char)j << " es: " << codigos[j] << endl;
-	}
+	// Nombre del fichero binario codificado de salida esto solo vale si es txt
+  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".huf";
 
-	// Nombre del fichero binario codificado de salida
-  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".bin";
+  // Generacion del fichero con el arbol comprimido
+  guardarArbolEnFichero(huff, ficheroSalida);
 
   // Cadena donde se almacena la informacion del fichero
   string contenidoFichero = "";
@@ -234,13 +173,22 @@ void comprimir(string ficheroEntrada, Huffman& h){
   // Escribir el contenido comprimido en un nuevo fichero
   escribirFichero(contenidoFichero, ficheroSalida);
 
-  // Creacion del fichero donde se guarda el arbol
-  string arbolFichero = "arbol" + ficheroEntrada;
+}
 
-  // Generacion del fichero con el arbol comprimido
-  guardarArbolEnFichero(huff, arbolFichero);
 
-  // Generacion del nuevo arbol a partir del fichero comprimido
-  ArbolTrie nuevoArbolFinal;
-  construirArbolDeFichero(arbolFichero, nuevoArbolFinal);
+
+/*
+ * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con la
+ *      codificacion de Hufmman y que tiene extension .huf
+ * Post: Ha creado un nuevo fichero resultado de llevar a cabo la descompresion
+ *       del fichero <<nombreFichero>> de modo que el contenido del nuevo
+ *       fichero es identico al del fichero original antes de hacer la
+ *       compresion
+ */
+void descomprimir(const string nombreFichero){
+    // Construccion del arbol de codigos Huffman para descomprimir
+    ArbolTrie a;
+  	construirArbolDeFichero(nombreFichero, a);
+    // Efectua la descompresion del fichero
+    descifraFichero(nombreFichero, a);
 }

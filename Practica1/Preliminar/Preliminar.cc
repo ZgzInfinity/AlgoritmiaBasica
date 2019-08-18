@@ -61,11 +61,4 @@ void frecuenciasPorCaracter(string nombreFichero, int frecsPorChar[]){
 		// Error en la asociacion del flujo al fichero
 		cerr << "El fichero de " << nombreFichero << " no se ha podido leer " << endl;
 	}
-
-	// PA PROBAR
-	for (int i = 0; i < NUM_CARACTERES; i++){
-		if (frecsPorChar[i] != 0){
-			cout << char(i) << " " << frecsPorChar[i] << endl;
-		}
-	}
 }
