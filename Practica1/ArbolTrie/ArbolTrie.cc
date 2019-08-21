@@ -88,6 +88,7 @@ carFrec obtenerCarFrec(const ArbolTrie& a){
 }
 
 
+
 /*
  * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia>>
  * Post: Ha devuelto el subarbol izquierdo de <<a>>
@@ -138,6 +139,51 @@ void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 }
 
 
+void escriRec(ArbolTrie a){
+		// Comprobacion de si el nodo es o no una hoja
+		if (!esHoja(a)){
+			// Escritura de la frecuencia del nodo y de que es interno
+			// No es hoja por lo canto escribo solo una N
+			//cout << "N" ;
+			// Comprobar el hijo izquierdo del nodo actual
+			escriRec(obtenerArbolIzquierdo(a));
+			// Comprobar el hijo el hijo derecho del nodo actual
+			escriRec(obtenerArbolDerecho(a));
+		}
+		else {
+			// El nodo es una hojaArbolTrie::Nodo* a
+		  	// Obtencion de la tupla <caracter, frecuencia> del nodo
+			carFrec c = obtenerCarFrec(a);
+			//cout << "El carfrec es " << c.getCaracter()  << " " << c.getFrecuencia()<< endl;
+			// Obtencion del caracter y la frecuencia de la tupla y del tipo de hijo
+			char caracter = c.getCaracter();
+			// Escritura de la frecuencia del nodo y de que es interno
+			//Es un nodo hoja por lo tanto escibo H y el caracter que contiene la hoja
+			cout << "H" << caracter;
+		}
+}
+
+
+
+
+
+/*
+ * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
+ *      cada uno de sus nodos hoja correspondientes a los caracteres
+ *      recogidos en un fichero de texto junto con sus frecuencias de
+ *      aparicion
+ * Post: Si se ha podido crear sin ningun problema el fichero de
+ *       texto <<arbolNombreFichero>> ha guardado en dicho fichero una
+ *       representacion del arbol con la siguiente estructura:
+ *
+ *       Estructura: explicar
+ *
+ */
+void esciArbol(ArbolTrie a){
+			escriRec(a);
+ }
+
+
 
 
 /*
@@ -154,6 +200,7 @@ void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero,
 	if (indice <= int(contenidoFichero.size() - 1)){
 		// Extraccion del bit 0 o 1
 		char c = contenidoFichero.at(indice);
+		//cout << c << endl;
 		// Determinar si el nodo es o no hoja
 		if (!esHoja(a1)){
 			// Es nodo interno
@@ -187,7 +234,6 @@ void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero,
 			f << tupla.getCaracter();
 		}
 	}
-
 }
 
 
@@ -216,6 +262,7 @@ void decodificarCaracter(ArbolTrie a, string contenidoFichero, string nombreFich
 
 
 
+
 /*
  * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
  *      cada uno de sus nodos hoja correspondientes a los caracteres
@@ -230,7 +277,9 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f){
 		// Comprobacion de si el nodo es o no una hoja
 		if (!esHoja(a)){
 			// Escritura de la frecuencia del nodo y de que es interno
-			f << "#";
+			// No es hoja por lo canto escribo solo una N
+			f << "N";
+			//cout << "N" ;
 			// Comprobar el hijo izquierdo del nodo actual
 			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f);
 			// Comprobar el hijo el hijo derecho del nodo actual
@@ -238,12 +287,15 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f){
 		}
 		else {
 			// El nodo es una hojaArbolTrie::Nodo* a
-		  // Obtencion de la tupla <caracter, frecuencia> del nodo
+		  	// Obtencion de la tupla <caracter, frecuencia> del nodo
 			carFrec c = obtenerCarFrec(a);
+			//cout << "El carfrec es " << c.getCaracter()  << " " << c.getFrecuencia()<< endl;
 			// Obtencion del caracter y la frecuencia de la tupla y del tipo de hijo
-			char caracter = c.getCaracter();
+			unsigned char caracter = c.getCaracter();
 			// Escritura de la frecuencia del nodo y de que es interno
-			f << caracter;
+			//Es un nodo hoja por lo tanto escibo H y el caracter que contiene la hoja
+			f << "H" << caracter;
+			//cout << "H" << caracter << "caracter ascii: "<< int(caracter);
 		}
 }
 
@@ -278,6 +330,7 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 		}
 		// Insertar salto de linea
 		f << endl;
+		//cout << "escribo fin de linea" << endl;
 		// Cierre del flujo asociado al fichero
 		f.close();
  }
@@ -296,7 +349,7 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
   *       <<f>> el contenido restante del arbol <<a>>
   *
   */
- void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f){
+ int construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f){
 	// Caracter a leer
 	char caracter;
  	// Intento de leer una nueva linea del fichero
@@ -306,32 +359,41 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 		// Se ha leido correctamente se crea la tupla
 		carFrec c = carFrec();
 		crearArbol(a, c);
-		if (caracter == '#'){
+		int izdo = 0;
+		int dcho = 0;
+
+		if (caracter == 'N'){
 			// Nodo interno
 			// Como el nodo es interno tiene hijos
 			// se van a visitar los hijos izquierdo y derecho
+		  	// Crear el arbolTrie del hijo izquierdo
 
-		  // Crear el arbolTrie del hijo izquierdo
-		  ArbolTrie aIzq;
-			construirArbolDeFicheroRec(aIzq, f);
+		  	ArbolTrie aIzq;
+			izdo = 1+construirArbolDeFicheroRec(aIzq, f);
 			asignarArbolIzquierdo(a, aIzq);
 
 			// Crear el arbolTrie del hijo derecho
 			ArbolTrie aDer;
-			construirArbolDeFicheroRec(aDer, f);
+			dcho = construirArbolDeFicheroRec(aDer, f);
 		 	asignarArbolDerecho(a, aDer);
+			return izdo + dcho;
 		}
 		else {
 			// Nodo hoja izquierda o derecha
 			// Asignar el caracter y su frecuencia de aparicion
-			c.setCaracter(caracter);
+			
+			f.get(caracter);
+			c.setCaracter((unsigned char)caracter);
+			//cout << "H" << caracter;
 			asignarArbolCarFrec(a, c);
 
 			// Apuntar los nodos hijos a nil
 			a.raiz->der = nullptr;
 			a.raiz->izq = nullptr;
+			return 2;
 		}
 	}
+	return 0;
  }
 
 
@@ -343,18 +405,19 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
  * Post: Ha construido en <<a>> un arbol el arbol de codigos Huffman
  *       correspondiente al fichero <<NombreFichero>>
  */
-void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a){
+int construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a){
 	// Flujo de escritura asociado al fichero
 	ifstream f;
 	// Apertura del fichero asociado al flujo
 	f.open(arbolNombreFichero);
 	if (f.is_open()){
 		// Si el fichero se ha abierto correctamente
-		construirArbolDeFicheroRec(a, f);
+		return construirArbolDeFicheroRec(a, f);
 	}
 	else {
 		cerr << "El fichero de lectura del arbol de codificacion "
 				 << arbolNombreFichero << " es innacesible" << endl;
+		return 0;
 	}
 	// Cierre del flujo asociado al fichero
 	f.close();
@@ -384,16 +447,21 @@ void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a){
  *
  */
 void codificador(string codigos[],const ArbolTrie& a, string codigo){
+	//cout << "Entro a codificador" << endl;
     // Comprobar que el nodo actual es hoja
-    if(esHoja(a)){
+    if(esHoja(a)){	
         // Obtencion del caracter con su frecuencia
         carFrec c = obtenerCarFrec(a);
+		//cout << "peta en obtener caracter" << endl;
+		//cout << "es hoja y letra: "<< c.getCaracter() << "y ascii " << (int)c.getCaracter();
+		//cout << "salgo de obtener caracter" << endl;
         // Guardar el codigo del caracter
         codigos[(int)c.getCaracter()]=codigo;
     }
     else{
         // Si el nodo no es hoja se inserta en la codificacion del caracter
         // un 0 para ir al hijo izuierdo y un 1 para ir al hijo derecho
+		//cout << "no es hoja" << endl;
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
         // Llamadas recursivas al hijo izquierdo y derecho
@@ -413,23 +481,120 @@ void codificador(string codigos[],const ArbolTrie& a, string codigo){
  *       del del fichero comprimido <<nombreFichero>> empleando para la
  *       descompresion el arbol de codigos Huffman <<a>>
  */
-void descifraFichero(string nombreFichero, ArbolTrie& trie){
+void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB){
 	// Flujo de lectura asociado al fichero .huf
   ifstream f(nombreFichero, ios::binary);
+  //cout << "El nombre del fichero de salida es " <<nombreFichero << endl;
   char c;
 	// Guardado del contenido del fichero
 	string total = "";
 	// Ignorar la primera linea del fichero porque es el arbol
-	f.ignore(MAX_LONG_LINEA, '\n');
+	// TODO: Esto esta mal
+	cout << "Numero de Bytes a ignorar "<< numB;
+	f.ignore(numB+1);
 	// Leer caracter a caracter el fichero
-  while (f.get(c)){
+  	while (!f.eof()){
+	f.get(c);
+	  //cout<< "Car: " << c << endl;
 		  // Parsear el contenido en grupos de bytes
       for (int i = 7; i >= 0; i--){
           int a =  ((c >> i) & 1);
+		  
           total = total + std::to_string(a);
       }
-  }
-	// Decodficar el fichero
+  	}
+  // Decodficar el fichero
   string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4) + "salida.txt";
-	decodificarCaracter(trie, total, ficheroSalida);
+  cout << "El nombre del fichero de salida es " <<ficheroSalida << endl;
+  decodificarCaracter(trie, total, ficheroSalida);
+}
+
+
+ArbolTrie decodificarCaracterRec2(const ArbolTrie& inicial, ArbolTrie& actual,int num, ofstream& f, bool& sumar){
+	if (num == 0){
+		ArbolTrie comprobar = obtenerArbolIzquierdo(actual);
+		if(!esHoja(comprobar)){
+			sumar=false;
+			return comprobar;
+		}else{
+			//cout << "es 0" << endl;
+			sumar=true;
+			//cout << "Total: "<< total << endl;
+			carFrec tupla = obtenerCarFrec(comprobar);
+			// Escritura del caracter en el fichero
+			//cout << "Escibo: " << tupla.getCaracter()<< endl;
+			f << tupla.getCaracter();
+			cout << tupla.getCaracter() << endl;
+			return inicial;
+		}
+	}
+	else if (num == 1){
+		ArbolTrie comprobar = obtenerArbolDerecho(actual);
+		if(!esHoja(comprobar)){
+			sumar=false;
+			return comprobar;
+		}else{
+			//cout << "es 1"<< endl;
+			carFrec tupla = obtenerCarFrec(comprobar);
+			// Escritura del caracter en el fichero
+			f << tupla.getCaracter();
+			cout << tupla.getCaracter() << endl;
+			sumar=true;
+			//cout << "Total: "<< total << endl;
+			return inicial;
+		}
+	}else{
+		sumar=false;
+		return inicial;
+	}
+
+}
+
+void descifraFichero2(string nombreFichero, ArbolTrie& trie,int numB){
+	// Flujo de lectura asociado al fichero .huf
+// Flujo de escritura asociado al fichero de texto
+// cout << "El arbol que tenemso es : " << endl;
+// esciArbol(trie);
+// cout << endl;
+ofstream f2;
+// Apertura del fichero asociado al flujo
+f2.open("Pruebas.txt");
+  ifstream f(nombreFichero, ios::binary);
+  int actuales=0;
+  bool sumar;
+
+
+  //cout << "El nombre del fichero de salida es " <<nombreFichero << endl;
+  char c;
+	// Guardado del contenido del fichero
+	string total = "";
+	// Ignorar la primera linea del fichero porque es el arbol
+	// TODO: Esto esta mal
+	cout << "Numero de Bytes a ignorar "<< numB;
+	f.ignore(numB+1);
+	f >> actuales;
+	f.ignore(1);
+	//cout << "Hay que leer bytes:" << bytes << endl;
+	ArbolTrie t1 = trie;
+	// Leer caracter a caracter el fichero
+	//TODO: chapuza para que acaba hay que hacer que cuente bien los caracteres que escribe.
+	bool continuar = true;
+  	while (continuar){
+			f.get(c);
+			// Parsear el contenido en grupos de bytes
+			for (int i = 7; i >= 0; i--){
+				int a =  ((c >> i) & 1);
+				t1 = decodificarCaracterRec2(trie,t1,a,f2,sumar);
+				if(sumar){
+					actuales--;
+					cout << "Actuales: " << actuales << endl;
+					if(actuales == 1){
+						continuar = false;
+						cout << "fin de fichero" << endl;
+						break;
+					}
+					sumar=false;	
+				}
+			}
+  	}
 }

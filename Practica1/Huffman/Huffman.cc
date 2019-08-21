@@ -46,23 +46,37 @@ void generaHuffman(Heap& c, ArbolTrie& a){
  *       caracter a caracter guardando la representacion binaria de cada
  *       uno en el vector <<contenidoFichero>>
  */
-void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos[]){
+unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos[]){
     // Flujo de lectura asociado al fichero
     ifstream f;
+    unsigned int total = 0 ;
     // Apertura del fichero de texto
     f.open(ficheroEntrada);
     if (f.is_open()){
       // Si el fichero se abre correctamente
       // Leer el fichero caracter a caracter
       char c;
+      unsigned char c2;
       f.get(c);
+      total++;
       // Mientras queden caracteres por leer
       while (!f.eof()){
+          c2 = (unsigned char)c;
+          //cout << "añado al string ";
           // Guardar la codificacion binario del caracter leido
-          contenidoFichero += codigos[(int)c];
+          //cout << "caracter: " << c2 <<" codigo caracter: " << (int)c2 << " codigo: "<< codigos[(int)c2] << endl;
+          contenidoFichero += codigos[(int)c2];
+          // if(contenidoFichero.length() > 8){
+          //   contenidoFichero = "";
+          // }
           // Leer el siguiente caracter
           f.get(c);
+          cout << "caracter "<< c << " ascii: " << int(c) << endl;
+          total++;
+         // cout << contenidoFichero << endl << endl;
       }
+
+      cout << "Cierre del flujo" << endl;
       // Cierre del flujo de lectura
       f.close();
     }
@@ -70,6 +84,14 @@ void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos
       // El fichero no se abre correctamente
       cerr << "Error al abir el fichero " << ficheroEntrada << endl;
     }
+
+    if(contenidoFichero.length()%8 != 0){
+      cout << "Voy a añadir 0's: " << 8 - (int)contenidoFichero.length()%8 << endl;
+	    for(int i = 0; i < 8 - (int)contenidoFichero.length()%8  ; i++){
+		    contenidoFichero = contenidoFichero + "0"; 
+	    }
+    }
+    return total;
 }
 
 
@@ -83,13 +105,14 @@ void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos
  *       comprimido. En caso contrario ha mostrado por salida estandar el
  *       error de apertura.
  */
-void escribirFichero(const string contenido, string ficheroSalida){
+void escribirFichero(const string contenido, string ficheroSalida, unsigned int total){
   // Flujo de lectura asociado al fichero
   ofstream f;
   //ofstream aux;
   //aux.open("salida.txt");
   // Apertura del fichero de texto
   f.open(ficheroSalida, ios::app);
+  f << total << endl;
   if (f.is_open()){
     // Si el fichero se abre correctamente
     // Parsear el contenido del fichero para guardalo en grupos de bytes
@@ -130,48 +153,72 @@ void escribirFichero(const string contenido, string ficheroSalida){
  */
 void comprimir(string ficheroEntrada){
 	// Vector de frecuencias de cada caracter
+
+  //cout << "Calculando frecuencias por caracteres" << endl;
   int frecsPorChar[MAX_CARACTERES];
 
 	// Inicializar la frecuencia de aparicion de cada caracter a cero
+  cout << "Inicialdofrecuencias por caracteres" << endl;
   iniciarFrecuencias(frecsPorChar);
+  
 
   // vector de codigos binarios para cada caracter
   string codigos[MAX_CARACTERES];
 
   // Iniciar codificaciones binarias
+  cout << "Inicio codificadores" << endl;
   iniciarCodificaciones(codigos);
 
 	// Contabilizar las frecuencias de cada caracter
+  cout << "frecuencias por caracteres" << endl;
   frecuenciasPorCaracter(ficheroEntrada, frecsPorChar);
-
+  // for(int i = 0; i < 256 ; i++){
+  //   if(frecsPorChar[i] != 0)
+  //   cout << "caracter: " << (char)i  << "codigo: " << frecsPorChar[i] << endl;
+  // }
   // Creacion del monticulo de prioridades
 	Heap hp;
 	crearVacio(hp);
 
 	// Rellenado del monticulo a partir de las frecuencias de cada caracter
+  cout << "Rellenando en heap" << endl;
 	rellenar(hp, frecsPorChar);
 
   // Construccion del arbol de codificacion Huffman
 	ArbolTrie huff;
+  cout << "generar huffman" << endl;
 	generaHuffman(hp, huff);
 
 	// Codificacion de caracteres con codigos binarios
+  cout << "codificdor" << endl;
 	codificador(codigos, huff, "");
+  
+
+  // for(int i = 0; i < 256 ; i++){
+  //   if(codigos[i] != "-")
+  //    cout << "caracter: " << (char)i  << "codigo: " << codigos[i] << endl;
+     
+  // }
+
+  cout << "salgi de codificador" << endl;
 
 	// Nombre del fichero binario codificado de salida esto solo vale si es txt
   string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".huf";
 
   // Generacion del fichero con el arbol comprimido
+  cout << "guardar arbol en ficheros" << endl;
   guardarArbolEnFichero(huff, ficheroSalida);
 
   // Cadena donde se almacena la informacion del fichero
   string contenidoFichero = "";
 
   // Leer fichero de texto y guardar su contenido codificado en binario
-  leerFichero(ficheroEntrada, contenidoFichero, codigos);
+  cout << "Leer fichero" << endl;
+  unsigned int total  = leerFichero(ficheroEntrada, contenidoFichero, codigos);
 
   // Escribir el contenido comprimido en un nuevo fichero
-  escribirFichero(contenidoFichero, ficheroSalida);
+  cout << "Escribir fichero" << endl;
+  escribirFichero(contenidoFichero, ficheroSalida, total);
 
 }
 
@@ -187,8 +234,9 @@ void comprimir(string ficheroEntrada){
  */
 void descomprimir(const string nombreFichero){
     // Construccion del arbol de codigos Huffman para descomprimir
+    int bytes;
     ArbolTrie a;
-  	construirArbolDeFichero(nombreFichero, a);
+  	bytes =  construirArbolDeFichero(nombreFichero, a);
     // Efectua la descompresion del fichero
-    descifraFichero(nombreFichero, a);
+    descifraFichero2(nombreFichero, a, bytes);
 }

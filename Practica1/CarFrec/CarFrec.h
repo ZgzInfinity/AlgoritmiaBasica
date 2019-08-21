@@ -24,7 +24,7 @@ using namespace std;
 class carFrec {
 	// Estructura interna del tipo de dato carFrec
 private:
-		char caracter;     // valor del caracter
+		unsigned char caracter;     // valor del caracter
 		int frecuencia;    // total de veces que aparece el caracter
 public:
 
@@ -43,30 +43,30 @@ public:
 		carFrec(char c, int f);
 
 
-    /*
-     * Pre: ---
-     * Post: Ha asignado al caracter de la tupla el valor de <<c>>
-     */
-    void setCaracter(char c);
-
-
-    /*
-     * Pre: ---
-     * Post: Ha asignado a la frecuencia de la tupla el valor de <<f>>
-     */
-    void setFrecuencia(int f);
+		/*
+		* Pre: ---
+		* Post: Ha asignado al caracter de la tupla el valor de <<c>>
+		*/
+		void setCaracter(unsigned char c);
 
 
 		/*
-		 * Pre: ---
-		 * Post: Ha devuelto el valor del caracter
-		 */
-		char getCaracter();
+		* Pre: ---
+		* Post: Ha asignado a la frecuencia de la tupla el valor de <<f>>
+		*/
+		void setFrecuencia(int f);
+
 
 		/*
-		 * Pre: ---
-		 * Post: Ha devuelto el valor de la frecuencia
-		 */
+			* Pre: ---
+			* Post: Ha devuelto el valor del caracter
+			*/
+		unsigned char getCaracter();
+
+		/*
+			* Pre: ---
+			* Post: Ha devuelto el valor de la frecuencia
+			*/
 		int getFrecuencia();
 };
 

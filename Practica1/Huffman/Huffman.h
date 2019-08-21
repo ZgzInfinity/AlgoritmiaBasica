@@ -50,7 +50,7 @@ const int TAMANYO_BYTE = 8;
 	*       uno en el vector <<contenidoFichero>>. En caso contrario ha
 	*       mostrado por salida estandar el error de apertura.
 	*/
- void leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos[]);
+ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string codigos[]);
 
 
 
@@ -64,7 +64,7 @@ const int TAMANYO_BYTE = 8;
 	*       comprimido. En caso contrario ha mostrado por salida estandar el
 	*       error de apertura.
 	*/
-void escribirFichero(const string contenido, string ficheroSalida);
+void escribirFichero(const string contenido, string ficheroSalida, unsigned int total);
 
 
 

@@ -121,7 +121,9 @@ struct ArbolTrie {
 		 */
 		 friend void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal);
 
+		friend void escriRec(ArbolTrie a);
 
+		friend void esciArbol(ArbolTrie a);
 
 		/*
 		 * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
@@ -187,7 +189,7 @@ struct ArbolTrie {
 		  *       <<f>> el contenido restante del arbol <<a>>
 		  *
 		  */
-		  friend void construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f);
+		  friend int construirArbolDeFicheroRec(ArbolTrie& a, ifstream& f);
 
 
 
@@ -197,7 +199,7 @@ struct ArbolTrie {
 		  * Post: Ha construido en <<a>> un arbol el arbol de codigos Huffman
 		  *       correspondiente al fichero <<NombreFichero>>
 		  */
-		  friend void construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a);
+		  friend int construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a);
 
 
 
@@ -233,7 +235,11 @@ struct ArbolTrie {
 		  *       del del fichero comprimido <<nombreFichero>> empleando para la
 		  *       descompresion el arbol de codigos Huffman <<a>>
 		  */
-		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie);
+		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie, int numB);
+
+		 friend ArbolTrie decodificarCaracterRec2(const ArbolTrie& inical, ArbolTrie& actual,int num, ofstream& f,bool& sumar);
+
+		 friend void descifraFichero2(string nombreFichero, ArbolTrie& trie,int numB);
 };
 
 #endif

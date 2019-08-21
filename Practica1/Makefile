@@ -27,7 +27,7 @@ PRELIMINAR=${PRELIMINAR_DIR}/Preliminar
 ARBOLTRIE=${ARBOLTRIE_DIR}/ArbolTrie
 HEAP=${HEAP_DIR}/Heap
 HUFFMAN=${HUFFMAN_DIR}/Huffman
-PRUEBAS=pruebas
+PRUEBAS=huf
 
 # Flags de compilacion
 CPPFLAGS=-O2 -std=c++11 -Wall

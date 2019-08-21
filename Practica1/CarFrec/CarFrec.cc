@@ -37,7 +37,7 @@ carFrec::carFrec(char c, int f){
  * Pre: ---
  * Post: Ha asignado al caracter de la tupla el valor de <<c>>
  */
-void carFrec::setCaracter(char c){
+void carFrec::setCaracter(unsigned char c){
 	this->caracter = c;
 }
 
@@ -55,7 +55,7 @@ void carFrec::setFrecuencia(int f){
  * Pre: ---
  * Post: Ha devuelto el valor del caracter
  */
-char carFrec::getCaracter(){
+unsigned char carFrec::getCaracter(){
 	return caracter;
 }
 
