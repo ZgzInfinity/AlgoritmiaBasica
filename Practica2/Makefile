@@ -1,5 +1,5 @@
 #*****************************************************************
-# Archivo: Makefile Practica_1
+# Archivo: Makefile Practica_2
 # Author:  Ruben Rodriguez Esteban 737215
 #          Jose Maria Vallejo Puyal 720044
 # Fecha:   23 de marzo de 2019
@@ -8,7 +8,7 @@
 #          1 - Make clean
 #          2 - Make
 #          3 - ./transporte pruebas.txt resultado.txt      
-#          AÑADIR REGLA PARA COMPILAR EN HENDRIX
+#          ANYADIR REGLA PARA COMPILAR EN HENDRIX
 #*****************************************************************
 
 # Seleccion del compilador
@@ -22,7 +22,6 @@ NODO_DIR=Nodo
 
 
 PEDIDO=${PEDIDO_DIR}/Pedido
-PRELIMINAR=${PRELIMINAR_DIR}/Preliminar
 NODO=${NODO_DIR}/Nodo
 HEAP=${HEAP_DIR}/Heap
 HEAP_IMPLEMENTOR=${HEAP_DIR}/HeapImplementor

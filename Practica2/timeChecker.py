@@ -6,7 +6,7 @@
 #-----------------------------------
 
 # Numero total de problemas resueltos por los algoritmos 
-NUM_PROBLEMAS = 10 
+NUM_PROBLEMAS = 8000
 
 
 # Fichero de resultados obtenidos por el algoritmo de ramificacion y poda

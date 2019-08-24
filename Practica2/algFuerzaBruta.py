@@ -1,15 +1,14 @@
-
 #-----------------------------------
 # Autores:
 # Ruben Rodriguez Esteban - 737215
-# Jose Maria Vallejo Puyal - 720004
+# Jose Maria Vallejo Puyal - 720044
 #-----------------------------------
  
 # Biblioteca para medir tiempos de ejecucion
 import time
 
 # Constantes 
-CLOCKS_PER_SEC = 1000000 
+CLOCKS_PER_SEC = 1000 
 
 def maximoBeneficio(pedidos, capacidadTren, estaciones):
 	# Contador del numero de pedidos atendidos
@@ -154,7 +153,7 @@ while( not fin):
 	presentarEstadisticas(idProblema, capacidadTren, estacionFinal, numPedidos, beneficio, tiempo)
 	
 	# Precision de 5 decimales
-	tiempoAcotado = format(tiempo, '.5f')
+	tiempoAcotado = '%.5f'%(tiempo)
 	
 	# Escribir el beneficio y el tiempo de ejecucion en el fichero de resultados
 	descriptorFicheroResultados.write(str(beneficio) + " " + str(tiempoAcotado) + "\n")
@@ -172,4 +171,3 @@ while( not fin):
 descriptorFicheroPruebas.close()
 # Cierre del descriptor del fichero de resultados 
 descriptorFicheroResultados.close()
-	
