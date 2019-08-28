@@ -139,29 +139,7 @@ void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 }
 
 
-void escriRec(ArbolTrie a){
-		// Comprobacion de si el nodo es o no una hoja
-		if (!esHoja(a)){
-			// Escritura de la frecuencia del nodo y de que es interno
-			// No es hoja por lo canto escribo solo una N
-			//cout << "N" ;
-			// Comprobar el hijo izquierdo del nodo actual
-			escriRec(obtenerArbolIzquierdo(a));
-			// Comprobar el hijo el hijo derecho del nodo actual
-			escriRec(obtenerArbolDerecho(a));
-		}
-		else {
-			// El nodo es una hojaArbolTrie::Nodo* a
-		  	// Obtencion de la tupla <caracter, frecuencia> del nodo
-			carFrec c = obtenerCarFrec(a);
-			//cout << "El carfrec es " << c.getCaracter()  << " " << c.getFrecuencia()<< endl;
-			// Obtencion del caracter y la frecuencia de la tupla y del tipo de hijo
-			char caracter = c.getCaracter();
-			// Escritura de la frecuencia del nodo y de que es interno
-			//Es un nodo hoja por lo tanto escibo H y el caracter que contiene la hoja
-			cout << "H" << caracter;
-		}
-}
+
 
 
 
@@ -179,86 +157,14 @@ void escriRec(ArbolTrie a){
  *       Estructura: explicar
  *
  */
-void esciArbol(ArbolTrie a){
-			escriRec(a);
- }
 
 
 
 
-/*
- * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
- *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
- *      en el arbol y ya han sido examinados los <<indice-1>> caracteres de la cadena
- * Post: Ha guardado en <<cB>> el caracter recogido en el arbol <<a>> si el caracter presente en el
- *       indice <<indice>> es igual al carcter nulo. En caso contrario si el caracter es
- *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
- *       un uno busca en el subarbol derecho
- */
-void decodificarCaracterRec(ArbolTrie a1, ArbolTrie a2, string contenidoFichero, int indice, ofstream& f){
-	// Comprobar que el contenido del fichero no ha terminado
-	if (indice <= int(contenidoFichero.size() - 1)){
-		// Extraccion del bit 0 o 1
-		char c = contenidoFichero.at(indice);
-		//cout << c << endl;
-		// Determinar si el nodo es o no hoja
-		if (!esHoja(a1)){
-			// Es nodo interno
-			// Incremento del indice de la cadena
-			indice++;
-			if (c == '0'){
-				// El bit leido es un 0 y se busca en el hijo izquierdo
-				decodificarCaracterRec(obtenerArbolIzquierdo(a1), a2, contenidoFichero, indice, f);
-			}
-			else if (c == '1'){
-				// El bit leido es un 1 y se busca en el hijo derecho
-				decodificarCaracterRec(obtenerArbolDerecho(a1), a2, contenidoFichero, indice, f);
-			}
-		}
-		else {
-			// El nodo es una hoja
-			// Se extrae la tupla <caracter, frecuencia> guardada en el nodo
-			carFrec tupla = obtenerCarFrec(a1);
-			// Escritura del caracter en el fichero
-			f << tupla.getCaracter();
-			decodificarCaracterRec(a2, a2, contenidoFichero, indice, f);
-		}
-	}
-	else {
-		// Tratamiento del ultimo caracter del fichero
-		// Si es el final del contenido del fichero
-		if (indice == int(contenidoFichero.size())){
-			// Se extrae la tupla <caracter, frecuencia> guardada en el nodo
-			carFrec tupla = obtenerCarFrec(a1);
-			// Escritura del ultimo caracter en el fichero
-			f << tupla.getCaracter();
-		}
-	}
-}
 
 
-/*
- * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia> y <<cadena>>
- *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
- *      en el arbol <<a>>
- * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
- *       de <<cadena>>
- */
-void decodificarCaracter(ArbolTrie a, string contenidoFichero, string nombreFichero){
-	// Flujo de escritura asociado al fichero de texto
-	ofstream f;
-	// Apertura del fichero asociado al flujo
-	f.open(nombreFichero);
-	if (f.is_open()){
-		// Si el fichero se ha abierto correctamente
-		decodificarCaracterRec(a, a, contenidoFichero, 0, f);
-	}
-	else {
-		// Error al intentar abrir el fichero
-		cerr << "El fichero de decodificacion " << nombreFichero
-		     << "no esta accesible" << endl;
-	}
-}
+
+
 
 
 
@@ -473,44 +379,26 @@ void codificador(string codigos[],const ArbolTrie& a, string codigo){
 
 
 
+
 /*
- * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con
- *      extension de archivo .huf y <<a>> es el arbol de codigos huffman
- *      empleado en la codficacion del fichero <<nombreFichero>>
- * Post: Ha devuelto como resultado un fichero descomprimido con el contenido
- *       del del fichero comprimido <<nombreFichero>> empleando para la
- *       descompresion el arbol de codigos Huffman <<a>>
+ * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia> y <<cadena>>
+ *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
+ *      en el arbol <<a>>
+ * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
+ *       de <<cadena>>
  */
-void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB){
-	// Flujo de lectura asociado al fichero .huf
-  ifstream f(nombreFichero, ios::binary);
-  //cout << "El nombre del fichero de salida es " <<nombreFichero << endl;
-  char c;
-	// Guardado del contenido del fichero
-	string total = "";
-	// Ignorar la primera linea del fichero porque es el arbol
-	// TODO: Esto esta mal
-	cout << "Numero de Bytes a ignorar "<< numB;
-	f.ignore(numB+1);
-	// Leer caracter a caracter el fichero
-  	while (!f.eof()){
-	f.get(c);
-	  //cout<< "Car: " << c << endl;
-		  // Parsear el contenido en grupos de bytes
-      for (int i = 7; i >= 0; i--){
-          int a =  ((c >> i) & 1);
-		  
-          total = total + std::to_string(a);
-      }
-  	}
-  // Decodficar el fichero
-  string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4) + "salida.txt";
-  cout << "El nombre del fichero de salida es " <<ficheroSalida << endl;
-  decodificarCaracter(trie, total, ficheroSalida);
-}
 
+/*
+ * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
+ *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
+ *      en el arbol y ya han sido examinados los <<indice-1>> caracteres de la cadena
+ * Post: Ha guardado en <<cB>> el caracter recogido en el arbol <<a>> si el caracter presente en el
+ *       indice <<indice>> es igual al carcter nulo. En caso contrario si el caracter es
+ *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
+ *       un uno busca en el subarbol derecho
+ */
 
-ArbolTrie decodificarCaracterRec2(const ArbolTrie& inicial, ArbolTrie& actual,int num, ofstream& f, bool& sumar){
+ArbolTrie decodificarCaracter(const ArbolTrie& inicial, ArbolTrie& actual,int num, ofstream& f, bool& sumar){
 	if (num == 0){
 		ArbolTrie comprobar = obtenerArbolIzquierdo(actual);
 		if(!esHoja(comprobar)){
@@ -524,7 +412,7 @@ ArbolTrie decodificarCaracterRec2(const ArbolTrie& inicial, ArbolTrie& actual,in
 			// Escritura del caracter en el fichero
 			//cout << "Escibo: " << tupla.getCaracter()<< endl;
 			f << tupla.getCaracter();
-			cout << tupla.getCaracter() << endl;
+			//cout << tupla.getCaracter() << endl;
 			return inicial;
 		}
 	}
@@ -538,7 +426,7 @@ ArbolTrie decodificarCaracterRec2(const ArbolTrie& inicial, ArbolTrie& actual,in
 			carFrec tupla = obtenerCarFrec(comprobar);
 			// Escritura del caracter en el fichero
 			f << tupla.getCaracter();
-			cout << tupla.getCaracter() << endl;
+			//cout << tupla.getCaracter() << endl;
 			sumar=true;
 			//cout << "Total: "<< total << endl;
 			return inicial;
@@ -550,47 +438,43 @@ ArbolTrie decodificarCaracterRec2(const ArbolTrie& inicial, ArbolTrie& actual,in
 
 }
 
-void descifraFichero2(string nombreFichero, ArbolTrie& trie,int numB){
-	// Flujo de lectura asociado al fichero .huf
-// Flujo de escritura asociado al fichero de texto
-// cout << "El arbol que tenemso es : " << endl;
-// esciArbol(trie);
-// cout << endl;
-ofstream f2;
-// Apertura del fichero asociado al flujo
-f2.open("Pruebas.txt");
-  ifstream f(nombreFichero, ios::binary);
-  int actuales=0;
-  bool sumar;
+/*
+ * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con
+ *      extension de archivo .huf y <<a>> es el arbol de codigos huffman
+ *      empleado en la codficacion del fichero <<nombreFichero>>
+ * Post: Ha devuelto como resultado un fichero descomprimido con el contenido
+ *       del del fichero comprimido <<nombreFichero>> empleando para la
+ *       descompresion el arbol de codigos Huffman <<a>>
+ */
 
-
-  //cout << "El nombre del fichero de salida es " <<nombreFichero << endl;
-  char c;
-	// Guardado del contenido del fichero
-	string total = "";
-	// Ignorar la primera linea del fichero porque es el arbol
-	// TODO: Esto esta mal
-	cout << "Numero de Bytes a ignorar "<< numB;
+void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB){
+	// Flujo de lectura asociado al fichero.huf
+	// Flujo de escritura asociado al fichero de texto
+	ofstream f2;
+	// Apertura del fichero asociado al flujo
+	string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4) + "Sal.txt";
+	cout << "El nombre del fichero es "<< ficheroSalida << "---------------------_" << endl;
+	f2.open(ficheroSalida);
+	ifstream f(nombreFichero, ios::binary);
+  	int actuales=0;
+  	bool sumar;
+  	char c;
+	//Se ignoran numB + 1 Bytes ya que es la representacion del arbol en el fichero comprimido.
 	f.ignore(numB+1);
 	f >> actuales;
 	f.ignore(1);
-	//cout << "Hay que leer bytes:" << bytes << endl;
 	ArbolTrie t1 = trie;
-	// Leer caracter a caracter el fichero
-	//TODO: chapuza para que acaba hay que hacer que cuente bien los caracteres que escribe.
 	bool continuar = true;
   	while (continuar){
 			f.get(c);
-			// Parsear el contenido en grupos de bytes
+			// Parsear el contenido en grupos de bytes e ir recorriendo el arbol descifrando las letras.
 			for (int i = 7; i >= 0; i--){
 				int a =  ((c >> i) & 1);
-				t1 = decodificarCaracterRec2(trie,t1,a,f2,sumar);
+				t1 = decodificarCaracter(trie,t1,a,f2,sumar);
 				if(sumar){
 					actuales--;
-					cout << "Actuales: " << actuales << endl;
 					if(actuales == 1){
 						continuar = false;
-						cout << "fin de fichero" << endl;
 						break;
 					}
 					sumar=false;	

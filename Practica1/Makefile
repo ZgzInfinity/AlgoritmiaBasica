@@ -12,7 +12,7 @@
 #*****************************************************************
 
 # Seleccion del compilador
-CC=g++
+CC=g++ -O3
 
 # Expansion de variables
 

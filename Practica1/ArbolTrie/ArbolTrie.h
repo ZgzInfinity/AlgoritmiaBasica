@@ -121,30 +121,6 @@ struct ArbolTrie {
 		 */
 		 friend void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal);
 
-		friend void escriRec(ArbolTrie a);
-
-		friend void esciArbol(ArbolTrie a);
-
-		/*
-		 * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
-		 *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
-		 *      en el arbol y ya han sido examinados los <<indice-1>> caracteres de la cadena
-		 * Post: Ha guardado en <<cB>> el caracter recogido en el arbol <<a>> si el caracter presente en el
-		*       indice <<indice>> es igual al carcter nulo. En caso contrario si el caracter es
-		 *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
-		 *       un uno busca en el subarbol derecho
-		 */
-		 friend void decodificarCaracter(ArbolTrie a1, ArbolTrie a2, string cadena, int indice,  ofstream& nombre);
-
-
-		/*
-		 * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia> y <<cadena>>
-		 *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
-		 *      en el arbol <<a>>
-		 * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
-		 *       de <<cadena>>
-		 */
-		 friend void decodificarCaracter(ArbolTrie a, string cadena, string nombreFichero);
 
 
 
@@ -235,11 +211,12 @@ struct ArbolTrie {
 		  *       del del fichero comprimido <<nombreFichero>> empleando para la
 		  *       descompresion el arbol de codigos Huffman <<a>>
 		  */
-		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie, int numB);
+		  
+		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB);
 
-		 friend ArbolTrie decodificarCaracterRec2(const ArbolTrie& inical, ArbolTrie& actual,int num, ofstream& f,bool& sumar);
+		 friend ArbolTrie decodificarCaracter(const ArbolTrie& inical, ArbolTrie& actual,int num, ofstream& f,bool& sumar);
 
-		 friend void descifraFichero2(string nombreFichero, ArbolTrie& trie,int numB);
+		
 };
 
 #endif

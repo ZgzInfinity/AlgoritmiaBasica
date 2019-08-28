@@ -71,7 +71,7 @@ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string
           // }
           // Leer el siguiente caracter
           f.get(c);
-          cout << "caracter "<< c << " ascii: " << int(c) << endl;
+          //cout << "caracter "<< c << " ascii: " << int(c) << endl;
           total++;
          // cout << contenidoFichero << endl << endl;
       }
@@ -238,5 +238,5 @@ void descomprimir(const string nombreFichero){
     ArbolTrie a;
   	bytes =  construirArbolDeFichero(nombreFichero, a);
     // Efectua la descompresion del fichero
-    descifraFichero2(nombreFichero, a, bytes);
+    descifraFichero(nombreFichero, a, bytes);
 }
