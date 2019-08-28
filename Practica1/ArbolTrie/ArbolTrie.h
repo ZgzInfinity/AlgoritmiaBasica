@@ -201,7 +201,15 @@ struct ArbolTrie {
 		  */
     	friend void codificador(string codigos[],const ArbolTrie& a, string codigo);
 
-
+		/*
+		 * Pre: <<inicial>> es un puntero a un nodo que almacena el arbol huffman inicial,
+		 * 		<<actual>> es un puntero a un nodo que almacena el nodo del arbol que hay que comprobar,
+		 *  	<<num>> es el bit que estamos decodificando,
+		 *      <<sumar>> indica si hemos llegado a una hoja. 
+		 * Post: Devuelve el SrbolTrie que hay que comprobar en la siguiente llamada, si se ha llegado a una
+		 * 		 hoja escribe en el fichero de salida el caracter obtenido a partir del arbol y sumar = true.
+		 */
+		 friend ArbolTrie decodificarCaracter(const ArbolTrie& inical, ArbolTrie& actual,int num, ofstream& f,bool& sumar);
 
 		 /*
 		  * Pre: <<nombreFichero>> es el nombre de un fichero comprimido con
@@ -213,8 +221,7 @@ struct ArbolTrie {
 		  */
 		  
 		  friend void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB);
-
-		 friend ArbolTrie decodificarCaracter(const ArbolTrie& inical, ArbolTrie& actual,int num, ofstream& f,bool& sumar);
+		
 
 		
 };

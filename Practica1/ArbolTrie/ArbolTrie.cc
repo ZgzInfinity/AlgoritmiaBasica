@@ -139,36 +139,6 @@ void unir(ArbolTrie& a1, ArbolTrie& a2, ArbolTrie& arbolFinal){
 }
 
 
-
-
-
-
-
-
-/*
- * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
- *      cada uno de sus nodos hoja correspondientes a los caracteres
- *      recogidos en un fichero de texto junto con sus frecuencias de
- *      aparicion
- * Post: Si se ha podido crear sin ningun problema el fichero de
- *       texto <<arbolNombreFichero>> ha guardado en dicho fichero una
- *       representacion del arbol con la siguiente estructura:
- *
- *       Estructura: explicar
- *
- */
-
-
-
-
-
-
-
-
-
-
-
-
 /*
  * Pre: <<a>> es un arbol que guarda tuplas <caracter, frecuencia> en
  *      cada uno de sus nodos hoja correspondientes a los caracteres
@@ -377,25 +347,13 @@ void codificador(string codigos[],const ArbolTrie& a, string codigo){
 
 }
 
-
-
-
 /*
- * Pre: <<a>> es un arbol que almacena tuplas <caracter, frecuencia> y <<cadena>>
- *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
- *      en el arbol <<a>>
- * Post: Ha devuelto el caracter recogido en el arbol <<a>> correspondiente a la codificacion
- *       de <<cadena>>
- */
-
-/*
- * Pre: <<a>> es un puntero a un nodo que almacena una tupla <caracter, frecuencia>, <<cadena>>
- *      es una secuencia binaria de caracteres que codifica un determinado caracter recogido
- *      en el arbol y ya han sido examinados los <<indice-1>> caracteres de la cadena
- * Post: Ha guardado en <<cB>> el caracter recogido en el arbol <<a>> si el caracter presente en el
- *       indice <<indice>> es igual al carcter nulo. En caso contrario si el caracter es
- *       un cero ha seguido buscando en el subarbol izquierdo de <<a>> y si el caracter es
- *       un uno busca en el subarbol derecho
+ * Pre: <<inicial>> es un puntero a un nodo que almacena el arbol huffman inicial,
+ * 		<<actual>> es un puntero a un nodo que almacena el nodo del arbol que hay que comprobar,
+ *  	<<num>> es el bit que estamos decodificando,
+ *      <<sumar>> indica si hemos llegado a una hoja. 
+ * Post: Devuelve el SrbolTrie que hay que comprobar en la siguiente llamada, si se ha llegado a una
+ * 		 hoja escribe en el fichero de salida el caracter obtenido a partir del arbol y sumar = true.
  */
 
 ArbolTrie decodificarCaracter(const ArbolTrie& inicial, ArbolTrie& actual,int num, ofstream& f, bool& sumar){
