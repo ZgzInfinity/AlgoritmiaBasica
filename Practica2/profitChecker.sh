@@ -57,7 +57,7 @@ awk '{print $1}' $1 > $ficheroPoda
 awk '{print $1}' $2 > $ficheroFuerzaBruta
 
 # Comparar ambos ficheros
-diff -y $ficheroPoda $ficheroFuerzaBruta
+diff -s $ficheroPoda $ficheroFuerzaBruta
 
 # Borrar los ficheros temporales
 rm -f $ficheroPoda

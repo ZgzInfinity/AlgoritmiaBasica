@@ -1,4 +1,4 @@
-#*****************************************************************
+#**********************************************************************
 # Archivo: Makefile Practica_1
 # Author:  Ruben Rodriguez Esteban 737215
 #          Jose Maria Vallejo Puyal 720044
@@ -7,9 +7,9 @@
 #          Para compilar y ejecutar seguir estos pasos en terminal
 #          1 - Make clean
 #          2 - Make
-#          3 - ./pruebas      
-#          AÑADIR REGLA PARA COMPILAR EN HENDRIX
-#*****************************************************************
+#          3 - Para comprimir fichero: huf -c <nombre de fichero>
+#            - Para descomprimir fichero: huf -d <nombre de fichero>
+#*********************************************************************
 
 # Seleccion del compilador
 CC=g++ -O3

@@ -303,6 +303,7 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 	else {
+		
 		// El numero de parametros es correcto
 		// Apertura del fichero de texto con las pruebas
 		ifstream f1;

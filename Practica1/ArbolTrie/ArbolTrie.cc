@@ -1,8 +1,8 @@
 /*
  * ***********************************************
  * Asignatura : Algoritmia basica ****************
- * Autores : RubÃ©n RodrÃ­guez Esteban 737215 ******
- *           JosÃ© MarÃ­a Vallejo Puyal 720044 *****
+ * Autores : Rubén Rodríguez Esteban 737215 ******
+ *           José María Vallejo Puyal 720044 *****
  * Fecha : 16-3-19 *******************************
  * ***********************************************
  */
@@ -410,7 +410,8 @@ void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB){
 	// Flujo de escritura asociado al fichero de texto
 	ofstream f2;
 	// Apertura del fichero asociado al flujo
-	string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4) + "Sal.txt";
+	string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4);
+	ficheroSalida = "FicherosResultado/" + ficheroSalida.substr(9, nombreFichero.length() - 1);
 	cout << "El nombre del fichero es "<< ficheroSalida << "---------------------_" << endl;
 	f2.open(ficheroSalida);
 	ifstream f(nombreFichero, ios::binary);

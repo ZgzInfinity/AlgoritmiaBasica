@@ -203,7 +203,7 @@ void comprimir(string ficheroEntrada){
   cout << "salgi de codificador" << endl;
 
 	// Nombre del fichero binario codificado de salida esto solo vale si es txt
-  string ficheroSalida = ficheroEntrada.substr(0, ficheroEntrada.length() - 4) + ".huf";
+  string ficheroSalida = ficheroEntrada + ".huf";
 
   // Generacion del fichero con el arbol comprimido
   cout << "guardar arbol en ficheros" << endl;

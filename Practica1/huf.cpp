@@ -28,8 +28,10 @@ int main(int argc, char* argv[]){
 	else {
 		// El numero de parametros es correcto
 		string ficheroTrabajo = "Ficheros/";
-		ficheroTrabajo += argv[2];
 
+		// Ruta completa del fichero
+		ficheroTrabajo += argv[2];
+	
 		// Control del flag de ejecucion
 		if (strcmp(argv[1], "-c") == 0){
 			// Modo compresion de fichero
