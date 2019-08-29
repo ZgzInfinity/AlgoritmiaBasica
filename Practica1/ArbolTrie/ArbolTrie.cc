@@ -1,8 +1,8 @@
 /*
  * ***********************************************
  * Asignatura : Algoritmia basica ****************
- * Autores : Rubén Rodríguez Esteban 737215 ******
- *           José María Vallejo Puyal 720044 *****
+ * Autores : Rubï¿½n Rodrï¿½guez Esteban 737215 ******
+ *           Josï¿½ Marï¿½a Vallejo Puyal 720044 *****
  * Fecha : 16-3-19 *******************************
  * ***********************************************
  */
@@ -369,6 +369,7 @@ ArbolTrie decodificarCaracter(const ArbolTrie& inicial, ArbolTrie& actual,int nu
 			carFrec tupla = obtenerCarFrec(comprobar);
 			// Escritura del caracter en el fichero
 			//cout << "Escibo: " << tupla.getCaracter()<< endl;
+			//cout << "caracter: " << tupla.getCaracter() << endl;
 			f << tupla.getCaracter();
 			//cout << tupla.getCaracter() << endl;
 			return inicial;

@@ -87,10 +87,19 @@ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string
 
     if(contenidoFichero.length()%8 != 0){
       cout << "Voy a añadir 0's: " << 8 - (int)contenidoFichero.length()%8 << endl;
-	    for(int i = 0; i < 8 - (int)contenidoFichero.length()%8  ; i++){
-		    contenidoFichero = contenidoFichero + "0"; 
+      string anyadir = "";
+      cout << contenidoFichero.substr(contenidoFichero.length()-4, contenidoFichero.length()) << endl;
+	    for(int i = 0; i < (int)contenidoFichero.length()%8  ; i++){
+		    anyadir = anyadir + "0"; 
 	    }
+      contenidoFichero = contenidoFichero + anyadir;
     }
+
+    
+
+    //cout << contenidoFichero.substr(contenidoFichero.length()-8, contenidoFichero.length()) << endl;
+
+    //cout << contenidoFichero << endl;
     return total;
 }
 
@@ -158,7 +167,6 @@ void comprimir(string ficheroEntrada){
   int frecsPorChar[MAX_CARACTERES];
 
 	// Inicializar la frecuencia de aparicion de cada caracter a cero
-  cout << "Inicialdofrecuencias por caracteres" << endl;
   iniciarFrecuencias(frecsPorChar);
   
 
@@ -166,41 +174,27 @@ void comprimir(string ficheroEntrada){
   string codigos[MAX_CARACTERES];
 
   // Iniciar codificaciones binarias
-  cout << "Inicio codificadores" << endl;
   iniciarCodificaciones(codigos);
 
 	// Contabilizar las frecuencias de cada caracter
-  cout << "frecuencias por caracteres" << endl;
   frecuenciasPorCaracter(ficheroEntrada, frecsPorChar);
-  // for(int i = 0; i < 256 ; i++){
-  //   if(frecsPorChar[i] != 0)
-  //   cout << "caracter: " << (char)i  << "codigo: " << frecsPorChar[i] << endl;
-  // }
+  
   // Creacion del monticulo de prioridades
 	Heap hp;
 	crearVacio(hp);
 
 	// Rellenado del monticulo a partir de las frecuencias de cada caracter
-  cout << "Rellenando en heap" << endl;
 	rellenar(hp, frecsPorChar);
 
   // Construccion del arbol de codificacion Huffman
 	ArbolTrie huff;
-  cout << "generar huffman" << endl;
 	generaHuffman(hp, huff);
 
 	// Codificacion de caracteres con codigos binarios
-  cout << "codificdor" << endl;
 	codificador(codigos, huff, "");
-  
 
-  // for(int i = 0; i < 256 ; i++){
-  //   if(codigos[i] != "-")
-  //    cout << "caracter: " << (char)i  << "codigo: " << codigos[i] << endl;
-     
-  // }
+  cout << codigos[(int)'3'] << endl;
 
-  cout << "salgi de codificador" << endl;
 
 	// Nombre del fichero binario codificado de salida esto solo vale si es txt
   string ficheroSalida = ficheroEntrada + ".huf";
@@ -213,13 +207,10 @@ void comprimir(string ficheroEntrada){
   string contenidoFichero = "";
 
   // Leer fichero de texto y guardar su contenido codificado en binario
-  cout << "Leer fichero" << endl;
   unsigned int total  = leerFichero(ficheroEntrada, contenidoFichero, codigos);
 
   // Escribir el contenido comprimido en un nuevo fichero
-  cout << "Escribir fichero" << endl;
   escribirFichero(contenidoFichero, ficheroSalida, total);
-
 }
 
 
