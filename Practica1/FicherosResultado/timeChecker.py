@@ -60,4 +60,4 @@ print "Total de casos en los que ramificacion y poda es mas rapido que fuerza br
 # Cierre del descriptor del fichero de pruebas
 descriptorFicheroResulPoda.close()
 # Cierre del descriptor del fichero de resultados 
-descriptorFicheroResulBruta.close()
+descriptorFicheroResulBruta.close()	

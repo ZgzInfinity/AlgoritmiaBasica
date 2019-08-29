@@ -155,7 +155,6 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f){
 			// Escritura de la frecuencia del nodo y de que es interno
 			// No es hoja por lo canto escribo solo una N
 			f << "N";
-			//cout << "N" ;
 			// Comprobar el hijo izquierdo del nodo actual
 			guardarArbolEnFicheroRec(obtenerArbolIzquierdo(a), f);
 			// Comprobar el hijo el hijo derecho del nodo actual
@@ -165,13 +164,11 @@ void guardarArbolEnFicheroRec(ArbolTrie a, ofstream& f){
 			// El nodo es una hojaArbolTrie::Nodo* a
 		  	// Obtencion de la tupla <caracter, frecuencia> del nodo
 			carFrec c = obtenerCarFrec(a);
-			//cout << "El carfrec es " << c.getCaracter()  << " " << c.getFrecuencia()<< endl;
 			// Obtencion del caracter y la frecuencia de la tupla y del tipo de hijo
 			unsigned char caracter = c.getCaracter();
 			// Escritura de la frecuencia del nodo y de que es interno
 			//Es un nodo hoja por lo tanto escibo H y el caracter que contiene la hoja
 			f << "H" << caracter;
-			//cout << "H" << caracter << "caracter ascii: "<< int(caracter);
 		}
 }
 
@@ -206,7 +203,6 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 		}
 		// Insertar salto de linea
 		f << endl;
-		//cout << "escribo fin de linea" << endl;
 		// Cierre del flujo asociado al fichero
 		f.close();
  }
@@ -260,7 +256,6 @@ void guardarArbolEnFichero(ArbolTrie a, const string arbolNombreFichero){
 			
 			f.get(caracter);
 			c.setCaracter((unsigned char)caracter);
-			//cout << "H" << caracter;
 			asignarArbolCarFrec(a, c);
 
 			// Apuntar los nodos hijos a nil
@@ -323,21 +318,16 @@ int construirArbolDeFichero(const string arbolNombreFichero, ArbolTrie& a){
  *
  */
 void codificador(string codigos[],const ArbolTrie& a, string codigo){
-	//cout << "Entro a codificador" << endl;
     // Comprobar que el nodo actual es hoja
     if(esHoja(a)){	
         // Obtencion del caracter con su frecuencia
         carFrec c = obtenerCarFrec(a);
-		//cout << "peta en obtener caracter" << endl;
-		//cout << "es hoja y letra: "<< c.getCaracter() << "y ascii " << (int)c.getCaracter();
-		//cout << "salgo de obtener caracter" << endl;
         // Guardar el codigo del caracter
         codigos[(int)c.getCaracter()]=codigo;
     }
     else{
         // Si el nodo no es hoja se inserta en la codificacion del caracter
         // un 0 para ir al hijo izuierdo y un 1 para ir al hijo derecho
-		//cout << "no es hoja" << endl;
         string codigoIzq = codigo + "0";
         string codigoDer = codigo + "1";
         // Llamadas recursivas al hijo izquierdo y derecho
@@ -363,15 +353,10 @@ ArbolTrie decodificarCaracter(const ArbolTrie& inicial, ArbolTrie& actual,int nu
 			sumar=false;
 			return comprobar;
 		}else{
-			//cout << "es 0" << endl;
 			sumar=true;
-			//cout << "Total: "<< total << endl;
 			carFrec tupla = obtenerCarFrec(comprobar);
 			// Escritura del caracter en el fichero
-			//cout << "Escibo: " << tupla.getCaracter()<< endl;
-			//cout << "caracter: " << tupla.getCaracter() << endl;
 			f << tupla.getCaracter();
-			//cout << tupla.getCaracter() << endl;
 			return inicial;
 		}
 	}
@@ -381,13 +366,10 @@ ArbolTrie decodificarCaracter(const ArbolTrie& inicial, ArbolTrie& actual,int nu
 			sumar=false;
 			return comprobar;
 		}else{
-			//cout << "es 1"<< endl;
 			carFrec tupla = obtenerCarFrec(comprobar);
 			// Escritura del caracter en el fichero
 			f << tupla.getCaracter();
-			//cout << tupla.getCaracter() << endl;
 			sumar=true;
-			//cout << "Total: "<< total << endl;
 			return inicial;
 		}
 	}else{
@@ -413,7 +395,7 @@ void descifraFichero(string nombreFichero, ArbolTrie& trie,int numB){
 	// Apertura del fichero asociado al flujo
 	string ficheroSalida = nombreFichero.substr(0, nombreFichero.length() - 4);
 	ficheroSalida = "FicherosResultado/" + ficheroSalida.substr(9, nombreFichero.length() - 1);
-	cout << "El nombre del fichero es "<< ficheroSalida << "---------------------_" << endl;
+	cout << "El nombre del fichero descomprimido es "<< ficheroSalida << endl;
 	f2.open(ficheroSalida);
 	ifstream f(nombreFichero, ios::binary);
   	int actuales=0;

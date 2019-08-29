@@ -44,7 +44,6 @@ void frecuenciasPorCaracter(string nombreFichero, int frecsPorChar[]){
 		unsigned char c;
 		// lectura del primer caracter del fichero
 		c = f.get();
-		//cout << nombreFichero << endl;
 		// mientras no acaba el fichero
 		while (!f.eof()){
 			// obtencion del codigo ascii del caracter leido
@@ -54,7 +53,6 @@ void frecuenciasPorCaracter(string nombreFichero, int frecsPorChar[]){
 			frecsPorChar[codAscii]++;
 			// lectura de un nuevo caracter del fichero
 			c = f.get();
-			//sscout <<  c << " "<<  (int)c << endl;
 		}
 		// Cierre del flujo de lectura asociado al fichero
 		f.close();
@@ -63,6 +61,4 @@ void frecuenciasPorCaracter(string nombreFichero, int frecsPorChar[]){
 		// Error en la asociacion del flujo al fichero
 		cerr << "El fichero de " << nombreFichero << " no se ha podido leer " << endl;
 	}
-
-	cout << "Salgo de los carateres" << endl;
 }

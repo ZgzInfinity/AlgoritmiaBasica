@@ -61,4 +61,4 @@ diff -y $ficheroPoda $ficheroFuerzaBruta
 
 # Borrar los ficheros temporales
 rm -f $ficheroPoda
-rm -f $ficheroFuerzaBrute
+rm -f $ficheroFuerzaBruta

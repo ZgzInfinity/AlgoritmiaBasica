@@ -62,21 +62,13 @@ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string
       // Mientras queden caracteres por leer
       while (!f.eof()){
           c2 = (unsigned char)c;
-          //cout << "añado al string ";
           // Guardar la codificacion binario del caracter leido
-          //cout << "caracter: " << c2 <<" codigo caracter: " << (int)c2 << " codigo: "<< codigos[(int)c2] << endl;
           contenidoFichero += codigos[(int)c2];
-          // if(contenidoFichero.length() > 8){
-          //   contenidoFichero = "";
-          // }
           // Leer el siguiente caracter
           f.get(c);
-          //cout << "caracter "<< c << " ascii: " << int(c) << endl;
           total++;
-         // cout << contenidoFichero << endl << endl;
       }
 
-      cout << "Cierre del flujo" << endl;
       // Cierre del flujo de lectura
       f.close();
     }
@@ -86,21 +78,14 @@ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string
     }
 
     if(contenidoFichero.length()%8 != 0){
-      cout << "Voy a añadir 0's: " << 8 - (int)contenidoFichero.length()%8 << endl;
       string anyadir = "";
-      cout << contenidoFichero.substr(contenidoFichero.length()-4, contenidoFichero.length()) << endl;
 	    for(int i = 0; i < (int)contenidoFichero.length()%8  ; i++){
 		    anyadir = anyadir + "0"; 
 	    }
       contenidoFichero = contenidoFichero + anyadir;
     }
 
-    
-
-    //cout << contenidoFichero.substr(contenidoFichero.length()-8, contenidoFichero.length()) << endl;
-
-    //cout << contenidoFichero << endl;
-    return total;
+	return total;
 }
 
 
@@ -163,7 +148,6 @@ void escribirFichero(const string contenido, string ficheroSalida, unsigned int 
 void comprimir(string ficheroEntrada){
 	// Vector de frecuencias de cada caracter
 
-  //cout << "Calculando frecuencias por caracteres" << endl;
   int frecsPorChar[MAX_CARACTERES];
 
 	// Inicializar la frecuencia de aparicion de cada caracter a cero
@@ -193,14 +177,10 @@ void comprimir(string ficheroEntrada){
 	// Codificacion de caracteres con codigos binarios
 	codificador(codigos, huff, "");
 
-  cout << codigos[(int)'3'] << endl;
-
-
 	// Nombre del fichero binario codificado de salida esto solo vale si es txt
   string ficheroSalida = ficheroEntrada + ".huf";
 
   // Generacion del fichero con el arbol comprimido
-  cout << "guardar arbol en ficheros" << endl;
   guardarArbolEnFichero(huff, ficheroSalida);
 
   // Cadena donde se almacena la informacion del fichero
