@@ -1,4 +1,11 @@
-
+/*
+ * ***********************************************
+ * Asignatura : Algoritmia basica ****************
+ * Autores : Rubén Rodríguez Esteban 737215 ******
+ *           José María Vallejo Puyal 720044 *****
+ * Fecha : 29-3-19 *******************************
+ * ***********************************************
+ */
 
 #ifndef PRELIMINAR_H
 #define PRELIMINAR_H

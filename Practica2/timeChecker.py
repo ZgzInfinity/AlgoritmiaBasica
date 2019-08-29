@@ -2,7 +2,7 @@
 #-----------------------------------
 # Autores:
 # Ruben Rodriguez Esteban - 737215
-# Jose Maria Vallejo Puyal - 720004
+# Jose Maria Vallejo Puyal - 720044
 #-----------------------------------
 
 # Numero total de problemas resueltos por los algoritmos 

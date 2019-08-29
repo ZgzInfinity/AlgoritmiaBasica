@@ -8,7 +8,7 @@
 #          1 - Make clean
 #          2 - Make
 #          3 - Para comprimir fichero: huf -c <nombre de fichero>
-#            - Para descomprimir fichero: huf -d <nombre de fichero>
+#            - Para descomprimir fichero: huf -d <nombre de fichero>.huf
 #*********************************************************************
 
 # Seleccion del compilador

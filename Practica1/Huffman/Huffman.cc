@@ -1,3 +1,17 @@
+/*
+ * ***********************************************
+ * Asignatura : Algoritmia basica ****************
+ * Autores : Rubén Rodríguez Esteban 737215 ******
+ *           José María Vallejo Puyal 720044 *****
+ * Fecha : 25-3-19 *******************************
+ * ***********************************************
+ */
+ 
+
+/*
+ * Fichero de implementacion del modulo Huffman
+ */
+
 #include "Huffman.h"
 
 using namespace std;
