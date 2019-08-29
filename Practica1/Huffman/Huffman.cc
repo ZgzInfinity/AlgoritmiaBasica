@@ -116,8 +116,6 @@ unsigned int leerFichero(string ficheroEntrada, string& contenidoFichero, string
 void escribirFichero(const string contenido, string ficheroSalida, unsigned int total){
   // Flujo de lectura asociado al fichero
   ofstream f;
-  //ofstream aux;
-  //aux.open("salida.txt");
   // Apertura del fichero de texto
   f.open(ficheroSalida, ios::app);
   f << total << endl;
@@ -126,7 +124,6 @@ void escribirFichero(const string contenido, string ficheroSalida, unsigned int 
     // Parsear el contenido del fichero para guardalo en grupos de bytes
     int indice = 0;
     //Mientras queden caracteres por leer
-    //aux << contenido;
     while(indice < int(contenido.length())){
         if((indice - contenido.length() < TAMANYO_BYTE)){
             f << (char)std::stoi(contenido.substr(indice, indice - contenido.length()), nullptr, BASE);

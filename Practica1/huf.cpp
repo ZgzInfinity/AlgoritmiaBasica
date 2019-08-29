@@ -56,6 +56,9 @@ int main(int argc, char* argv[]){
 
 			// Mostrar el tiempo de ejecucion del programa
 			secs = (double)(t_fin - t_ini) / CLOCKS_PER_SEC;
+			
+			// Mostrar tiempo de ejecucion del programa en milisegundos
+			printf("El fichero %s se ha tardado en comprimir %.16g milisegundos \n",  argv[2], secs * 1000.0);
 		}
 		else if (strcmp(argv[1], "-d") == 0){
 			// Modo descompresion de fichero
@@ -71,13 +74,15 @@ int main(int argc, char* argv[]){
 
 			// Mostrar el tiempo de ejecucion del programa
 			secs = (double)(t_fin - t_ini) / CLOCKS_PER_SEC;
+			
+			// Mostrar tiempo de ejecucion del programa en milisegundos
+			printf("El fichero %s se ha tardado en descomprimir %.16g milisegundos \n",  argv[2], secs * 1000.0);
 		}
 		else {
 			// Flag desconocido
 			cerr << "El flag es desconocido. Se esperaba -d o -c" << endl;
 		}
-		// Mostrar tiempo de ejecucion del programa en milisegundos
-		printf("El fichero %s se ha tardado en descomprimir %.16g milisegundos \n",  argv[2], secs * 1000.0);
+		
 	}
 	// Fin de la ejecucion del programa
   return 0;
